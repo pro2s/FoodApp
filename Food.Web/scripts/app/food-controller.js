@@ -22,8 +22,9 @@
         $scope.working = false;
 
         $scope.answer = function () {
-            return $scope.correctAnswer ? 'correct' : 'incorrect';
+            return $scope.correctAnswer ? 'Changes accepted' : 'Сhanges rejected';
         };
+
 
     
         $scope.setDayChoice = function (day, choice) {
