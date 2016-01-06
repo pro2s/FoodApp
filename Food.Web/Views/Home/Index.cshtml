@@ -6,7 +6,7 @@
                     <div class="back" ng-class="{flip: answered, correct: correctAnswer, incorrect:!correctAnswer}">
                         <p class="lead">{{answer()}}</p>
                         <p>
-                            <button class="btn btn-info option" ng-click="nextQuestion()" ng-disabled="working">Next Question</button>
+                            <button class="btn btn-info option" ng-click="nextQuestion()" ng-disabled="working">Edit Week Menu</button>
                         </p>
                     </div>
                     <div class="front row" ng-class="{flip: answered}">
@@ -90,6 +90,6 @@
 @section scripts{
     @Scripts.Render("~/scripts/angular.js")
     @Scripts.Render("~/scripts/bootstrap.js")
-    @Scripts.Render("~/scripts/App/food-controller.js")
+    @Scripts.Render("~/scripts/app/food-controller.js")
 }
 
