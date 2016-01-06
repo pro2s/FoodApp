@@ -1,0 +1,61 @@
+﻿.validation-summary-valid {
+     display: none;
+}
+
+/* Geek Quiz styles */
+.flip-container .back,
+.flip-container .front {
+     padding-bottom: 10px;
+     padding-top: 10px;
+}
+
+#content {
+    position:relative;
+    background:#fff;
+    padding:10px 0 0 0;
+}
+
+.option {
+     width:140px;
+     margin: 15px;
+}
+
+div.correct p {
+     color: green;
+}
+
+div.incorrect p {
+     color: red;
+}
+
+.flip-container div.front, .flip-container div.back.flip {
+    display: block;
+}
+
+.flip-container div.front.flip, .flip-container div.back {
+    display: none;
+}
+
+@media (min-width: 768px) {
+  .seven-cols .col-md-1,
+  .seven-cols .col-sm-1,
+  .seven-cols .col-lg-1  {
+    width: 100%;
+  }
+}
+
+@media (min-width: 992px) {
+  .seven-cols .col-md-1,
+  .seven-cols .col-sm-1,
+  .seven-cols .col-lg-1 {
+    width: 14.285714285714285714285714285714%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .seven-cols .col-md-1,
+  .seven-cols .col-sm-1,
+  .seven-cols .col-lg-1 {
+    width: 14.285714285714285714285714285714%;
+  }
+}
