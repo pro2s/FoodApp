@@ -1,0 +1,25 @@
+﻿<div class="users col-md-7 row" ng-controller="MenuCtrl" ng-init="Menu()">
+    <div class="col-sm-8 lead">{{title}}</div>
+    <div class="col-sm-4 text-right"><button type="button" class="btn" ng-class="{'btn-success': tomorrow, 'btn-default': !tomorrow}" ng-click="tomorrow=!tomorrow">Tomorrow Only</button></div>
+
+    <div ng-repeat="menu in choice | slice:1">
+        <div class="clearfix" ng-if="$index % 2 == 0"></div>
+        <div class="col-sm-6" ng-if="!tomorrow||checkdate(menu.onDate)">
+            <div class="panel panel-default">
+
+                <div class="panel-heading">{{menu.name}} {{menu.onDate|date:'dd.MM.yyyy'}}</div>
+
+                <div class="panel-body">
+                    Цена: {{menu.price}} руб.<br />
+                    Заказно: шт.
+                </div>
+
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="item in menu.menu"><span class="badge">{{item.weight}}</span>{{item.name}}</li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+</div>

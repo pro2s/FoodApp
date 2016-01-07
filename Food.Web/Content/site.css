@@ -1,4 +1,12 @@
-﻿.validation-summary-valid {
+﻿body {
+     padding-top: 70px; 
+}
+
+.panel-footer.price {
+    background: #fff8dc;
+}
+
+.validation-summary-valid {
      display: none;
 }
 

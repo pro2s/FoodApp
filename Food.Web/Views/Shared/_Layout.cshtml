@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="FoodApp">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -8,9 +8,29 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+    <nav class="navbar navbar-default navbar-fixed-top" ng-controller="HeaderCtrl">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">FoodApp</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li ng-class="{ active: isActive('/')}"><a href="#/">Home</a></li>
+                <li ng-class="{ active: isActive('/admin')}"><a href="#/admin">Admin</a></li>
+                <li ng-class="{ active: isActive('/test')}"><a href="#/test">Test</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" ng-view>
+        
+    </div>
+    
     @RenderBody()
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/app")
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -133,6 +133,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\views\admin.html" />
+    <Content Include="app\views\food.html" />
+    <Content Include="app\views\menu.html" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -143,6 +146,8 @@
     <Content Include="scripts\ai.0.15.0-build58334.js" />
     <Content Include="scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="scripts\angular-mocks.js" />
+    <Content Include="scripts\angular-route.js" />
+    <Content Include="scripts\angular-route.min.js" />
     <Content Include="scripts\angular.js" />
     <Content Include="scripts\angular.min.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -153,8 +158,11 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="scripts\angular-route.min.js.map" />
     <None Include="scripts\jquery-1.9.1.intellisense.js" />
-    <Content Include="scripts\app\food-controller.js" />
+    <Content Include="app\app.js" />
+    <Content Include="app\controllers\menu.js" />
+    <Content Include="app\controllers\user.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
     <Content Include="scripts\jquery-1.9.1.js" />
@@ -190,6 +198,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="app\directives\" />
+    <Folder Include="app\services\" />
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
   </ItemGroup>

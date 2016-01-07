@@ -1,0 +1,67 @@
+﻿<div class="row">
+    <div class="flip-container text-center col-md-12" ng-init="nextQuestion()">
+        <div class="back" ng-class="{flip: answered, correct: correctAnswer, incorrect:!correctAnswer}">
+            <p class="lead">{{answer()}}</p>
+            <p>
+                <button class="btn btn-info option" ng-click="nextQuestion()" ng-disabled="working">Edit Week Menu</button>
+            </p>
+        </div>
+        <div class="front row" ng-class="{flip: answered}">
+            <div class="col-md-12 text-center">
+                <p class="lead">{{title}} </p>
+            </div>
+            <div class="col-md-2" ng-repeat="day in days">
+                <label>{{day.date|date:'dd.MM.yyyy'}}<br />{{day.date|date:'(EEEE)'}}</label>
+                <fieldset ng-disabled="!checkdate(day.date)">
+                    <div class="btn-group-vertical" data-toggle="buttons">
+                        <label class="btn btn-primary"
+                               ng-repeat="choice in choiceset | OnDate: day.date"
+                               ng-click="setDayChoice(day, choice)"
+                               ng-class="{active: day.select.id == choice.id}">
+                            <input type="radio" name="choice" id="{{choice.id}}" autocomplete="off" /> {{choice.name}}
+                        </label>
+                    </div>
+                </fieldset>
+                <label>{{day.select.name}}</label>
+                <ul class="list-unstyled">
+                    <li ng-repeat="item in day.select.menu">
+                        {{item.name}}
+                    </li>
+                    <li ng-if="day.select.price>0">{{day.select.price}}</li>
+                </ul>
+            </div>
+
+            <div class="col-md-12 text-center">
+                <button class="btn btn-info option" ng-click="sendAnswer(days)" ng-disabled="working">Confirm</button>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-controller="MenuCtrl" ng-init="Menu()">
+    <div class="col-md-10 lead">{{title}}</div>
+    <div class="col-md-2 text-right">
+        <button type="button" class="btn" ng-class="{'btn-success': tomorrow, 'btn-default': !tomorrow}" ng-click="tomorrow=!tomorrow">
+            Tomorrow Only
+        </button>
+    </div>
+
+    <div ng-repeat="menu in choice | slice:1">
+        <div class="clearfix" ng-if="$index % 4 == 0"></div>
+        <div class="col-md-3" ng-if="!tomorrow||checkdate(menu.onDate)">
+            <div class="panel" ng-class="{'panel-primary': checkdate(menu.onDate),'panel-default': !checkdate(menu.onDate)}">
+
+                <div class="panel-heading">{{menu.name}} на {{menu.onDate|date:'dd.MM.yyyy'}}</div>
+
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="item in menu.menu"><span class="badge">{{item.weight}}</span>{{item.name}}</li>
+                </ul>
+
+                <div class="panel-footer price">Цена: {{menu.price}} руб.</div>
+            </div>
+        </div>
+    </div>
+
+</div>

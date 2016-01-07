@@ -1,0 +1,56 @@
+﻿<div class="row">
+    <div class="users col-md-3" ng-controller="UserCtrl" ng-init="Users()">
+        <div class="lead">{{title}}</div>
+        <div ng-repeat="user in users" id="{{user.id}}" class="row">
+            <div class="col-sm-8">
+                {{user.name}}
+            </div>
+            <div class="col-sm-4">
+                {{user.bill}}
+            </div>
+        </div>
+    </div>
+    <div class="users col-md-7 row" ng-controller="MenuCtrl" ng-init="Menu(false)">
+        <div class="col-sm-4 lead">{{title}}</div>
+        <div class="col-sm-4 text-center"><button type="button" class="btn" ng-class="{'btn-success': components, 'btn-default': !components}" ng-click="components=!components">Show Components</button></div>
+        <div class="col-sm-4 text-right"><button type="button" class="btn" ng-class="{'btn-success': tomorrow, 'btn-default': !tomorrow}" ng-click="tomorrow=!tomorrow">Tomorrow Only</button></div>
+
+        <div ng-repeat="menu in choice | slice:1">
+            <div class="clearfix" ng-if="$index % 2 == 0"></div>
+            <div class="col-sm-6" ng-if="!tomorrow||checkdate(menu.onDate)">
+                <div class="panel" ng-class="{'panel-primary': checkdate(menu.onDate),'panel-default': !checkdate(menu.onDate)}">
+
+                    <div class="panel-heading">{{menu.name}} {{menu.onDate|date:'dd.MM.yyyy'}}</div>
+
+                    <div class="panel-body">
+                        Цена: {{menu.price}} руб.<br />
+                        Заказно: шт.<br />
+                        Итого: руб.<br />
+                    </div>
+
+                    <ul class="list-group" ng-if="components">
+                        <li class="list-group-item" ng-repeat="item in menu.menu"><span class="badge">{{item.weight}}</span>{{item.name}}</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-2" ng-init="accordion=1">
+        <h3 class="accordion" ng-class="{active:accordion==1}">
+            <a href="" ng-click="accordion = 1">Section 1</a>
+        </h3>
+        <p class="accordion-content" ng-show="accordion==1">Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using</p>
+
+        <h3 class="accordion" ng-class="{active:accordion==2}">
+            <a href="" ng-click="accordion = 2">Section 2</a>
+        </h3>
+        <p class="accordion-content" ng-show="accordion==2">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using</p>
+
+        <h3 class="accordion" ng-class="{active:accordion==3}">
+            <a href="" ng-click="accordion = 3">Section 3</a>
+        </h3>
+        <p class="accordion-content" ng-show="accordion==3">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form</p>
+    </div>
+</div>
