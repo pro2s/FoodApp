@@ -1,12 +1,15 @@
-﻿<!DOCTYPE html>
+
+<!DOCTYPE html>
 <html ng-app="FoodApp">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <base target="/"> 
+    <title></title>
+    <link href="./Content/bootstrap.css" rel="stylesheet"/>
+<link href="./Content/site.css" rel="stylesheet"/>
+
     
-    <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top" >
@@ -15,6 +18,7 @@
                 <a class="navbar-brand" href="#">FoodApp</a>
             </div>
             <ul class="nav navbar-nav">
+                <li ng-class="{ active: isActive('/')}"><a href="/">Test home</a></li>
                 <li ng-class="{ active: isActive('/')}"><a href="#/">Home</a></li>
                 <li ng-class="{ active: isActive('/admin')}"><a href="#/admin">Admin</a></li>
                 <li ng-class="{ active: isActive('/test')}"><a href="#/test">Test</a></li>
@@ -26,12 +30,22 @@
         
     </div>
     
-    @RenderBody()
+    
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/angular")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/app")
-    @RenderSection("scripts", required: false)
+    <script src="./Scripts/jquery-1.9.1.js"></script>
+
+    <script src="./Scripts/angular.js"></script>
+<script src="./Scripts/angular-mocks.js"></script>
+<script src="./Scripts/angular-route.js"></script>
+
+    <script src="./Scripts/bootstrap.js"></script>
+
+    <script src="./app/app.js"></script>
+<script src="./app/controllers/menu.js"></script>
+<script src="./app/controllers/user.js"></script>
+
+    
+
+
 </body>
 </html>

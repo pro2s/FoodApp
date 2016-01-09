@@ -1,16 +1,17 @@
 ﻿'use strict';
 
 angular.module('FoodApp.User', [])
-.config(['$routeProvider', function ($routeProvider) {
+.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+    $routeProvider.otherwise({ redirectTo: '/' });
     $routeProvider
-        .when('/', {
-            templateUrl: 'app/views/food.html',
-            controller: 'FoodCtrl'
-        })
-        .when('/admin', {
-            templateUrl: 'app/views/admin.html',
-            controller: 'UserCtrl'
-        })
+    .when('/', {
+        templateUrl: 'app/views/food.html',
+        controller: 'FoodCtrl'
+    })
+    .when('/admin', {
+        templateUrl: 'app/views/admin.html',
+        controller: 'UserCtrl'
+    });
 }])
 .controller('FoodCtrl', function ($scope, $http) {
     $scope.answered = false;
