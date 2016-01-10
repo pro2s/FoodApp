@@ -12,6 +12,7 @@ angular.module('FoodApp.User', [])
         templateUrl: 'app/views/admin.html',
         controller: 'UserCtrl'
     });
+    $locationProvider.html5Mode(true);
 }])
 .controller('FoodCtrl', function ($scope, $http) {
     $scope.answered = false;

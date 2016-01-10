@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module('FoodApp.Menu', []).controller('MenuCtrl', function ($scope, $http) {
+angular.module('FoodApp.Menu', []).controller('MenuCtrl', function ($scope, $http, menuService) {
     $scope.title = "loading menu ...";
     $scope.options = [];
     $scope.working = false;
@@ -10,19 +10,16 @@ angular.module('FoodApp.Menu', []).controller('MenuCtrl', function ($scope, $htt
         $scope.options = [];
         $scope.tomorrow = false;
         $scope.components = typeof components !== 'undefined' ? components : true;
-
+        $scope.date = new Date();
+        $scope.weekmenu = menuService.getMenu();
+        $scope.working = menuService.status;
         $http.get("http://localhost:52959/api/values").success(function (data, status, headers, config) {
-            $scope.date = new Date();
             $scope.choice = data.choiceSet;
             $scope.title = "Menus";
-            //$scope.menu = data.menu;
-            //$scope.choiceset = data.choiceSet;
-
-
-            $scope.working = false;
+            //$scope.working = false;
         }).error(function (data, status, headers, config) {
             $scope.title = "Oops... something went wrong";
-            $scope.working = false;
+            //$scope.working = false;
         });
     };
 })

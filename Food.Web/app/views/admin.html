@@ -1,6 +1,6 @@
 ﻿<div class="row">
     <div class="users col-md-3" ng-controller="UserCtrl" ng-init="Users()">
-        <div class="lead">{{title}}</div>
+        <div class="lead" ng-bind="title"></div>
         <div ng-repeat="user in users" id="{{user.id}}" class="row">
             <div class="col-sm-8">
                 {{user.name}}
@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="users col-md-7 row" ng-controller="MenuCtrl" ng-init="Menu(false)">
-        <div class="col-sm-4 lead">{{title}}</div>
+        <div class="col-sm-4 lead" ng-bind="title"></div>
         <div class="col-sm-4 text-center"><button type="button" class="btn" ng-class="{'btn-success': components, 'btn-default': !components}" ng-click="components=!components">Show Components</button></div>
         <div class="col-sm-4 text-right"><button type="button" class="btn" ng-class="{'btn-success': tomorrow, 'btn-default': !tomorrow}" ng-click="tomorrow=!tomorrow">Tomorrow Only</button></div>
 

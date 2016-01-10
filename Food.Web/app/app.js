@@ -2,7 +2,8 @@
 angular.module('FoodApp', [
     'ngRoute',
     'FoodApp.User',
-    'FoodApp.Menu', 
+    'FoodApp.Menu',
+    'FoodApp.MenuService',
     ])
     .controller('HeaderCtrl', function ($scope, $location) {
         $scope.isActive = function (viewLocation) {
