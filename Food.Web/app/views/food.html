@@ -40,15 +40,15 @@
     </div>
 </div>
 
-<div class="row" ng-controller="MenuCtrl" ng-init="Menu()">
+<div class="row" ng-controller="MenuCtrl" ng-init="Menu(true)">
     <div class="col-md-10 lead" ng-bind="title"></div>
     <div class="col-md-2 text-right">
         <button type="button" class="btn" ng-class="{'btn-success': tomorrow, 'btn-default': !tomorrow}" ng-click="tomorrow=!tomorrow">
-            Tomorrow Only
+            Tomorrow Only 
         </button>
     </div>
 
-    <div ng-repeat="menu in choice | slice:1">
+    <div ng-repeat="menu in weekmenu | slice:1">
         <div class="clearfix" ng-if="$index % 4 == 0"></div>
         <div class="col-md-3" ng-if="!tomorrow||checkdate(menu.onDate)">
             <div class="panel" ng-class="{'panel-primary': checkdate(menu.onDate),'panel-default': !checkdate(menu.onDate)}">
@@ -56,7 +56,7 @@
                 <div class="panel-heading">{{menu.name}} на {{menu.onDate|date:'dd.MM.yyyy'}}</div>
 
                 <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="item in menu.menu"><span class="badge">{{item.weight}}</span>{{item.name}}</li>
+                    <li class="list-group-item" ng-repeat="item in menu.items"><span class="badge">{{item.weight}}</span>{{item.name}}</li>
                 </ul>
 
                 <div class="panel-footer price">Цена: {{menu.price}} руб.</div>
