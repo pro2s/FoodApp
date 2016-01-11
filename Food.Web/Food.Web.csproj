@@ -134,7 +134,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="app\services\menu.js" />
-    <Content Include="app\services\users.js" />
     <Content Include="app\views\admin.html" />
     <Content Include="app\views\food.html" />
     <Content Include="app\views\menu.html" />
