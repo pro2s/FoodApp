@@ -6,6 +6,8 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using Word = Microsoft.Office.Interop.Word;
+using System.IO;
 
 namespace Food.Dummy.Api
 {
@@ -27,7 +29,9 @@ namespace Food.Dummy.Api
 
     public class WeekMenu
     {
-      
+
+        string _url = "http://chudo-pechka.by/";
+
         private List<Menu> _weekmenu
         {
             get; set;
@@ -53,27 +57,47 @@ namespace Food.Dummy.Api
             return _weekmenu;
         }
 
-        public void Load()
+        private HtmlDocument ReadData()
         {
-           
-            DateTime MondayDay = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + 1);
-            
-
             WebClient client = new WebClient();
-            string url = "http://chudo-pechka.by/";
-            var data = client.DownloadData(url);
+            
+            var data = client.DownloadData(_url);
             var raw_html = Encoding.UTF8.GetString(data);
             var html = new HtmlDocument();
             html.LoadHtml(raw_html);
+            return html;
+        }
+
+        public void LoadDoc()
+        {
+            HtmlDocument html = ReadData();
             var doc_url = html.DocumentNode.Descendants("a").Where(d =>
                 d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("file but")
                 ).First().Attributes["href"];
-            
-                
+            WebClient client = new WebClient();
+            string filename = "menu.doc";
+            client.DownloadFile(_url + doc_url.Value, filename);
+            var wordApp = new Word.Application();
+            Word.Document doc = wordApp.Documents.Open(Path.Combine(Directory.GetCurrentDirectory(), filename));
+            foreach (Word.Table tb in doc.Tables)
+            {
+                for (int row = 1; row <= tb.Rows.Count; row++)
+                {
+                    var cell = tb.Cell(row, 1);
+                    var cell2 = tb.Cell(row, 2);
+                    var cell3 = tb.Cell(row, 3);
+                }
+            }
+        }
+
+
+        public void Load()
+        {
+            DateTime MondayDay = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek + 1);
+            HtmlDocument html = ReadData();
 
             var html_menu = html.GetElementbyId("issues").Elements("li");
             
-
             int num = 0;
             int id = new Random().Next() + 1;
             foreach (var item in html_menu)

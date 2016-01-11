@@ -27,6 +27,7 @@ namespace Food.Dummy.Api.MVC4.Controllers
         public IEnumerable<Menu> Get()
         {
             WeekMenu week = new WeekMenu();
+            week.LoadDoc();
             return week.Get();
         }
 
