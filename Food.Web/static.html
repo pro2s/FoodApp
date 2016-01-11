@@ -4,28 +4,26 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <base target="/"> 
+    <base href="http://localhost:3000/static.html"> 
     <title></title>
     <link href="./Content/bootstrap.css" rel="stylesheet"/>
-<link href="./Content/site.css" rel="stylesheet"/>
-
-    
+	<link href="./Content/site.css" rel="stylesheet"/>
 </head>
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top" >
+	<data ng-init="setAPI('http://localhost:3000/')"/>
+    <nav class="navbar navbar-default navbar-fixed-top" ng-controller="HeaderCtrl">
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">FoodApp</a>
             </div>
             <ul class="nav navbar-nav">
-                <li ng-class="{ active: isActive('/')}"><a href="/">Test home</a></li>
-                <li ng-class="{ active: isActive('/')}"><a href="#/">Home</a></li>
-                <li ng-class="{ active: isActive('/admin')}"><a href="#/admin">Admin</a></li>
-                <li ng-class="{ active: isActive('/test')}"><a href="#/test">Test</a></li>
+                <li ng-class="{ active: isActive('/')}"><a href="/">Home</a></li>
+                <li ng-class="{ active: isActive('/admin')}"><a href="/admin">Admin</a></li>
+                <li ng-class="{ active: isActive('/test')}"><a href="/test">Test</a></li>
             </ul>
         </div>
     </nav>
-
+	
     <div class="container" ng-view>
         
     </div>
@@ -43,6 +41,8 @@
     <script src="./app/app.js"></script>
 <script src="./app/controllers/menu.js"></script>
 <script src="./app/controllers/user.js"></script>
+<script src="./app/services/menu.js"></script>
+<script src="./app/services/user.js"></script>
 
     
 

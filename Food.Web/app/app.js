@@ -10,9 +10,13 @@ angular.module('FoodApp', [
             var test = $location.path();
             return viewLocation === $location.path();
         };
+		
     })
     .run(function ($rootScope) {
-
+		$rootScope.api = "http://localhost/"
+		$rootScope.setAPI = function (apiurl) {
+            $rootScope.api = apiurl;
+        };
         $rootScope.checkdate = function (date) {
             var today = new Date();
             today.setDate(today.getDate() + 1);
