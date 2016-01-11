@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using Word = Microsoft.Office.Interop.Word;
 using System.IO;
+using System.Diagnostics;
 
 namespace Food.Dummy.Api
 {
@@ -75,17 +76,27 @@ namespace Food.Dummy.Api
                 d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("file but")
                 ).First().Attributes["href"];
             WebClient client = new WebClient();
-            string filename = "menu.doc";
-            client.DownloadFile(_url + doc_url.Value, filename);
+            
+            string tempfile = Path.GetTempFileName();
+            
+            client.DownloadFile(_url + doc_url.Value, tempfile);
             var wordApp = new Word.Application();
-            Word.Document doc = wordApp.Documents.Open(Path.Combine(Directory.GetCurrentDirectory(), filename));
-            foreach (Word.Table tb in doc.Tables)
+            Word.Document doc = wordApp.Documents.Open(tempfile);
+            foreach (Word.Table table in doc.Tables)
             {
-                for (int row = 1; row <= tb.Rows.Count; row++)
+                for (int row = 1; row <= table.Rows.Count; row++)
                 {
-                    var cell = tb.Cell(row, 1);
-                    var cell2 = tb.Cell(row, 2);
-                    var cell3 = tb.Cell(row, 3);
+                    if (table.Rows[row].Cells.Count == 2)
+                    {
+                        var cell = table.Cell(row, 1);
+                        var cell2 = table.Cell(row, 2);
+                        Debug.WriteLine("{0} - {1}", cell, cell2);
+                    }
+                    else
+                    {
+
+                    }
+                    
                 }
             }
         }

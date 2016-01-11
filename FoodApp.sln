@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Food.Web", "Food.Web\Food.W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Food.Dummy.Api", "Food.Dummy.Api\Food.Dummy.Api.csproj", "{6AB058A8-51E0-4A0D-AB5D-CFEE543BF222}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Food.Dummy.Api.MVC4", "Food.Dummy.Api.MVC4\Food.Dummy.Api.MVC4.csproj", "{6458E0A1-27CB-4D66-AA17-E9D17FE6A76A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{6AB058A8-51E0-4A0D-AB5D-CFEE543BF222}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AB058A8-51E0-4A0D-AB5D-CFEE543BF222}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AB058A8-51E0-4A0D-AB5D-CFEE543BF222}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6458E0A1-27CB-4D66-AA17-E9D17FE6A76A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6458E0A1-27CB-4D66-AA17-E9D17FE6A76A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6458E0A1-27CB-4D66-AA17-E9D17FE6A76A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6458E0A1-27CB-4D66-AA17-E9D17FE6A76A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
