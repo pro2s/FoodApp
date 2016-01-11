@@ -60,13 +60,14 @@ namespace Food.Dummy.Api
             
 
             WebClient client = new WebClient();
-            var data = client.DownloadData("http://chudo-pechka.by/");
+            string url = "http://chudo-pechka.by/";
+            var data = client.DownloadData(url);
             var raw_html = Encoding.UTF8.GetString(data);
             var html = new HtmlDocument();
             html.LoadHtml(raw_html);
             var doc_url = html.DocumentNode.Descendants("a").Where(d =>
-                  d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("file but")
-            ).First().Attributes["href"];
+                d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("file but")
+                ).First().Attributes["href"];
             
                 
 
