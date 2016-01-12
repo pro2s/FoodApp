@@ -1,14 +1,19 @@
 ﻿<div class="row">
-    <div class="flip-container text-center col-md-12" ng-init="nextQuestion()">
+    <div class="flip-container text-center col-md-12" ng-init="init()">
+	
         <div class="back" ng-class="{flip: answered, correct: correctAnswer, incorrect:!correctAnswer}">
             <p class="lead">{{answer()}}</p>
             <p>
-                <button class="btn btn-info option" ng-click="nextQuestion()" ng-disabled="working">Edit Week Menu</button>
+                <button class="btn btn-info option" ng-click="loadUser()" ng-disabled="working">Edit Week Menu</button>
             </p>
         </div>
+		
         <div class="front row" ng-class="{flip: answered}">
-            <div class="col-md-12 text-center">
-                <p class="lead" ng-bind="title"></p>
+			<div class="col-md-12 text-center" ng-if="error">
+				<div role="alert" class="alert" ng-class="{'alert-info':error && working, 'alert-danger':error && !working}" ng-bind="status"></div>
+            </div>
+            <div class="col-md-12 text-center" ng-if="!error">
+                <p class="lead" >Select Menu on Day</p>
             </div>
 			<div ng-repeat="day in days">
 			<div class="clearfix" ng-if="$index % 6 == 0"></div>
@@ -34,7 +39,7 @@
             </div>
 			</div>
 
-            <div class="col-md-12 text-center">
+            <div class="col-md-12 text-center" ng-if="!error">
                 <button class="btn btn-info option" ng-click="sendAnswer(days)" ng-disabled="working">Confirm</button>
             </div>
 
@@ -43,8 +48,8 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-10 lead" ng-bind="menutitle"></div>
+<div class="row" ng-if="!error">
+    <div class="col-md-10 lead">Week Menu</div>
     <div class="col-md-2 text-right">
         <button type="button" class="btn" ng-class="{'btn-success': tomorrow, 'btn-default': !tomorrow}" ng-click="tomorrow=!tomorrow">
             Tomorrow Only 

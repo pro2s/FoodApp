@@ -27,12 +27,23 @@ angular.module('FoodApp.User', ['ngResource'])
     $locationProvider.html5Mode(true);
 }])
 .controller('FoodCtrl', ['$scope','$http','UserDay','Menu', function ($scope, $http, UserDay, Menu) {
-    $scope.answered = false;
-    $scope.title = "loading food ...";
-    $scope.options = [];
+    $scope.date = new Date();
+	$scope.answered = false;
+    $scope.title = "Loading ...";
     $scope.correctAnswer = false;
     $scope.working = false;
-
+	
+	var success = function(){
+		$scope.error = false;
+		$scope.working = false;
+	};
+		
+	var failure = function(){
+		$scope.status = "Oops... something went wrong";
+		$scope.error = true;
+		$scope.working = false;
+	};
+	
     $scope.answer = function () {
         return $scope.correctAnswer ? 'Changes accepted' : 'Сhanges rejected';
     };
@@ -42,30 +53,32 @@ angular.module('FoodApp.User', ['ngResource'])
             day.select = choice;
         }
     };
-
-    $scope.nextQuestion = function () {
-        $scope.date = new Date();
+	
+	$scope.init = function() {
+		$scope.loadUser();
+		$scope.loadMenu();
+	};
+    
+	$scope.loadMenu = function () {
+        
 		$scope.working = true;
-        $scope.answered = false;
-        $scope.title = "loading food ...";
-		$scope.menutitle = "";
-        $scope.options = [];
-		
-		var success = function(){
-			$scope.title = "Select Menu on Day";
-			$scope.menutitle = "Week Menu";
-		    $scope.answered = false;
-        	$scope.working = false;
-		};
-		var failure = function(){
-			$scope.title = "Oops... something went wrong";
-			$scope.working = false;
-		};
+		$scope.error = true;
+
+		$scope.status = "Loading menu ...";
+        
+		$scope.weekmenu = Menu.query(success,failure);
+    };
+	
+	$scope.loadUser = function () {
+        
+		$scope.working = true;
+		$scope.error = true;
+		$scope.answered = false;
+
+		$scope.status = "Loading food ...";
         
 		$scope.days = UserDay.query(success,failure);
-		$scope.weekmenu = Menu.query(success,failure);
-		
-    };
+	};
 
     $scope.sendAnswer = function (days) {
         $scope.working = true;
