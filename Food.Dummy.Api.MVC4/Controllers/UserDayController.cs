@@ -7,6 +7,7 @@ using System.Web.Http;
 
 namespace Food.Dummy.Api.MVC4.Controllers
 {
+    [AllowCrossSiteJson]
     public class UserDayController : ApiController
     {
         public class UserDay
