@@ -25,7 +25,7 @@ namespace Food.Dummy.Api.MVC4.Controllers
             List<UserDay> days = new List<UserDay>();
 
             // TODO: Get days from base, if no exist generate like this
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 8; i++)
             {
                 days.Add(new UserDay() {UserId = 1, Id = i, Date = MondayDay.AddDays(i), select = WeekMenu.NoChoice});
 

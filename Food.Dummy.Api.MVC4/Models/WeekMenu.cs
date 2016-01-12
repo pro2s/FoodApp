@@ -32,7 +32,7 @@ namespace Food.Dummy.Api
 
     public class WeekMenu
     {
-        public static const Menu NoChoice = new Menu() { Id = -1, Name = "Без Обеда", Price = 0, OnDate = null };
+        public static Menu NoChoice = new Menu() { Id = -1, Name = "Без Обеда", Price = 0, OnDate = null };
         string _url;
         int _id;
         DateTime _monday;
@@ -73,8 +73,7 @@ namespace Food.Dummy.Api
         private void Init()
         {
             _weekmenu.Clear();
-            
-            _weekmenu.Add(nochoice);
+            _weekmenu.Add(NoChoice);
         }
 
         public List<Menu> Get()
