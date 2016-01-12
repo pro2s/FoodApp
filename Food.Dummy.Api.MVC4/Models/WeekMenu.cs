@@ -32,7 +32,7 @@ namespace Food.Dummy.Api
 
     public class WeekMenu
     {
-
+        public static const Menu NoChoice = new Menu() { Id = -1, Name = "Без Обеда", Price = 0, OnDate = null };
         string _url;
         int _id;
         DateTime _monday;
@@ -73,7 +73,7 @@ namespace Food.Dummy.Api
         private void Init()
         {
             _weekmenu.Clear();
-            Menu nochoice = new Menu() { Id = -1, Name = "Без Обеда", Price = 0, OnDate = null };
+            
             _weekmenu.Add(nochoice);
         }
 
@@ -179,8 +179,8 @@ namespace Food.Dummy.Api
             {
                 FillMenu(items, day);
             }
-            //wordApp.Documents.Close();
-            wordApp.Quit();
+            
+            ((Word._Application) wordApp).Quit();
         }
 
 
