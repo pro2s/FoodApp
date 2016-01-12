@@ -74,6 +74,12 @@ namespace Food.Dummy.Api
         {
             _weekmenu.Clear();
             _weekmenu.Add(NoChoice);
+            List<Item> items = new List<Item>();
+            // специальные пункты для следующего понедельника в понедельник после 
+            // получения нового меню должны заменятся на вновь добавленные
+            FillMenu(items, 8);
+            _weekmenu[1].Id = -10;
+            _weekmenu[1].Id = -11;
         }
 
         public List<Menu> Get()
