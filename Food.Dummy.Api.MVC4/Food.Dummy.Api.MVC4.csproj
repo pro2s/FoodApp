@@ -119,6 +119,7 @@
   <ItemGroup>
     <Compile Include="Controllers\HttpFilters.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserDayController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
