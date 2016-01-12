@@ -1,6 +1,18 @@
 ﻿'use strict';
 
-angular.module('FoodApp.User', [])
+angular.module('FoodApp.User', ['ngResource'])
+.factory('UserDay', ['$rootScope','$resource',
+  function($rootScope, $resource){
+    return $resource($rootScope.api + 'api/userday/:menuId', {}, {
+      query: {method:'GET', params:{menuId:''}, isArray:true}
+    });
+}])
+.factory('User', ['$rootScope','$resource',
+  function($rootScope, $resource){
+    return $resource($rootScope.api + 'api/user/:menuId', {}, {
+      query: {method:'GET', params:{menuId:''}, isArray:true}
+    });
+}])  
 .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $routeProvider.otherwise({ redirectTo: '/' });
     $routeProvider
@@ -14,7 +26,7 @@ angular.module('FoodApp.User', [])
     });
     $locationProvider.html5Mode(true);
 }])
-.controller('FoodCtrl', function ($scope, $http) {
+.controller('FoodCtrl', ['$scope','$http','UserDay','Menu', function ($scope, $http, UserDay, Menu) {
     $scope.answered = false;
     $scope.title = "loading food ...";
     $scope.options = [];
@@ -32,23 +44,27 @@ angular.module('FoodApp.User', [])
     };
 
     $scope.nextQuestion = function () {
-        $scope.working = true;
+        $scope.date = new Date();
+		$scope.working = true;
         $scope.answered = false;
         $scope.title = "loading food ...";
+		$scope.menutitle = "";
         $scope.options = [];
-
-        $http.get("http://localhost:52959/api/values").success(function (data, status, headers, config) {
-            $scope.date = new Date();
-            $scope.days = data.days;
-            $scope.menu = data.menu;
-            $scope.choiceset = data.choiceSet;
-            $scope.title = data.title;
-            $scope.answered = false;
-            $scope.working = false;
-        }).error(function (data, status, headers, config) {
-            $scope.title = "Oops... something went wrong";
-            $scope.working = false;
-        });
+		
+		var success = function(){
+			$scope.title = "Select Menu on Day";
+			$scope.menutitle = "Week Menu";
+		    $scope.answered = false;
+        	$scope.working = false;
+		};
+		var failure = function(){
+			$scope.title = "Oops... something went wrong";
+			$scope.working = false;
+		};
+        
+		$scope.days = UserDay.query(success,failure);
+		$scope.weekmenu = Menu.query(success,failure);
+		
     };
 
     $scope.sendAnswer = function (days) {
@@ -63,8 +79,8 @@ angular.module('FoodApp.User', [])
             $scope.working = false;
         });
     };
-})
-.controller('UserCtrl', function ($scope, $http) {
+}])
+.controller('UserCtrl', ['$scope','$http','User', function ($scope, $http, User){
     $scope.title = "loading users ...";
     $scope.options = [];
 
@@ -73,20 +89,9 @@ angular.module('FoodApp.User', [])
     $scope.Users = function () {
         $scope.working = true;
         $scope.options = [];
-
-        $http.get("http://localhost:52959/api/bill").success(function (data, status, headers, config) {
-            $scope.date = new Date();
-            $scope.users = data.users;
-            $scope.title = "Users";
-            //$scope.menu = data.menu;
-            //$scope.choiceset = data.choiceSet;
-
-
-            $scope.working = false;
-        }).error(function (data, status, headers, config) {
-            $scope.title = "Oops... something went wrong";
-            $scope.working = false;
-        });
+		$scope.title = "Users";
+		$scope.users = User.query();
+		$scope.working = false;
     };
-});
+}]);
 
