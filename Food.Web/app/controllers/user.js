@@ -63,9 +63,7 @@ angular.module('FoodApp.User', ['ngResource'])
         
 		$scope.working = true;
 		$scope.error = true;
-
-		$scope.status = "Loading menu ...";
-        
+    
 		$scope.weekmenu = Menu.query(success,failure);
     };
 	
@@ -74,7 +72,7 @@ angular.module('FoodApp.User', ['ngResource'])
 		$scope.working = true;
 		$scope.error = true;
 		$scope.answered = false;
-
+		
 		$scope.status = "Loading food ...";
         
 		$scope.days = UserDay.query(success,failure);
@@ -96,9 +94,53 @@ angular.module('FoodApp.User', ['ngResource'])
 .controller('UserCtrl', ['$scope','$http','User', function ($scope, $http, User){
     $scope.title = "loading users ...";
     $scope.options = [];
-
+	$scope.addbill = {
+		id: 0, 
+		value: 0,
+		error: false,
+		};
+	
+	$scope.addId = -1;
     $scope.working = false;
-
+	
+	$scope.chkadd = function (id) {
+		if ($scope.addId == id) {
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	};
+	
+	$scope.onadd = function (id) {
+		$scope.addId = id;
+	};
+	
+	$scope.offadd = function () {
+		$scope.addId = -1;
+		$scope.addbill.error = false;
+		$scope.addbill.value = 0;
+	};
+	
+	$scope.sendbill = function (user) {
+		if ($scope.addId < 0 ) {
+			return;
+		}
+		var add = parseInt($scope.addbill.value);
+		if (isNaN(add)) {
+			$scope.addbill.error = true;
+		}
+		else
+		{
+			$scope.addbill.error = false;
+			user.bill = user.bill + add;
+			// Update user info on server
+			$scope.addId = -1;
+			$scope.addbill.value = 0;
+		}
+	};
+	
     $scope.Users = function () {
         $scope.working = true;
         $scope.options = [];

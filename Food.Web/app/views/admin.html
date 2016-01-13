@@ -1,13 +1,44 @@
 ﻿<div class="row">
     <div class="users col-md-3" ng-controller="UserCtrl" ng-init="Users()">
         <div class="lead" ng-bind="title"></div>
+		
         <div ng-repeat="user in users" id="{{user.id}}" class="row">
-            <div class="col-sm-8">
-                {{user.name}}
-            </div>
-            <div class="col-sm-4">
-                {{user.bill}}
-            </div>
+ 
+			
+			<div class="col-sm-12" ng-if="!chkadd(user.id)">
+			<div class="input-group users">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" ng-bind="user.name"></button>
+			</span>
+			<input type="text" class="form-control" ng-model="user.bill" readonly>
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" ng-click="onadd(user.id)" >
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				</button>
+			</span>
+			</div>
+			</div>
+			
+			<div class="col-sm-12" ng-if="chkadd(user.id)">
+			<div class="input-group users" ng-class="{'has-error':addbill.error}">
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" ng-bind="user.name"></button>
+			</span>
+			<input type="text" class="form-control" ng-model="addbill.value" >
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" ng-click="sendbill(user)" ng-class="{'btn-danger':addbill.error}">
+					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+				</button>
+				<button class="btn btn-default" type="button" ng-click="offadd()">
+					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+				</button>
+			</span>
+			</div>
+			</div>
+			
+			
+			
+
         </div>
     </div>
     <div class="users col-md-7 row" ng-controller="MenuCtrl" ng-init="Menu(false)">

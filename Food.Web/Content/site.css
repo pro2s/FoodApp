@@ -10,7 +10,8 @@
      display: none;
 }
 
-/* Geek Quiz styles */
+
+
 .flip-container .back,
 .flip-container .front {
      padding-bottom: 10px;
@@ -23,9 +24,9 @@
     padding:10px 0 0 0;
 }
 
-.option {
-     width:140px;
-     margin: 15px;
+
+.users {
+      padding-top: 5px;
 }
 
 div.correct p {

@@ -21,7 +21,7 @@ namespace Food.Dummy.Api.MVC4.Controllers
         public IEnumerable<FoodUser> Get()
         {
             List<FoodUser> list = new List<FoodUser>(){
-                new FoodUser() {Id=1, Name = "User A", Bill = 0},
+                new FoodUser() {Id=1, Name = "User Long Name A", Bill = 0},
                 new FoodUser() {Id=2, Name = "User B", Bill = 100000},
                 new FoodUser() {Id=3, Name = "User C", Bill = 200000},
                 new FoodUser() {Id=4, Name = "User D", Bill = 300000},
