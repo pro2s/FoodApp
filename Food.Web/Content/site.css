@@ -24,6 +24,18 @@
     padding:10px 0 0 0;
 }
 
+.triple-input .form-control {
+      border-right-width: 0px;
+}
+
+.triple-input .form-control:focus {
+    border-right-width: 1px;
+	padding-right:11px;
+}
+
+.input-group > .input-group-btn:empty {
+    width: 0px;
+}
 
 .users {
       padding-top: 5px;

@@ -9,8 +9,11 @@ angular.module('FoodApp.Menu', []).controller('MenuCtrl',['$scope','Menu', funct
         $scope.date = new Date();  
 		$scope.tomorrow = false;
         $scope.working = true;
+		$scope.edit = false;
 		$scope.components = components;
-		
+		$scope.add = function() {
+			$scope.edit = true;
+		};
 		var success = function(menu){
 			$scope.working = false;
 			$scope.title = "Week Menu";
