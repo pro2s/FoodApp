@@ -1,14 +1,14 @@
 ﻿<div class="row">
     <div class="flip-container text-center col-md-12" ng-init="init()">
 	
-        <div class="back" ng-class="{flip: answered, correct: correctAnswer, incorrect:!correctAnswer}">
-            <p class="lead">{{answer()}}</p>
+        <div class="back" ng-class="{flip: sendData, correct: correctData, incorrect:!correctData}">
+            <p class="lead" ng-bind="answer()"></p>
             <p>
                 <button class="btn btn-info option" ng-click="loadUser()" ng-disabled="working">Edit Week Menu</button>
             </p>
         </div>
 		
-        <div class="front row" ng-class="{flip: answered}">
+        <div class="front row" ng-class="{flip: sendData}">
 			<div class="col-md-12 text-center" ng-if="error">
 				<div role="alert" class="alert" ng-class="{'alert-info':error && working, 'alert-danger':error && !working}" ng-bind="status"></div>
             </div>
@@ -22,10 +22,10 @@
                 <fieldset ng-disabled="!checkdate(day.date)">
                     <div class="btn-group-vertical" data-toggle="buttons">
                         <label class="btn btn-primary"
-                               ng-repeat="choice in weekmenu | OnDate: day.date"
-                               ng-click="setDayChoice(day, choice)"
-                               ng-class="{active: day.select.id == choice.id}">
-                            <input type="radio" name="choice" id="{{choice.id}}" autocomplete="off" /> {{choice.name}}
+                               ng-repeat="menu in weekmenu | OnDate: day.date"
+                               ng-click="setDaySelect(day, menu)"
+                               ng-class="{active: day.select.id == menu.id}">
+                            <input type="radio" name="choice" id="{{menu.id}}" autocomplete="off" /> {{menu.name}}
                         </label>
                     </div>
                 </fieldset>
@@ -40,7 +40,7 @@
 			</div>
 
             <div class="col-md-12 text-center" ng-if="!error">
-                <button class="btn btn-info option" ng-click="sendAnswer(days)" ng-disabled="working">Confirm</button>
+                <button class="btn btn-info option" ng-click="sendUserDays(days)" ng-disabled="working">Confirm</button>
             </div>
 
 

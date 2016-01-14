@@ -3,14 +3,14 @@
 angular.module('FoodApp.User', ['ngResource'])
 .factory('UserDay', ['$rootScope','$resource',
   function($rootScope, $resource){
-    return $resource($rootScope.api + 'api/userday/:menuId', {}, {
-      query: {method:'GET', params:{menuId:''}, isArray:true}
+    return $resource($rootScope.api + 'api/userday/:Id', {}, {
+      query: {method:'GET', params:{Id:''}, isArray:true}
     });
 }])
 .factory('User', ['$rootScope','$resource',
   function($rootScope, $resource){
-    return $resource($rootScope.api + 'api/user/:menuId', {}, {
-      query: {method:'GET', params:{menuId:''}, isArray:true}
+    return $resource($rootScope.api + 'api/user/:Id', {}, {
+      query: {method:'GET', params:{Id:''}, isArray:true}
     });
 }])  
 .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
@@ -24,13 +24,13 @@ angular.module('FoodApp.User', ['ngResource'])
         templateUrl: 'app/views/admin.html',
         controller: 'UserCtrl'
     });
-    $locationProvider.html5Mode(true);
+    // $locationProvider.html5Mode(true);
 }])
 .controller('FoodCtrl', ['$scope','$http','UserDay','Menu', function ($scope, $http, UserDay, Menu) {
     $scope.date = new Date();
-	$scope.answered = false;
+    $scope.sendData = false;
     $scope.title = "Loading ...";
-    $scope.correctAnswer = false;
+    $scope.correctData = false;
     $scope.working = false;
 	
 	var success = function(){
@@ -45,12 +45,12 @@ angular.module('FoodApp.User', ['ngResource'])
 	};
 	
     $scope.answer = function () {
-        return $scope.correctAnswer ? 'Changes accepted' : 'Сhanges rejected';
+        return $scope.correctData ? 'Changes accepted' : 'Сhanges rejected';
     };
 
-    $scope.setDayChoice = function (day, choice) {
+    $scope.setDaySelect = function (day, menu) {
         if ($scope.checkdate(day.date)) {
-            day.select = choice;
+            day.select = menu;
         }
     };
 	
@@ -71,24 +71,20 @@ angular.module('FoodApp.User', ['ngResource'])
         
 		$scope.working = true;
 		$scope.error = true;
-		$scope.answered = false;
+		$scope.sendData = false;
 		
 		$scope.status = "Loading food ...";
         
 		$scope.days = UserDay.query(success,failure);
 	};
 
-    $scope.sendAnswer = function (days) {
+	$scope.sendUserDays = function (days) {
         $scope.working = true;
-        $scope.answered = true;
-
-        $http.post('http://localhost:52959/api/values', days).success(function (data, status, headers, config) {
-            $scope.correctAnswer = (data === true);
-            $scope.working = false;
-        }).error(function (data, status, headers, config) {
-            $scope.title = "Oops... something went wrong";
-            $scope.working = false;
-        });
+        $scope.sendData = true;
+        var mdays = new UserDay(days) // impliment success/failure func for set correctData
+        mdays.$save();
+        $scope.working = false;
+        $scope.correctData = true; //false if error in request
     };
 }])
 .controller('UserCtrl', ['$scope','$http','User', function ($scope, $http, User){
@@ -135,7 +131,7 @@ angular.module('FoodApp.User', ['ngResource'])
 		{
 			$scope.addbill.error = false;
 			user.bill = user.bill + add;
-			// Update user info on server
+			user.$save();
 			$scope.addId = -1;
 			$scope.addbill.value = 0;
 		}

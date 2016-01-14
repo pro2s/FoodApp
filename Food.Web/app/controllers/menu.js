@@ -11,6 +11,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	$scope.menuitem = {};
 	
 	$scope.additem = function(item) {
+	    item.id = -1;
 		$scope.menu.items.push(angular.copy(item));
 	};
 	
@@ -23,7 +24,6 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	};
 	
 	$scope.saveitem = function() {
-		//  edit item in base
 		var item = new MenuItem($scope.editeditem);
 		item.$save();
 		$scope.editeditem = {};
@@ -48,7 +48,8 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	};
 	
 	$scope.add = function() {
-		$scope.menu = {};
+	    $scope.menu = {};
+	    $scope.menu.id = -1;
 		$scope.menu.items = [];
 		$scope.menuitem = {}
 		$scope.edit = true;
@@ -59,7 +60,17 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 		$scope.menu = menu;
 	};
 	
-    $scope.Menu = function (components = true) {
+	$scope.cancelMenu = function() {
+	    $scope.edit = false;
+	}
+	
+	$scope.saveMenu = function() {
+	    var menu = new Menu($scope.menu);
+	    menu.$save();
+	    $scope.edit = false;
+	}
+
+    $scope.Menu = function (components=true) {
         $scope.date = new Date();  
 		$scope.tomorrow = false;
         $scope.working = true;
