@@ -10,8 +10,6 @@
      display: none;
 }
 
-
-
 .flip-container .back,
 .flip-container .front {
      padding-bottom: 10px;
@@ -24,11 +22,11 @@
     padding:10px 0 0 0;
 }
 
-.triple-input .form-control {
+.many-input-group .form-control {
       border-right-width: 0px;
 }
 
-.triple-input .form-control:focus {
+.many-input-group .form-control:focus {
     border-right-width: 1px;
 	padding-right:11px;
 }
