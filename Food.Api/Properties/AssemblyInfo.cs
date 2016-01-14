@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Управление общими сведениями о сборке осуществляется с помощью 
 // набора атрибутов. Измените значения этих атрибутов для изменения сведений,
 // связанных с этой сборкой.
-[assembly: AssemblyTitle("Food.Dummy.Api")]
+[assembly: AssemblyTitle("Food.Api")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Food.Dummy.Api")]
+[assembly: AssemblyProduct("Food.Api")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Следующий GUID служит для идентификации библиотеки типов typelib, если этот проект видим для COM
-[assembly: Guid("6ab058a8-51e0-4a0d-ab5d-cfee543bf222")]
+[assembly: Guid("b1457802-0c8d-453e-b8a9-4a2ff1bc8e56")]
 
 // Сведения о версии сборки состоят из указанных ниже четырех значений:
 //
