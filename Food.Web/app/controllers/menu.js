@@ -1,7 +1,7 @@
 ﻿'use strict';
 
-angular.module('FoodApp.Menu', [])
-.controller('MenuCtrl',['$scope','Menu', function ($scope, Menu) {
+angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
+.controller('MenuCtrl',['$scope', 'Menu','MenuItem', function ($scope, Menu,MenuItem) {
     $scope.title = "Loading menu ...";
     $scope.options = [];
     $scope.working = false;
@@ -24,13 +24,19 @@ angular.module('FoodApp.Menu', [])
 	
 	$scope.saveitem = function() {
 		//  edit item in base
+		var item = new MenuItem($scope.editeditem);
+		item.$save();
 		$scope.editeditem = {};
 	};
 	
 	$scope.deleteitem = function(item) {
 		//  remove item from base
 		for (var i = 0; $scope.menu.items.length; i++) {
+			
 			if ($scope.menu.items[i] === item) {
+				if (item.id > 0){
+					MenuItem.delete({id:item.id});
+				}
 				$scope.menu.items.splice(i, 1);
 				break; 
 			}
