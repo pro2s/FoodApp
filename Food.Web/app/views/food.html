@@ -9,47 +9,61 @@
         </div>
 		
         <div class="front row" ng-class="{flip: sendData}">
+			
 			<div class="col-md-12 text-center" ng-if="error">
 				<div role="alert" class="alert" ng-class="{'alert-info':error && working, 'alert-danger':error && !working}" ng-bind="status"></div>
             </div>
+			
             <div class="col-md-12 text-center" ng-if="!error">
                 <p class="lead" >Select Menu on Day</p>
             </div>
-			<div ng-repeat="day in days">
-			<div class="clearfix" ng-if="$index % 6 == 0"></div>
-            <div class="col-md-2">
-                <label>{{day.date|date:'dd.MM.yyyy'}}<br />{{day.date|date:'(EEEE)'}}</label>
-                <fieldset ng-disabled="!checkdate(day.date)">
-                    <div class="btn-group-vertical" data-toggle="buttons">
-                        <label class="btn btn-primary"
-                               ng-repeat="menu in weekmenu | OnDate: day.date"
-                               ng-click="setDaySelect(day, menu)"
-                               ng-class="{active: day.select.id == menu.id}">
-                            <input type="radio" name="choice" id="{{menu.id}}" autocomplete="off" /> {{menu.name}}
-                        </label>
-                    </div>
-                </fieldset>
-                <label>{{day.select.name}}</label>{{}}
-                <ul class="list-unstyled">
-                    <li ng-repeat="item in day.select.items">
-                        {{item.name}}
-                    </li>
-                    <li ng-if="day.select.price>0">{{day.select.price}}</li>
-                </ul>
-            </div>
-			</div>
-
-            <div class="col-md-12 text-center" ng-if="!error">
-                <button class="btn btn-info option" ng-click="sendUserDays(days)" ng-disabled="working">Confirm</button>
-            </div>
-
-
+			
+			<div class="col-md-12 text-center">
+				<table class="table grid selectday" id="grid">
+					<thead>
+					<tr>
+					<th ng-repeat="day in days" ng-if="checkday(day)" class="text-center">                
+						<label>{{day.date|date:'dd.MM.yyyy'}}<br />{{day.date|date:'(EEEE)'}}</label>
+					</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+						<td ng-repeat="day in days" ng-if="checkday(day)">
+							<fieldset ng-disabled="!checkdate(day.date)">
+								<div class="btn-group-vertical" data-toggle="buttons">
+									<label class="btn btn-default"
+										ng-repeat="menu in weekmenu | OnDate: day.date"
+										ng-click="setDaySelect(day, menu)"
+										ng-class="{active: day.select.id == menu.id, 'btn-info': day.select.id == menu.id}">
+										<input type="radio" name="choice" id="{{menu.id}}" autocomplete="off" /> {{menu.name}}
+									</label>
+								</div>
+							</fieldset>
+						</td>
+					</tr>
+					<tr >
+						<td ng-repeat="day in days" ng-if="checkday(day)">
+							<dl>
+								<dt class="text-center">{{day.select.name}}</dd>
+								<dd ng-repeat="item in day.select.items">
+								{{$index+1}}. {{item.name}}
+								</dd>
+								<dt ng-if="day.select.price>0" class="text-center">{{day.select.price}}</dt>
+							</ul>
+						</td>
+					</tr>
+					</tbody>
+				</table>	
+				<button class="btn btn-info" ng-click="sendUserDays(days)" ng-disabled="working" ng-if="!error">Confirm</button>
+			</div>		
+			
         </div>
     </div>
 </div>
 
 <div class="row" ng-if="!error">
-    <div class="col-md-10 lead">Week Menu</div>
+    <div class="col-md-10 lead text-left">Week Menu</div>
     <div class="col-md-2 text-right">
         <button type="button" class="btn" ng-class="{'btn-success': tomorrow, 'btn-default': !tomorrow}" ng-click="tomorrow=!tomorrow">
             Tomorrow Only 

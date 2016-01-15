@@ -9,7 +9,10 @@
 .validation-summary-valid {
      display: none;
 }
-
+table.selectday {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
 .flip-container .back,
 .flip-container .front {
      padding-bottom: 10px;

@@ -20,6 +20,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	$scope.backupitem = {};
 	$scope.menuitem = {};
 	
+	
 	$scope.additem = function(item) {
 	    item.id = -1;
 		$scope.menu.items.push(angular.copy(item));
@@ -62,6 +63,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	};
 	
 	$scope.add = function() {
+		$scope.formTitle = "New menu";
 	    $scope.menu = {};
 	    $scope.menu.id = -1;
 		$scope.menu.items = [];
@@ -71,6 +73,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	
 	$scope.editMenu = function(menu) {
 		$scope.add();
+		$scope.formTitle = "Edit menu";
 		$scope.menu = menu;
 	};
 	

@@ -18,6 +18,7 @@ angular.module('FoodApp', [
             $rootScope.api = apiurl;
         };
         $rootScope.checkdate = function (date) {
+			
             var today = new Date();
             today.setDate(today.getDate() + 1);
             var day = new Date(new Date(date).setHours(15, 0, 0, 0));

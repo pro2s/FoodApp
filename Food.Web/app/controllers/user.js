@@ -34,6 +34,19 @@ angular.module('FoodApp.User', ['ngResource'])
     $scope.correctData = false;
     $scope.working = false;
 	
+	$scope.checkday = function(day) {
+		var count = 0;
+		$scope.weekmenu.forEach(function(item){
+			if (item.onDate == day.date){
+				count++;
+			};
+		});
+		if (count>1){
+			return true;
+		} else {
+			return false;
+		}
+	}
 	var success = function(){
 		$scope.error = false;
 		$scope.working = false;
