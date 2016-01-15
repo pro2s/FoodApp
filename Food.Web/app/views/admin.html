@@ -1,5 +1,5 @@
 ﻿<div class="row">
-    <div class="users col-md-3" ng-controller="UserCtrl" ng-init="Users()">
+    <div class="users col-md-6" ng-controller="UserCtrl" ng-init="Users()">
         <div class="lead" ng-bind="title"></div>
 		
         <div ng-repeat="user in users" id="{{user.id}}" class="row">
@@ -43,132 +43,10 @@
     </div>
 	
 	
-    <div class="users col-md-7 row" ng-controller="MenuCtrl" ng-init="Menu(false)">
-	
-        <div class="col-sm-4 lead" ng-bind="title"></div>
-		<div class="col-sm-2 text-center"><button type="button" class="btn btn-default" ng-click="add()">Add menu</button></div>
-        <div class="col-sm-3 text-center"><button type="button" class="btn" ng-class="{'btn-success': components, 'btn-default': !components}" ng-click="components=!components">Show Components</button></div>
-        <div class="col-sm-3 text-right"><button type="button" class="btn" ng-class="{'btn-success': tomorrow, 'btn-default': !tomorrow}" ng-click="tomorrow=!tomorrow">Tomorrow Only</button></div>
 
-		<div class="col-sm-12" ng-if="edit">
-		<form name="menuForm">
-			  <div class="form-group">
-				<label for="menuName">Name</label>
-				<input type="text" class="form-control" id="menuName" placeholder="Menu name" ng-model="menu.name">
-			  </div>
-			  <div class="form-group">
-				<label for="menuPrice">Price</label>
-				<input type="text" class="form-control" id="menuPrice" placeholder="Menu price" ng-model="menu.price">
-			  </div>
-			  <div class="form-group">
-				<label for="ondatePrice">On Date</label>
-				<input type="text" class="form-control" id="menuPrice" placeholder="01.01.2016" ng-model="menu.onDate">
-			  </div>
-			  <div class="form-group">
-				<label>Components</label>
-				<div class="input-group many-input-group"  for="menuItems">
-				  <input type="text" class="form-control" placeholder="Name" id="itemName" aria-describedby="menuItems" ng-model="menuitem.name">
-				  <span class="input-group-btn"></span>
-				  <input type="text" class="form-control" placeholder="Description" id="itemDesc" aria-describedby="itemName" ng-model="menuitem.description">
-				  <span class="input-group-btn"></span>
-				  <input type="text" class="form-control" placeholder="Weight" aria-describedby="itemDesc" ng-model="menuitem.weight">
-				  <span class="input-group-btn">
-					<button class="btn btn-default" type="button" ng-click="additem(menuitem)">
-						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-					</button>
-					</span>
-				</div>
-			  </div>
-			  <div class="form-group">
-					<table class="table grid" id="grid">
-					  <thead>
-						<tr>
-						  <th>Name</th>
-						  <th>Description</th>
-						  <th>Weight</th>
-						  <th></th>
-						</tr>
-					  </thead>
-					  <tbody>
-						<tr ng-repeat="item in menu.items">
-						  <td ng-if="!edited(item)">
-							{{item.name}}
-						  </td>
-						  <td ng-if="!edited(item)">
-							{{item.description}}
-						  </td>
-						  <td ng-if="!edited(item)">
-							{{item.weight}}
-						  </td>
-						  <td ng-if="edited(item)"  colspan="4">
-							  <div class="input-group many-input-group"  for="menuItems">
-							  <input type="text" class="form-control" id="edititemName" aria-describedby="menuItems" ng-model="editeditem.name">
-							  <span class="input-group-btn"></span>
-							  <input type="text" class="form-control"  id="edititemDesc" aria-describedby="itemName" ng-model="editeditem.description">
-							  <span class="input-group-btn"></span>
-							  <input type="text" class="form-control" id="edititemWeight" ng-model="editeditem.weight">
-							  <span class="input-group-btn">
-									<button type="button" class="btn btn-default" ng-click="saveitem()" ng-if="edited(item)">
-										<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-									</button>
-									<button type="button" class="btn btn-default" ng-click="canceledit()" ng-if="edited(item)">
-										<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-									</button>
-								</span>
-							</div>
-						  </td>
-						  <td class="text-right" ng-if="!edited(item)" >
-								<div class="btn-group" role="group" >
-									<button type="button" class="btn btn-default" ng-click="edititem(item)" >
-										<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-									</button>
-									<button type="button" class="btn btn-default" ng-click="deleteitem(item)">
-										<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-									</button>
-								</div>
-							</td>
-						</tr>
-					  </tbody>
-					</table>
-					
-					
-			  </div >
-			  <button type="submit" class="btn btn-default" ng-click="saveMenu()">Submit</button>
-              <button type="submit" class="btn btn-default" ng-click="cancelMenu()">Cancel</button>
-			</form>
-			<br/>
-		</div>
-		
-        <div ng-repeat="menu in weekmenu | slice:3">
-            <div class="clearfix" ng-if="$index % 2 == 0"></div>
-            <div class="col-sm-6" ng-if="!tomorrow||checkdate(menu.onDate)">
-                <div class="panel" ng-class="{'panel-primary': checkdate(menu.onDate),'panel-default': !checkdate(menu.onDate)}">
-
-                    <div class="panel-heading">
-					<div class="btn-group pull-right">
-						<button class="btn btn-default btn-xs" type="button" ng-click="editMenu(menu)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-					</div>
-					{{menu.name}} {{menu.onDate|date:'dd.MM.yyyy'}}
-					</div>
-
-                    <div class="panel-body">
-                        Цена: {{menu.price}} руб.<br />
-                        Заказно: шт.<br />
-                        Итого: руб.<br />
-                    </div>
-
-                    <ul class="list-group" ng-if="components">
-                        <li class="list-group-item" ng-repeat="item in menu.items"><span class="badge">{{item.weight}}</span>{{item.name}}</li>
-                    </ul>
-
-                </div>
-            </div>
-        </div>
-
-    </div>
 	
 	
-    <div class="col-md-2" ng-init="accordion=1">
+    <div class="col-md-6" ng-init="accordion=1">
         <h3 class="accordion" ng-class="{active:accordion==1}">
             <a href="" ng-click="accordion = 1">Section 1</a>
         </h3>

@@ -4,7 +4,8 @@ angular.module('FoodApp.User', ['ngResource'])
 .factory('UserDay', ['$rootScope','$resource',
   function($rootScope, $resource){
     return $resource($rootScope.api + 'api/userday/:Id', {}, {
-      query: {method:'GET', params:{Id:''}, isArray:true}
+      query: {method:'GET', params:{Id:''}, isArray:true},
+	  update: {method:'PUT', params:{Id:''}},
     });
 }])
 .factory('User', ['$rootScope','$resource',
@@ -81,9 +82,10 @@ angular.module('FoodApp.User', ['ngResource'])
 	$scope.sendUserDays = function (days) {
         $scope.working = true;
         $scope.sendData = true;
-        var mdays = new UserDay(days) // impliment success/failure func for set correctData
-        mdays.$save();
-        $scope.working = false;
+        days.forEach(function(item) {
+			item.$update();
+		});
+		$scope.working = false;
         $scope.correctData = true; //false if error in request
     };
 }])

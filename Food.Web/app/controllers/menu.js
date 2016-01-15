@@ -1,6 +1,15 @@
 ﻿'use strict';
 
 angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
+.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+    $routeProvider.otherwise({ redirectTo: '/' });
+    $routeProvider
+    .when('/menu', {
+        templateUrl: 'app/views/menu.html',
+        controller: 'UserCtrl'
+    });
+    // $locationProvider.html5Mode(true);
+}])
 .controller('MenuCtrl',['$scope', 'Menu','MenuItem', function ($scope, Menu,MenuItem) {
     $scope.title = "Loading menu ...";
     $scope.options = [];
@@ -8,6 +17,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	$scope.menu = {};
 	$scope.menu.items = [];
 	$scope.editeditem = {};
+	$scope.backupitem = {};
 	$scope.menuitem = {};
 	
 	$scope.additem = function(item) {
@@ -16,16 +26,20 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	};
 	
 	$scope.edititem = function(item) {
-		$scope.editeditem = item;
+		$scope.backupitem = angular.copy(item);
+		$scope.editeditem =  item;
 	};
 	
 	$scope.canceledit = function() {
+		angular.copy($scope.backupitem,$scope.editeditem);
 		$scope.editeditem = {};
 	};
 	
 	$scope.saveitem = function() {
 		var item = new MenuItem($scope.editeditem);
-		item.$save();
+		if (item.id > 0) {
+			item.$update();
+		}
 		$scope.editeditem = {};
 	};
 	
@@ -65,8 +79,14 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	}
 	
 	$scope.saveMenu = function() {
+		var success = function(menu){
+			$scope.weekmenu.push(menu);	
+		}
+		var failure = function(data){
+			$scope.title = "Oops... something went wrong";
+		};
 	    var menu = new Menu($scope.menu);
-	    menu.$save();
+	    menu.$save(success,failure);
 	    $scope.edit = false;
 	}
 
