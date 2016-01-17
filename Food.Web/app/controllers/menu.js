@@ -84,7 +84,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	$scope.saveMenu = function() {
 		var success = function(menu){
 			if ($scope.menu.id < 0) {
-				$scope.weekmenu.push($scope.menu);	
+				$scope.weekmenu.push(menu);	
 			}
 		}
 		var failure = function(data){
