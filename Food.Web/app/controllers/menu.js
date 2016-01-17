@@ -39,7 +39,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	$scope.saveitem = function() {
 		var item = new MenuItem($scope.editeditem);
 		if (item.id > 0) {
-			item.$update();
+			item.$update({id:item.id});
 		}
 		$scope.editeditem = {};
 	};

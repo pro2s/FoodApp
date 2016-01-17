@@ -11,7 +11,8 @@ angular.module('FoodApp.User', ['ngResource'])
 .factory('User', ['$rootScope','$resource',
   function($rootScope, $resource){
     return $resource($rootScope.api + 'api/user/:Id', {}, {
-      query: {method:'GET', params:{Id:''}, isArray:true}
+      query: {method:'GET', params:{Id:''}, isArray:true},
+	  update: {method:'PUT', params:{Id:''}},
     });
 }])  
 .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
@@ -146,7 +147,7 @@ angular.module('FoodApp.User', ['ngResource'])
 		{
 			$scope.addbill.error = false;
 			user.bill = user.bill + add;
-			user.$save();
+			user.$update({id:user.id});
 			$scope.addId = -1;
 			$scope.addbill.value = 0;
 		}
