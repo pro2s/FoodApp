@@ -29,7 +29,7 @@
 					</thead>
 					<tbody>
 					<tr>
-						<td ng-repeat="day in days" >
+						<td ng-repeat="day in days" ng-if="checkday(day)">
 							<fieldset ng-disabled="!checkdate(day.date)">
 								<div class="btn-group-vertical" data-toggle="buttons">
 									<label class="btn btn-default"
