@@ -103,7 +103,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 		var success = function(menu){
 			$scope.working = false;
 			$scope.title = "Week Menu";
-			$scope.weekmenu = menu;
+			$scope.weekmenu.push(menu);
 		};
 		var failure = function(data){
 			$scope.title = "Oops... something went wrong";
