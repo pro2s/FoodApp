@@ -3,16 +3,16 @@
 angular.module('FoodApp.User', ['ngResource'])
 .factory('UserDay', ['$rootScope','$resource',
   function($rootScope, $resource){
-    return $resource($rootScope.api + 'api/userday/:Id', {}, {
-      query: {method:'GET', params:{Id:''}, isArray:true},
-	  update: {method:'PUT', params:{Id:''}},
+    return $resource($rootScope.api + 'api/userday/:id', {}, {
+      query: {method:'GET', params:{id:''}, isArray:true},
+	  update: {method:'PUT', params:{id:''}},
     });
 }])
 .factory('User', ['$rootScope','$resource',
   function($rootScope, $resource){
-    return $resource($rootScope.api + 'api/user/:Id', {}, {
-      query: {method:'GET', params:{Id:''}, isArray:true},
-	  update: {method:'PUT', params:{Id:''}},
+    return $resource($rootScope.api + 'api/user/:id', {}, {
+      query: {method:'GET', params:{id:''}, isArray:true},
+	  update: {method:'PUT', params:{id:''}},
     });
 }])  
 .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
