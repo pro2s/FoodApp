@@ -95,7 +95,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	    if ($scope.menu.id < 0) {
 			menu.$save(success,failure);
 		} else {
-			menu.$update(success,failure);
+			menu.$update({id:$scope.menu.id},success,failure);
 		}
 			
 	    $scope.edit = false;
