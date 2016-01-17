@@ -92,7 +92,12 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 		};
 		
 	    var menu = new Menu($scope.menu);
-	    menu.$save(success,failure);
+	    if ($scope.menu.id < 0) {
+			menu.$save(success,failure);
+		} else {
+			menu.$update(success,failure);
+		}
+			
 	    $scope.edit = false;
 	}
 
