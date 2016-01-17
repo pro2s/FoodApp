@@ -102,7 +102,7 @@ angular.module('FoodApp.User', ['ngResource'])
         $scope.correctData = true; //false if error in request
     };
 }])
-.controller('UserCtrl', ['$scope','$http','User', function ($scope, $http, User){
+.controller('UserCtrl', ['$scope','User', function ($scope, User){
     $scope.title = "loading users ...";
     $scope.options = [];
 	$scope.addbill = {
