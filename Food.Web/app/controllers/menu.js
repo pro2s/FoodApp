@@ -83,11 +83,12 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	
 	$scope.saveMenu = function() {
 		var success = function(menu){
-			$scope.weekmenu.push(menu);	
+			$scope.weekmenu.push($scope.menu);	
 		}
 		var failure = function(data){
 			$scope.title = "Oops... something went wrong";
 		};
+		
 	    var menu = new Menu($scope.menu);
 	    menu.$save(success,failure);
 	    $scope.edit = false;
@@ -103,7 +104,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 		var success = function(menu){
 			$scope.working = false;
 			$scope.title = "Week Menu";
-			$scope.weekmenu.push(menu);
+			$scope.weekmenu = menu;
 		};
 		var failure = function(data){
 			$scope.title = "Oops... something went wrong";
