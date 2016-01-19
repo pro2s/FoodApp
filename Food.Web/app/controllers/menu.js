@@ -22,7 +22,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	
 	
 	$scope.additem = function(item) {
-	    item.id = -1;
+	    item.id = null;
 		$scope.menu.items.push(angular.copy(item));
 	};
 	
@@ -38,7 +38,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	
 	$scope.saveitem = function() {
 		var item = new MenuItem($scope.editeditem);
-		if (item.id > 0) {
+		if (item.id != null) {
 			item.$update({id:item.id});
 		}
 		$scope.editeditem = {};
@@ -65,7 +65,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	$scope.add = function() {
 		$scope.formTitle = "New menu";
 	    $scope.menu = {};
-	    $scope.menu.id = -1;
+	    $scope.menu.id = null;
 		$scope.menu.items = [];
 		$scope.menuitem = {}
 		$scope.edit = true;
@@ -83,7 +83,8 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	
 	$scope.saveMenu = function() {
 		var success = function(menu){
-			if ($scope.menu.id < 0) {
+			// returned id must by assign to menu
+			if ($scope.menu.id == null ) {
 				$scope.weekmenu.push(menu);	
 			}
 		}
@@ -92,7 +93,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 		};
 		
 	    var menu = new Menu($scope.menu);
-	    if ($scope.menu.id < 0) {
+	    if ($scope.menu.id == null) {
 			menu.$save(success,failure);
 		} else {
 			menu.$update({id:$scope.menu.id},success,failure);
@@ -108,10 +109,10 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 		$scope.edit = false;
 		$scope.components = components;
 		
-		var success = function(menu){
+		var success = function(data){
 			$scope.working = false;
 			$scope.title = "Week Menu";
-			$scope.weekmenu = menu;
+			$scope.weekmenu = data.items;
 		};
 		var failure = function(data){
 			$scope.title = "Oops... something went wrong";

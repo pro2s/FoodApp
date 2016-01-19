@@ -4,14 +4,14 @@ angular.module('FoodApp.User', ['ngResource'])
 .factory('UserDay', ['$rootScope','$resource',
   function($rootScope, $resource){
     return $resource($rootScope.api + 'api/userday/:id', {}, {
-      query: {method:'GET', params:{id:''}, isArray:true},
+      query: {method:'GET', params:{id:''}, isArray:false},
 	  update: {method:'PUT', params:{id:''}},
     });
 }])
 .factory('User', ['$rootScope','$resource',
   function($rootScope, $resource){
     return $resource($rootScope.api + 'api/user/:id', {}, {
-      query: {method:'GET', params:{id:''}, isArray:true},
+      query: {method:'GET', params:{id:''},  isArray:false},
 	  update: {method:'PUT', params:{id:''}},
     });
 }])  
@@ -146,8 +146,8 @@ angular.module('FoodApp.User', ['ngResource'])
 		else
 		{
 			$scope.addbill.error = false;
-			user.bill = user.bill + add;
-			user.$update({id:user.id});
+			user.bill = parseInt(user.bill) + add;
+			User.update({id:user.id},user);
 			$scope.addId = -1;
 			$scope.addbill.value = 0;
 		}
@@ -157,8 +157,15 @@ angular.module('FoodApp.User', ['ngResource'])
         $scope.working = true;
         $scope.options = [];
 		$scope.title = "Users";
-		$scope.users = User.query();
-		$scope.working = false;
+		var success = function(data){
+			$scope.working = false;
+			$scope.users = data.items;
+		};
+		var failure = function(data){
+			$scope.title = "Oops... something went wrong";
+			$scope.working = false;
+		};
+		User.query(success, failure);
     };
 }]);
 
