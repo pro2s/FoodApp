@@ -22,21 +22,21 @@
 				<table class="table grid selectday" id="grid">
 					<thead>
 					<tr>
-					<th ng-repeat="day in days" ng-if="checkday(day)" class="text-center">                
+					<th ng-repeat="day in weekdays"  class="text-center">                 
 						<label>{{day.date|date:'dd.MM.yyyy'}}<br />{{day.date|date:'(EEEE)'}}</label>
 					</th>
 					</tr>
 					</thead>
 					<tbody>
 					<tr>
-						<td ng-repeat="day in days" ng-if="checkday(day)">
+						<td ng-repeat="day in weekdays">
 							<fieldset ng-disabled="!checkdate(day.date)">
-								<div class="btn-group-vertical" data-toggle="buttons">
-									<label class="btn btn-default"
-										ng-repeat="menu in weekmenu | OnDate: day.date"
+								<div class="btn-group-vertical" data-toggle="buttons">{{$index}}
+									<label class="btn btn-default" 
+										ng-repeat="menu in day.menu"
 										ng-click="setDaySelect(day, menu)"
 										ng-class="{active: day.select.id == menu.id, 'btn-info': day.select.id == menu.id}">
-										<input type="radio" name="choice" id="{{menu.id}}" autocomplete="off" /> {{menu.name}}
+										<input type="radio" name="choice" id="{{menu.id}}" autocomplete="off" />{{menu.name}}
 									</label>
 								</div>
 							</fieldset>

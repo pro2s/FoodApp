@@ -20,6 +20,11 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	$scope.backupitem = {};
 	$scope.menuitem = {};
 	
+	$scope.showMenu = function(menu){
+		var show = true;
+		show &= !$scope.tomorrow||$scope.checkdate(menu.onDate);
+		return show;
+	}
 	
 	$scope.additem = function(item) {
 	    item.id = null;
@@ -112,7 +117,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 		var success = function(data){
 			$scope.working = false;
 			$scope.title = "Week Menu";
-			$scope.weekmenu = data.items;
+			$scope.weekmenu = data;
 		};
 		var failure = function(data){
 			$scope.title = "Oops... something went wrong";

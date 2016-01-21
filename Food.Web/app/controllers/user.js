@@ -4,14 +4,14 @@ angular.module('FoodApp.User', ['ngResource'])
 .factory('UserDay', ['$rootScope','$resource',
   function($rootScope, $resource){
     return $resource($rootScope.api + 'api/userday/:id', {}, {
-      query: {method:'GET', params:{id:''}, isArray:false},
+      query: {method:'GET', params:{id:''}, isArray:true},
 	  update: {method:'PUT', params:{id:''}},
     });
 }])
 .factory('User', ['$rootScope','$resource',
   function($rootScope, $resource){
     return $resource($rootScope.api + 'api/user/:id', {}, {
-      query: {method:'GET', params:{id:''},  isArray:false},
+      query: {method:'GET', params:{id:''},  isArray:true},
 	  update: {method:'PUT', params:{id:''}},
     });
 }])  
@@ -28,6 +28,17 @@ angular.module('FoodApp.User', ['ngResource'])
     });
     // $locationProvider.html5Mode(true);
 }])
+.filter('OnSysMenu', function () {
+        return function (items, index) {
+			var filtered = [];
+			angular.forEach(items, function(item) {
+			  if (item.type < 0  || (item.type == index + 1)) {
+				filtered.push(item);
+			  }
+			});
+			return filtered;
+        }
+    })
 .controller('FoodCtrl', ['$scope','$http','UserDay','Menu', function ($scope, $http, UserDay, Menu) {
     $scope.date = new Date();
     $scope.sendData = false;
@@ -51,6 +62,8 @@ angular.module('FoodApp.User', ['ngResource'])
 	var success = function(){
 		$scope.error = false;
 		$scope.working = false;
+		
+		
 	};
 		
 	var failure = function(){
@@ -70,8 +83,8 @@ angular.module('FoodApp.User', ['ngResource'])
     };
 	
 	$scope.init = function() {
-		$scope.loadUser();
 		$scope.loadMenu();
+		$scope.loadUser();
 	};
     
 	$scope.loadMenu = function () {
@@ -79,8 +92,45 @@ angular.module('FoodApp.User', ['ngResource'])
 		$scope.working = true;
 		$scope.error = true;
     
-		$scope.weekmenu = Menu.query(success,failure);
+		
+		$scope.weekmenu= Menu.query(
+			{system:'all'},
+			function() {
+				$scope.weekdays = [];
+
+				var monday = new Date();
+				var day = monday.getDay();
+				monday.setDate(monday.getDate() - day + 1);
+				
+				for (var i = 0; i < 8; i++) {
+					var menu = []
+					angular.forEach($scope.sysmenu, function(item) {
+						if (item.type < 0  || (item.type == i + 1)) {
+							menu.push(item);
+						}
+					}); 
+					$scope.weekdays.push({date:new Date(+monday),select:{},menu:menu});                 
+					monday.setDate(monday.getDate() + 1); 
+				}	
+				
+				$scope.weekmenu = Menu.query(
+					function(){
+						$scope.error = false;
+						$scope.working = false;
+						angular.forEach($scope.weekdays, function(item) {
+							angular.forEach($scope.weekmenu, function(item) {
+								if (item.date  == i + 1) {
+									menu.push(item);
+								}
+							}); 
+						}) 
+					},failure);
+			},
+			failure);
     };
+	
+	
+	
 	
 	$scope.loadUser = function () {
         
@@ -89,13 +139,17 @@ angular.module('FoodApp.User', ['ngResource'])
 		$scope.sendData = false;
 		
 		$scope.status = "Loading food ...";
-        
+	
+		
 		$scope.days = UserDay.query(success,failure);
 	};
+	
+	
 
 	$scope.sendUserDays = function (days) {
         $scope.working = true;
         $scope.sendData = true;
+		
         days.forEach(function(item) {
 			item.$update();
 		});
@@ -157,9 +211,10 @@ angular.module('FoodApp.User', ['ngResource'])
         $scope.working = true;
         $scope.options = [];
 		$scope.title = "Users";
+		
 		var success = function(data){
 			$scope.working = false;
-			$scope.users = data.items;
+			$scope.users = data;
 		};
 		var failure = function(data){
 			$scope.title = "Oops... something went wrong";
