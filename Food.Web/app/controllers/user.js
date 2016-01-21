@@ -72,12 +72,7 @@ angular.module('FoodApp.User', ['ngResource'])
     };
 	
 	$scope.init = function() {
-		$scope.loadMenu();
-		$scope.loadUser();
-	};
-    
-	$scope.loadMenu = function () {
-        
+		
 		$scope.working = true;
 		$scope.error = true;
     
@@ -104,9 +99,7 @@ angular.module('FoodApp.User', ['ngResource'])
 				
 				$scope.weekmenu = Menu.query(
 					function(){
-						$scope.error = false;
-						$scope.working = false;
-
+						
                         var clear = [];   
 						
                         angular.forEach($scope.weekmenu, function(menu) {
@@ -125,7 +118,9 @@ angular.module('FoodApp.User', ['ngResource'])
                         angular.forEach(clear, function(pos) {
                              $scope.weekdays.splice(pos, 1);
                         });  
-                
+                        
+                        $scope.days = UserDay.query(success,failure);
+                        
 					},failure);
                     
                 
@@ -133,21 +128,6 @@ angular.module('FoodApp.User', ['ngResource'])
 			},
 			failure);
     };
-	
-	
-	
-	
-	$scope.loadUser = function () {
-        
-		$scope.working = true;
-		$scope.error = true;
-		$scope.sendData = false;
-		
-		$scope.status = "Loading food ...";
-	
-		
-		$scope.days = UserDay.query(success,failure);
-	};
 	
 	
 
