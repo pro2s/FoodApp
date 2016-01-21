@@ -31,7 +31,7 @@
 					<tr>
 						<td ng-repeat="day in weekdays">
 							<fieldset ng-disabled="!checkdate(day.date)">
-								<div class="btn-group-vertical" data-toggle="buttons">{{$index}}
+								<div class="btn-group-vertical" data-toggle="buttons">
 									<label class="btn btn-default" 
 										ng-repeat="menu in day.menu"
 										ng-click="setDaySelect(day, menu)"
@@ -43,7 +43,7 @@
 						</td>
 					</tr>
 					<tr >
-						<td ng-repeat="day in days" ng-if="checkday(day)">
+						<td ng-repeat="day in weekdays">
 							<dl>
 								<dt class="text-center">{{day.select.name}}</dd>
 								<dd ng-repeat="item in day.select.items">
@@ -70,7 +70,7 @@
         </button>
     </div>
 
-    <div ng-repeat="menu in weekmenu | slice:3" >
+    <div ng-repeat="menu in weekmenu" >
         <div class="clearfix" ng-if="$index % 4 == 0"></div>
         <div class="col-md-3" ng-if="!tomorrow||checkdate(menu.onDate)">
             <div class="panel" ng-class="{'panel-primary': checkdate(menu.onDate),'panel-default': !checkdate(menu.onDate)}">

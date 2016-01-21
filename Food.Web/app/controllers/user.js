@@ -28,17 +28,6 @@ angular.module('FoodApp.User', ['ngResource'])
     });
     // $locationProvider.html5Mode(true);
 }])
-.filter('OnSysMenu', function () {
-        return function (items, index) {
-			var filtered = [];
-			angular.forEach(items, function(item) {
-			  if (item.type < 0  || (item.type == index + 1)) {
-				filtered.push(item);
-			  }
-			});
-			return filtered;
-        }
-    })
 .controller('FoodCtrl', ['$scope','$http','UserDay','Menu', function ($scope, $http, UserDay, Menu) {
     $scope.date = new Date();
     $scope.sendData = false;
@@ -93,7 +82,7 @@ angular.module('FoodApp.User', ['ngResource'])
 		$scope.error = true;
     
 		
-		$scope.weekmenu= Menu.query(
+		$scope.sysmenu = Menu.query(
 			{system:'all'},
 			function() {
 				$scope.weekdays = [];
@@ -117,14 +106,30 @@ angular.module('FoodApp.User', ['ngResource'])
 					function(){
 						$scope.error = false;
 						$scope.working = false;
-						angular.forEach($scope.weekdays, function(item) {
-							angular.forEach($scope.weekmenu, function(item) {
-								if (item.date  == i + 1) {
-									menu.push(item);
-								}
-							}); 
+
+                        var clear = [];   
+						
+                        angular.forEach($scope.weekmenu, function(menu) {
+                            var day = new Date(menu.onDate).getDay()-1;
+							$scope.weekdays[day].menu.push(menu);
 						}) 
+
+                        angular.forEach($scope.weekdays, function(day, i) {
+                             if (day.menu.length == 1) {
+                                clear.push(i);
+                             }
+                        });   
+                        
+                        clear.reverse();
+                        
+                        angular.forEach(clear, function(pos) {
+                             $scope.weekdays.splice(pos, 1);
+                        });  
+                
 					},failure);
+                    
+                
+                
 			},
 			failure);
     };
