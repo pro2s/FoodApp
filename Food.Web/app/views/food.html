@@ -4,7 +4,7 @@
         <div class="back" ng-class="{flip: sendData, correct: correctData, incorrect:!correctData}">
             <p class="lead" ng-bind="answer()"></p>
             <p>
-                <button class="btn btn-info option" ng-click="loadUser()" ng-disabled="working">Edit Week Menu</button>
+                <button class="btn btn-info option" ng-click="init()" ng-disabled="working">Edit Week Menu</button>
             </p>
         </div>
 		
@@ -18,7 +18,7 @@
                 <p class="lead" >Select Menu on Day</p>
             </div>
 			
-			<div class="col-md-12 text-center">
+			<div class="col-md-12 text-center" ng-if="!error">
 				<table class="table grid selectday" id="grid">
 					<thead>
 					<tr>
