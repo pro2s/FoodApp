@@ -155,7 +155,11 @@ angular.module('FoodApp.User', ['ngResource'])
 			var day = $scope.weekdays[key];
 			
 			if (isEmpty(day.userday)) {
-				console.log('save');
+				if (!isEmpty(day.select)){
+					console.log('save');
+					var userday = new UserDay({userid:-1, selectid: day.select.id, date:day.date});
+					userday.$save();
+				}
 			}
 			else if (day.select.id != day.userday.selectid)
 			{
