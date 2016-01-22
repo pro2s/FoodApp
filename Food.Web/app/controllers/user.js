@@ -72,6 +72,7 @@ angular.module('FoodApp.User', ['ngResource'])
 	};
 	
 	$scope.init = function() {
+		$scope.status = "Loading food ...";
 		$scope.sendData = false;
 		$scope.working = true;
 		$scope.error = true;
