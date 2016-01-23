@@ -42,17 +42,17 @@ angular.module('FoodApp.User', ['ngResource'])
 				count++;
 			};
 		});
+		count = 2;
 		if (count>1){
 			return true;
 		} else {
 			return false;
 		}
+		
 	}
 	var success = function(){
 		$scope.error = false;
 		$scope.working = false;
-		
-		
 	};
 		
 	var failure = function(){
@@ -76,7 +76,8 @@ angular.module('FoodApp.User', ['ngResource'])
 		$scope.sendData = false;
 		$scope.working = true;
 		$scope.error = true;
-	
+        
+        $scope.userid = 5700305828184064;
 		
 		$scope.sysmenu = Menu.query(
 			{system:'all'},
@@ -103,8 +104,6 @@ angular.module('FoodApp.User', ['ngResource'])
 				
 				$scope.weekmenu = Menu.query(
 					function(){
-						
-		
 						angular.forEach($scope.weekmenu, function(menu) {
 							var day = new Date(menu.onDate).getDay()-1;
 							var key = new Date(menu.onDate).toDateString();
@@ -118,7 +117,7 @@ angular.module('FoodApp.User', ['ngResource'])
 							}
 						}
 						
-						$scope.days = UserDay.query(
+						$scope.days = UserDay.query({userid:$scope.userid},
 						function() {
 							angular.forEach($scope.days, function(day) {
 								var key = new Date(day.date).toDateString();
@@ -136,11 +135,7 @@ angular.module('FoodApp.User', ['ngResource'])
 						},failure);
 							
 					},failure);
-					
-				
-				
-			},
-			failure);
+			}, failure);
 	};
 	
 	function isEmpty(obj) { 
@@ -158,7 +153,7 @@ angular.module('FoodApp.User', ['ngResource'])
 			if (isEmpty(day.userday)) {
 				if (!isEmpty(day.select)){
 					console.log('save');
-					var userday = new UserDay({userid:-1, selectid: day.select.id, date:day.date});
+					var userday = new UserDay({userid:$scope.userid, selectid: day.select.id, date:day.date});
 					userday.$save();
 				}
 			}
@@ -174,7 +169,7 @@ angular.module('FoodApp.User', ['ngResource'])
 		$scope.correctData = true; //false if error in request
 	};
 }])
-.controller('UserCtrl', ['$scope','User', function ($scope, User){
+.controller('UserCtrl', ['$scope', 'User', 'UserDay' , 'Menu', function ($scope, User, UserDay, Menu){
 	$scope.title = "loading users ...";
 	$scope.options = [];
 	$scope.addbill = {
@@ -228,16 +223,87 @@ angular.module('FoodApp.User', ['ngResource'])
 		$scope.working = true;
 		$scope.options = [];
 		$scope.title = "Users";
-		
-		var success = function(data){
+		$scope.accordion = 0;
+        $scope.menucount = {}
+        $scope.menu = {};
+        
+		var success = function(){
 			$scope.working = false;
-			$scope.users = data;
 		};
 		var failure = function(data){
 			$scope.title = "Oops... something went wrong";
 			$scope.working = false;
 		};
-		User.query(success, failure);
+        
+        $scope.users = {};
+		User.query(function(data){
+            angular.forEach(data, function(user) {
+				$scope.users[user.id] = user;
+			});
+            success();
+        }, failure);
+        
+        $scope.weekdays = {};
+        UserDay.query(function(userdays) {
+            
+            var monday = new Date();
+            var day = monday.getDay();
+            monday.setDate(monday.getDate() - day + 1);
+            for (var i = 0; i < 8; i++) {
+                var date = new Date(+monday)
+                var day = {date:date,userselect:[],menu:[]};
+                var key = date.toDateString();
+                $scope.weekdays[key] = day;
+                monday.setDate(monday.getDate() + 1); 
+            }	
+            angular.forEach(userdays, function(day) {
+				var key = new Date(day.date).toDateString();
+				if ($scope.weekdays.hasOwnProperty(key)) {
+                    $scope.weekdays[key].userselect.push(day)
+                    if (typeof $scope.menucount[day.selectid] == 'undefined'){
+                        $scope.menucount[day.selectid]=1;
+                     } else {
+                        $scope.menucount[day.selectid]++;
+                     }
+				}
+			});
+            success();
+        }, failure);
+        
+        
+        Menu.query(function(data) {
+            angular.forEach(data, function(menu) {
+				$scope.menu[menu.id] = menu;
+                var key = new Date(menu.onDate).toDateString();
+                if ($scope.weekdays.hasOwnProperty(key)) {
+                    menu.count = $scope.menucount[menu.id];
+                    $scope.weekdays[key].menu.push(menu);
+                };
+			});
+
+            Menu.query({system:"global"},function(data) {
+                angular.forEach(data, function(menu) {
+                    $scope.menu[menu.id] = menu;
+                    var key = new Date(menu.ondate).toDateString();
+                    if ($scope.weekdays.hasOwnProperty(key)) {
+                        menu.count = $scope.menucount[menu.id];
+                        $scope.weekdays[key].menu.push(menu);
+                    };
+                 });
+            }, failure);
+            
+            success();
+        }, failure);
+        
+        
+        $scope.getUser = function(userday) {
+            return $scope.users[userday.userid];
+        };
+		
+        $scope.getMenu = function(userday) {
+            return $scope.menu[userday.selectid];
+        };
+	    
 	};
 }]);
 

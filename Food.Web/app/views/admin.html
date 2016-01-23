@@ -1,5 +1,5 @@
-﻿<div class="row">
-    <div class="users col-md-6" ng-controller="UserCtrl" ng-init="Users()">
+﻿<div class="row" ng-controller="UserCtrl" ng-init="Users()">
+    <div class="users col-md-6">
         <div class="lead" ng-bind="title"></div>
 		
         <div ng-repeat="user in users" id="{{user.id}}" class="row">
@@ -42,24 +42,21 @@
         </div>
     </div>
 	
-	
-
-	
-	
-    <div class="col-md-6" ng-init="accordion=1">
-        <h3 class="accordion" ng-class="{active:accordion==1}">
-            <a href="" ng-click="accordion = 1">Section 1</a>
-        </h3>
-        <p class="accordion-content" ng-show="accordion==1">Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using</p>
-
-        <h3 class="accordion" ng-class="{active:accordion==2}">
-            <a href="" ng-click="accordion = 2">Section 2</a>
-        </h3>
-        <p class="accordion-content" ng-show="accordion==2">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using</p>
-
-        <h3 class="accordion" ng-class="{active:accordion==3}">
-            <a href="" ng-click="accordion = 3">Section 3</a>
-        </h3>
-        <p class="accordion-content" ng-show="accordion==3">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form</p>
+        
+    <div class="col-md-6">
+        <div class="panel panel-default" ng-class="{'panel-success':$parent.accordion==$index}" ng-repeat="day in weekdays">
+        <div class="panel-heading">
+            <a href="" ng-click="$parent.accordion = $index">{{day.date|date:'dd.MM.yyyy'}} {{day.date|date:'(EEEE)'}}</a>
+        </div>
+        <ul class="list-group" ng-show="$parent.accordion==$index">
+            <li ng-repeat="select in day.userselect track by $index" class="list-group-item">
+                {{$parent.getUser(select).name}} - {{$parent.getMenu(select).name}} ({{$parent.getMenu(select).price}})
+            </li>
+            <li class="list-group-item"><b>Итого по меню</b></li>
+            <li ng-repeat="menu in day.menu" class="list-group-item">
+                {{menu.name}} - {{menu.count}} на сумму {{menu.price * menu.count}}
+            </li>
+        </ul>
+        </div>
     </div>
 </div>

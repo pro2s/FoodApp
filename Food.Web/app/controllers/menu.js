@@ -107,7 +107,7 @@ angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
 	    $scope.edit = false;
 	}
 
-    $scope.Menu = function (components=true) {
+    $scope.Menu = function (components) {
         $scope.date = new Date();  
 		$scope.tomorrow = false;
         $scope.working = true;
