@@ -267,33 +267,34 @@ angular.module('FoodApp.User', ['ngResource'])
                      }
 				}
 			});
-            success();
-        }, failure);
-        
-        
-        Menu.query(function(data) {
-            angular.forEach(data, function(menu) {
-				$scope.menu[menu.id] = menu;
-                var key = new Date(menu.onDate).toDateString();
-                if ($scope.weekdays.hasOwnProperty(key)) {
-                    menu.count = $scope.menucount[menu.id];
-                    $scope.weekdays[key].menu.push(menu);
-                };
-			});
-
-            Menu.query({system:"global"},function(data) {
+            
+            Menu.query(function(data) {
                 angular.forEach(data, function(menu) {
                     $scope.menu[menu.id] = menu;
-                    var key = new Date(menu.ondate).toDateString();
+                    var key = new Date(menu.onDate).toDateString();
                     if ($scope.weekdays.hasOwnProperty(key)) {
                         menu.count = $scope.menucount[menu.id];
                         $scope.weekdays[key].menu.push(menu);
                     };
-                 });
-            }, failure);
+                });
+            }, failure);    
+
+            Menu.query({system:"global"},function(data) {
+                    angular.forEach(data, function(menu) {
+                        $scope.menu[menu.id] = menu;
+                        var key = new Date(menu.ondate).toDateString();
+                        if ($scope.weekdays.hasOwnProperty(key)) {
+                            menu.count = $scope.menucount[menu.id];
+                            $scope.weekdays[key].menu.push(menu);
+                        };
+                     });
+            }, failure);            
             
             success();
         }, failure);
+        
+        
+        
         
         
         $scope.getUser = function(userday) {

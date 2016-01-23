@@ -52,8 +52,8 @@
             <li ng-repeat="select in day.userselect track by $index" class="list-group-item">
                 {{$parent.getUser(select).name}} - {{$parent.getMenu(select).name}} ({{$parent.getMenu(select).price}})
             </li>
-            <li class="list-group-item"><b>Итого по меню</b></li>
-            <li ng-repeat="menu in day.menu" class="list-group-item">
+            <li class="list-group-item" ng-if="day.menu.length>0"><b>Итого по меню</b></li>
+            <li ng-repeat="menu in day.menu" class="list-group-item" ng-if="menu.count>0">
                 {{menu.name}} - {{menu.count}} на сумму {{menu.price * menu.count}}
             </li>
         </ul>
