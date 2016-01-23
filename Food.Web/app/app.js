@@ -1,4 +1,8 @@
 ﻿'use strict';
+Date.prototype.GetMonday = function() {
+    return (new Date(this.setDate(this.getDate() - this.getDay() + (this.getDay() == 0?-6:1))));
+}
+            
 angular.module('FoodApp', [
     'ngRoute',
     'FoodApp.User',

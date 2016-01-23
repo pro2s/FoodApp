@@ -44,15 +44,15 @@
 	
         
     <div class="col-md-6">
-        <div class="panel panel-default" ng-class="{'panel-success':$parent.accordion==$index}" ng-repeat="day in weekdays">
+        <div class="panel panel-default" ng-repeat="day in weekdays" ng-class="{'panel-success':stat.select==$index}"  ng-if="day.total>0">
         <div class="panel-heading">
-            <a href="" ng-click="$parent.accordion = $index">{{day.date|date:'dd.MM.yyyy'}} {{day.date|date:'(EEEE)'}}</a>
+            <a href="" ng-click="stat.select=$index">{{day.date|date:'dd.MM.yyyy'}} {{day.date|date:'(EEEE)'}}</a>
         </div>
-        <ul class="list-group" ng-show="$parent.accordion==$index">
+        <ul class="list-group" ng-show="stat.select==$index">
             <li ng-repeat="select in day.userselect track by $index" class="list-group-item">
                 {{$parent.getUser(select).name}} - {{$parent.getMenu(select).name}} ({{$parent.getMenu(select).price}})
             </li>
-            <li class="list-group-item" ng-if="day.menu.length>0"><b>Итого по меню</b></li>
+            <li class="list-group-item"><b>Итого по меню</b></li>
             <li ng-repeat="menu in day.menu" class="list-group-item" ng-if="menu.count>0">
                 {{menu.name}} - {{menu.count}} на сумму {{menu.price * menu.count}}
             </li>

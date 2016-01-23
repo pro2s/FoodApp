@@ -84,9 +84,7 @@ angular.module('FoodApp.User', ['ngResource'])
 			function() {
 				$scope.weekdays = {};
 
-				var monday = new Date();
-				var day = monday.getDay();
-				monday.setDate(monday.getDate() - day + 1);
+				var monday = new Date().GetMonday();
 				
 				for (var i = 0; i < 8; i++) {
 					var menu = [];
@@ -223,8 +221,8 @@ angular.module('FoodApp.User', ['ngResource'])
 		$scope.working = true;
 		$scope.options = [];
 		$scope.title = "Users";
-		$scope.accordion = 0;
-        $scope.menucount = {}
+		$scope.stat = {};
+        
         $scope.menu = {};
         
 		var success = function(){
@@ -245,13 +243,16 @@ angular.module('FoodApp.User', ['ngResource'])
         
         $scope.weekdays = {};
         UserDay.query(function(userdays) {
+            var menucount = {};   
+            var monday = new Date().GetMonday();
             
-            var monday = new Date();
-            var day = monday.getDay();
-            monday.setDate(monday.getDate() - day + 1);
+            var day = new Date().getDay();
+            $scope.stat.select =  (day == 0 ? 6: day) + 1;
+            
+           
             for (var i = 0; i < 8; i++) {
                 var date = new Date(+monday)
-                var day = {date:date,userselect:[],menu:[]};
+                var day = {date:date,userselect:[],menu:[],total:0};
                 var key = date.toDateString();
                 $scope.weekdays[key] = day;
                 monday.setDate(monday.getDate() + 1); 
@@ -260,10 +261,12 @@ angular.module('FoodApp.User', ['ngResource'])
 				var key = new Date(day.date).toDateString();
 				if ($scope.weekdays.hasOwnProperty(key)) {
                     $scope.weekdays[key].userselect.push(day)
-                    if (typeof $scope.menucount[day.selectid] == 'undefined'){
-                        $scope.menucount[day.selectid]=1;
+                    if (typeof menucount[day.selectid] == 'undefined'){
+                        menucount[day.selectid]=1;
+                        $scope.weekdays[key].total++;
                      } else {
-                        $scope.menucount[day.selectid]++;
+                        menucount[day.selectid]++;
+                        $scope.weekdays[key].total++;
                      }
 				}
 			});
@@ -273,18 +276,20 @@ angular.module('FoodApp.User', ['ngResource'])
                     $scope.menu[menu.id] = menu;
                     var key = new Date(menu.onDate).toDateString();
                     if ($scope.weekdays.hasOwnProperty(key)) {
-                        menu.count = $scope.menucount[menu.id];
+                        menu.count = menucount[menu.id];
                         $scope.weekdays[key].menu.push(menu);
                     };
                 });
             }, failure);    
-
+            
+            monday = new Date().GetMonday();
+            
             Menu.query({system:"global"},function(data) {
                     angular.forEach(data, function(menu) {
                         $scope.menu[menu.id] = menu;
-                        var key = new Date(menu.ondate).toDateString();
+                        var key = new Date(new Date().setDate(monday.getDate() + menu.type - 1) ).toDateString();
                         if ($scope.weekdays.hasOwnProperty(key)) {
-                            menu.count = $scope.menucount[menu.id];
+                            menu.count = menucount[menu.id];
                             $scope.weekdays[key].menu.push(menu);
                         };
                      });
