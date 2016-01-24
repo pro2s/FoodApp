@@ -11,7 +11,7 @@ using System.IO;
 using System.Diagnostics;
 
 
-namespace Food.Dummy.Api
+namespace Food.Api
 {
     public class Item
     {
@@ -30,7 +30,7 @@ namespace Food.Dummy.Api
         public DateTime? OnDate { get; set; }
     }
 
-    public class WeekMenu
+    public class ChudoPechka
     {
         public static Menu NoChoice = new Menu() { Id = -1, Name = "Без Обеда", Price = 0, OnDate = null };
         string _url;
@@ -60,7 +60,7 @@ namespace Food.Dummy.Api
 
         }
 
-        public WeekMenu()
+        public ChudoPechka()
         {
             _url = "http://chudo-pechka.by/";
             _monday = DateTime.Today.AddDays(1-(int)DateTime.Today.DayOfWeek);
