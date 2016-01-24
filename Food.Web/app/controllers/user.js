@@ -79,16 +79,15 @@ angular.module('FoodApp.User', ['ngResource'])
         
         $scope.userid = 5700305828184064;
 		
-		$scope.sysmenu = Menu.query(
-			{system:'all'},
-			function() {
+		Menu.query({system:'all'},
+			function(sysmenu) {
 				$scope.weekdays = {};
 
 				var monday = new Date().GetMonday();
 				
 				for (var i = 0; i < 8; i++) {
 					var menu = [];
-					angular.forEach($scope.sysmenu, function(item) {
+					angular.forEach(sysmenu, function(item) {
 						if (item.type < 0  || (item.type == i + 1)) {
 							menu.push(item);
 						}
@@ -100,39 +99,39 @@ angular.module('FoodApp.User', ['ngResource'])
 					monday.setDate(monday.getDate() + 1); 
 				}	
 				
-				$scope.weekmenu = Menu.query(
-					function(){
-						angular.forEach($scope.weekmenu, function(menu) {
-							var day = new Date(menu.onDate).getDay()-1;
-							var key = new Date(menu.onDate).toDateString();
-							$scope.weekdays[key].menu.push(menu)
-						}) ;
+				Menu.query(function(weekmenu) {
+					angular.forEach(weekmenu, function(menu) {
+						var day = new Date(menu.onDate).getDay()-1;
+						var key = new Date(menu.onDate).toDateString();
+						if ($scope.weekdays.hasOwnProperty(key)) {
+                            $scope.weekdays[key].menu.push(menu);
+                        }
+					}) ;
 
-						for (var key in $scope.weekdays) {
-							var day = $scope.weekdays[key];
-							if (day.menu.length == 1) {
-								delete $scope.weekdays[key]
-							}
+					for (var key in $scope.weekdays) {
+						var day = $scope.weekdays[key];
+						if (day.menu.length == 1) {
+							delete $scope.weekdays[key]
 						}
-						
-						$scope.days = UserDay.query({userid:$scope.userid},
-						function() {
-							angular.forEach($scope.days, function(day) {
-								var key = new Date(day.date).toDateString();
-								if ($scope.weekdays.hasOwnProperty(key)) {
+					}
+					
+					$scope.days = UserDay.query({userid:$scope.userid},
+					function() {
+						angular.forEach($scope.days, function(day) {
+							var key = new Date(day.date).toDateString();
+							if ($scope.weekdays.hasOwnProperty(key)) {
 
-									angular.forEach($scope.weekdays[key].menu, function(menu) {
-										if (menu.id == day.selectid){
-											$scope.weekdays[key].select = menu;
-											$scope.weekdays[key].userday = day;
-										}		
-									});
-								}
-							});
-							success();
-						},failure);
-							
+								angular.forEach($scope.weekdays[key].menu, function(menu) {
+									if (menu.id == day.selectid){
+										$scope.weekdays[key].select = menu;
+										$scope.weekdays[key].userday = day;
+									}		
+								});
+							}
+						});
+						success();
 					},failure);
+				},failure);
 			}, failure);
 	};
 	
