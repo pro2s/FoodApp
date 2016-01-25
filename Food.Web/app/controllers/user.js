@@ -100,6 +100,7 @@ angular.module('FoodApp.User', ['ngResource'])
 				}	
 				
 				Menu.query(function(weekmenu) {
+					$scope.weekmenu = weekmenu;
 					angular.forEach(weekmenu, function(menu) {
 						var day = new Date(menu.onDate).getDay()-1;
 						var key = new Date(menu.onDate).toDateString();
