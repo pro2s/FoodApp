@@ -79,19 +79,16 @@ angular.module('FoodApp.User', ['ngResource'])
         
         $scope.userid = 5700305828184064;
 		
-		Menu.query({system:'all'},
+		Menu.query({system:'none'},
 			function(sysmenu) {
 				$scope.weekdays = {};
-
+				var nonemenu = sysmenu.pop()
 				var monday = new Date().GetMonday();
 				
 				for (var i = 0; i < 8; i++) {
 					var menu = [];
-					angular.forEach(sysmenu, function(item) {
-						if (item.type < 0  || (item.type == i + 1)) {
-							menu.push(item);
-						}
-					}); 
+					menu.push(nonemenu);
+					
 					var date = new Date(+monday)
 					var day = {date:date,menu:menu,select:{},userday:{}};
 					var key = date.toDateString();
@@ -257,19 +254,29 @@ angular.module('FoodApp.User', ['ngResource'])
                 $scope.weekdays[key] = day;
                 monday.setDate(monday.getDate() + 1); 
             }	
-            angular.forEach(userdays, function(day) {
-				var key = new Date(day.date).toDateString();
-				if ($scope.weekdays.hasOwnProperty(key)) {
-                    $scope.weekdays[key].userselect.push(day)
-                    if (typeof menucount[day.selectid] == 'undefined'){
-                        menucount[day.selectid]=1;
-                        $scope.weekdays[key].total++;
-                     } else {
-                        menucount[day.selectid]++;
-                        $scope.weekdays[key].total++;
-                     }
-				}
-			});
+			
+			
+			Menu.query({system:"none"}, function(menu){
+				var nonemenu = menu.pop();	
+				angular.forEach(userdays, function(day) {
+					var key = new Date(day.date).toDateString();
+					if ($scope.weekdays.hasOwnProperty(key)) {
+						$scope.weekdays[key].userselect.push(day)
+						if (day.selectid != nonemenu.id) {
+							if (typeof menucount[day.selectid] == 'undefined'){
+								menucount[day.selectid]=1;
+								$scope.weekdays[key].total++;
+							 } else {
+								menucount[day.selectid]++;
+								$scope.weekdays[key].total++;
+							 }
+						}
+					}
+				});
+			}, failure);    
+			
+			
+            
             
             Menu.query(function(data) {
                 angular.forEach(data, function(menu) {
