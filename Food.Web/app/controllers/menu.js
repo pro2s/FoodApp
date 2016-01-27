@@ -1,15 +1,6 @@
 ﻿'use strict';
 
 angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
-.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
-    $routeProvider.otherwise({ redirectTo: '/' });
-    $routeProvider
-    .when('/menu', {
-        templateUrl: 'app/views/menu.html',
-        controller: 'UserCtrl'
-    });
-    // $locationProvider.html5Mode(true);
-}])
 .controller('MenuCtrl',['$scope', 'Menu','MenuItem', function ($scope, Menu,MenuItem) {
     $scope.title = "Loading menu ...";
     $scope.options = [];

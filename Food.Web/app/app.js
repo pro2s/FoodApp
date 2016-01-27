@@ -6,10 +6,29 @@ Date.prototype.GetMonday = function() {
 angular.module('FoodApp', [
     'ngRoute',
     'FoodApp.User',
+	'FoodApp.Admin',
     'FoodApp.Menu',
     'FoodApp.MenuService',
+	'FoodApp.UserService',
     ])
-    .controller('HeaderCtrl', function ($scope, $location) {
+	.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+		$routeProvider.otherwise({ redirectTo: '/' });
+		$routeProvider
+		.when('/', {
+			templateUrl: 'app/views/food.html',
+			controller: 'FoodCtrl'
+		})
+		.when('/admin', {
+			templateUrl: 'app/views/admin.html',
+			controller: 'UserCtrl'
+		})
+		.when('/menu', {
+			templateUrl: 'app/views/menu.html',
+			controller: 'UserCtrl'
+		});
+		// $locationProvider.html5Mode(true);
+	}])
+    .controller('TopMenu', function ($scope, $location) {
         $scope.isActive = function (viewLocation) {
             var test = $location.path();
             return viewLocation === $location.path();
