@@ -50,7 +50,7 @@ angular.module('FoodApp.User', ['FoodApp.UserService'])
 		$scope.working = true;
 		$scope.error = true;
         
-        $scope.userid = 5700305828184064;
+        
 		
 		Menu.query({system:'none'},
 			function(sysmenu) {

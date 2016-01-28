@@ -28,18 +28,16 @@ angular.module('FoodApp', [
 		});
 		// $locationProvider.html5Mode(true);
 	}])
-    .controller('TopMenu', function ($scope, $location) {
-        $scope.isActive = function (viewLocation) {
-            var test = $location.path();
-            return viewLocation === $location.path();
-        };
-		
-    })
-    .run(function ($rootScope) {
+    .run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {
+        $rootScope.userid = 5700305828184064;
+        $rootScope.username = "User A";
 		$rootScope.api = "http://localhost/"
 		$rootScope.setAPI = function (apiurl) {
             $rootScope.api = apiurl;
         };
+        
+       
+        
         $rootScope.checkdate = function (date) {
 			
             var today = new Date();
@@ -53,7 +51,31 @@ angular.module('FoodApp', [
             return false;
         };
 
-    })
+    }])
+    .controller('TopMenu', ['$scope','$rootScope','$location','$route','User',function ($scope, $rootScope, $location, $route, User) {
+        $scope.isActive = function (viewLocation) {
+            var test = $location.path();
+            return viewLocation === $location.path();
+        };
+        
+        $scope.users = {};
+		User.query(function(data){
+            angular.forEach(data, function(user) {
+				$scope.users[user.id] = user;
+			});
+        });
+        
+        $scope.selectUser = function(user){
+            $rootScope.userid = user.id;
+            $rootScope.username  =user.name;
+            if  ($location.path() == '/') {
+                $route.reload();
+            } else {
+                $location.path('/').replace();
+            }
+        }
+		
+    }])    
     .filter('OnDate', function () {
         return function (items, date) {
           
