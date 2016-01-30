@@ -39,7 +39,7 @@ angular.module('FoodApp.User', ['FoodApp.UserService'])
         
         $scope.sysmenu = Menu.query({system:'none'});
 		$scope.weekmenu = Menu.query();
-        $scope.days = UserDay.query();
+        $scope.days = UserDay.query({userid:$scope.userid});
         
         $q.all([
             $scope.sysmenu.$promise,
