@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('FoodApp.Admin', ['FoodApp.UserService'])
-.controller('UserCtrl', ['$scope', 'User', 'Payment', 'UserDay' , 'Menu', function ($scope, User, Payment, UserDay, Menu){
+.controller('AdminCtrl', ['$scope', 'User', 'Payment', 'UserDay' , 'Menu', function ($scope, User, Payment, UserDay, Menu){
 	$scope.title = "loading users ...";
 	$scope.options = [];
 	$scope.addbill = {

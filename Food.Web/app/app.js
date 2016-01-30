@@ -15,16 +15,16 @@ angular.module('FoodApp', [
 		$routeProvider.otherwise({ redirectTo: '/' });
 		$routeProvider
 		.when('/', {
-			templateUrl: 'app/views/food.html',
-			controller: 'FoodCtrl'
+			templateUrl: 'app/views/user.html',
+			controller: 'UserCtrl'
 		})
 		.when('/admin', {
 			templateUrl: 'app/views/admin.html',
-			controller: 'UserCtrl'
+			controller: 'AdminCtrl'
 		})
 		.when('/menu', {
 			templateUrl: 'app/views/menu.html',
-			controller: 'UserCtrl'
+			controller: 'MenuCtrl'
 		});
 		// $locationProvider.html5Mode(true);
 	}])

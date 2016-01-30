@@ -1,7 +1,7 @@
 ﻿'use strict';
 
 angular.module('FoodApp.User', ['FoodApp.UserService'])
-.controller('FoodCtrl', ['$scope','$http','UserDay','Menu', function ($scope, $http, UserDay, Menu) {
+.controller('UserCtrl', ['$scope','$http','UserDay','Menu', function ($scope, $http, UserDay, Menu) {
 	$scope.date = new Date();
 	$scope.sendData = false;
 	$scope.title = "Loading ...";
