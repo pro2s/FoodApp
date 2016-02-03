@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module('FoodApp.Menu', ['FoodApp.MenuService',])
+angular.module('app.menu', ['app.menuservice',])
 .controller('MenuCtrl',['$scope', 'Menu','MenuItem', function ($scope, Menu,MenuItem) {
     $scope.title = "Loading menu ...";
     $scope.options = [];

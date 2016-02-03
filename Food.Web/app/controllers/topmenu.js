@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     angular
-        .module('FoodApp')
+        .module('app')
         .controller('TopMenu', TopMenu);
 
     TopMenu.$inject = ['$scope', '$rootScope', '$location', '$route', 'User'];    

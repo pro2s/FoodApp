@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-angular.module('FoodApp.User', ['FoodApp.UserService'])
+angular.module('app.user', ['app.userservice'])
 .controller('UserCtrl', ['$scope','$q','UserDay','Menu', function ($scope, $q, UserDay, Menu) {
 	$scope.date = new Date();
 	$scope.sendData = false;

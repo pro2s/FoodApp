@@ -1,4 +1,4 @@
-angular.module('FoodApp.UserService', ['ngResource'])
+angular.module('app.userservice', ['ngResource'])
 .factory('UserDay', ['$rootScope','$resource',
   function($rootScope, $resource){
 	return $resource($rootScope.api + 'api/userday/:id', {}, {

@@ -8,13 +8,13 @@ function isEmpty(obj) {
 	return true;
 }
     
-angular.module('FoodApp', [
+angular.module('app', [
     'ngRoute',
-    'FoodApp.User',
-	'FoodApp.Admin',
-    'FoodApp.Menu',
-    'FoodApp.MenuService',
-	'FoodApp.UserService',
+    'app.user',
+	'app.admin',
+    'app.menu',
+    'app.menuservice',
+	'app.userservice',
     ])
 	.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
 		$routeProvider.otherwise({ redirectTo: '/' });
@@ -25,7 +25,8 @@ angular.module('FoodApp', [
 		})
 		.when('/admin', {
 			templateUrl: 'app/views/admin.html',
-			controller: 'AdminCtrl'
+			controller: 'UserAdmin',
+            controllerAs: 'vm',
 		})
 		.when('/menu', {
 			templateUrl: 'app/views/menu.html',

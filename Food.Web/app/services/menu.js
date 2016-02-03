@@ -1,5 +1,5 @@
 ﻿'use strict';
-angular.module('FoodApp.MenuService', ['ngResource'])
+angular.module('app.menuservice', ['ngResource'])
 .factory('Menu', ['$rootScope','$resource',
   function($rootScope, $resource){
     return $resource($rootScope.api + 'api/menu/:id', {}, {
