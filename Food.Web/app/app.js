@@ -2,7 +2,12 @@
 Date.prototype.GetMonday = function() {
     return (new Date(this.setDate(this.getDate() - this.getDay() + (this.getDay() == 0?-6:1))));
 }
-            
+  
+function isEmpty(obj) { 
+	for (var x in obj) { return false; }
+	return true;
+}
+    
 angular.module('FoodApp', [
     'ngRoute',
     'FoodApp.User',
