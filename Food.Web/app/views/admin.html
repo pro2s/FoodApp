@@ -1,35 +1,35 @@
-﻿<div class="row" ng-init="Users()">
+﻿<div class="row">
     <div class="users col-md-6">
-        <div class="lead" ng-bind="title"></div>
+        <div class="lead" ng-bind="vm.title"></div>
 		
-        <div ng-repeat="user in users" id="{{user.id}}" class="row">
+        <div ng-repeat="user in vm.users" id="{{user.id}}" class="row">
  
 			
-			<div class="col-sm-12" ng-if="!chkadd(user.id)">
+			<div class="col-sm-12" ng-if="!vm.isadd(user.id)">
 			<div class="input-group users">
 			<span class="input-group-btn">
 				<button class="btn btn-default" type="button" ng-bind="user.name"></button>
 			</span>
 			<input type="text" class="form-control" ng-model="user.bill" readonly>
 			<span class="input-group-btn">
-				<button class="btn btn-default" type="button" ng-click="onadd(user.id)" >
+				<button class="btn btn-default" type="button" ng-click="vm.onadd(user.id)" >
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 				</button>
 			</span>
 			</div>
 			</div>
 			
-			<div class="col-sm-12" ng-if="chkadd(user.id)">
-			<div class="input-group users" ng-class="{'has-error':addbill.error}">
+			<div class="col-sm-12" ng-if="vm.isadd(user.id)">
+			<div class="input-group users" ng-class="{'has-error':vm.payment.error}">
 			<span class="input-group-btn">
 				<button class="btn btn-default" type="button" ng-bind="user.name"></button>
 			</span>
-			<input type="text" class="form-control" ng-model="addbill.value" >
+			<input type="text" class="form-control" ng-model="vm.payment.value" >
 			<span class="input-group-btn">
-				<button class="btn btn-default" type="button" ng-click="sendbill(user)" ng-class="{'btn-danger':addbill.error}">
+				<button class="btn btn-default" type="button" ng-click="vm.sendpayment(user)" ng-class="{'btn-danger':vm.payment.error}">
 					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 				</button>
-				<button class="btn btn-default" type="button" ng-click="offadd()">
+				<button class="btn btn-default" type="button" ng-click="vm.cancel()">
 					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 				</button>
 			</span>
@@ -43,7 +43,8 @@
     </div>
 	
         
-    <div class="col-md-6">
+    <div class="col-md-6" ng-controller="UserChoice">
+        <div class="lead" ng-bind="title"></div>
         <div class="panel panel-default" ng-repeat="day in weekdays" ng-class="{'panel-success':stat.select==$index}"  ng-if="day.total>0">
         <div class="panel-heading">
             <a href="" ng-click="stat.select=$index">{{day.date|date:'dd.MM.yyyy'}} {{day.date|date:'(EEEE)'}}</a>
