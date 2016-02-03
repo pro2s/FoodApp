@@ -15,17 +15,7 @@
         activate();
         
         function activate() {
-            topmenu.users = getUsers();
-        }
-        
-        function getUsers() {
-            var users = {};
-            User.query(function(data){
-                angular.forEach(data, function(user) {
-                    users[user.id] = user;
-                });
-            });
-            return users;
+            topmenu.users = User.getUsers();
         }
         
         function isActive(viewLocation) {

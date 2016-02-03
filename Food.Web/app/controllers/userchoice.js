@@ -26,7 +26,7 @@
         function activate() {
             $scope.working = true;
             $scope.title = "Users choice";
-            $users = getUsers();
+            $scope.users = User.getUsers();
             
             $scope.sysmenu = Menu.query({system:'none'});
             $scope.weekmenu = Menu.query();
@@ -95,16 +95,6 @@
             $scope.working = false;
         };
             
-        function getUsers() {
-            var users = {};
-            User.query(function(data){
-                angular.forEach(data, function(user) {
-                    users[user.id] = user;
-                });
-            });
-            return users;
-        }        
-        
         function getUser(userday) {
             return $scope.users[userday.userid];
         };

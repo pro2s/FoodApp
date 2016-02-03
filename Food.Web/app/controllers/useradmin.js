@@ -22,20 +22,10 @@
         activate();
         
         function activate() {
-            vm.users = getUsers();
+            vm.users = User.getUsers();
             vm.title = "Users"
         }
         
-        // TODO: Move to user service 
-        function getUsers() {
-            var users = {};
-            User.query(function(data){
-                angular.forEach(data, function(user) {
-                    users[user.id] = user;
-                });
-            });
-            return users;
-        }        
         
         function isAdd(id) {
             if (vm.addId == id) {
