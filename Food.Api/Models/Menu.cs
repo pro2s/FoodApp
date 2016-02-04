@@ -9,6 +9,7 @@ namespace Food.Api.Models
     public enum MenuType
     {
         NoneMenu = -1,
+        NormalMenu = 0,
         NextMonday = 8,
     }
 
