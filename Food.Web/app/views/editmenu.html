@@ -1,0 +1,133 @@
+﻿    <div class="row"  ng-controller="ViewMenu as vm">
+	
+        <div class="col-sm-8 lead" ng-bind="vm.title"></div>
+		
+        <div class="col-sm-4 text-right">
+			<button type="button" class="btn btn-default" ng-click="form.add()">Add menu</button>
+			<button type="button" class="btn" ng-class="{'btn-success': vm.components, 'btn-default': !vm.components}" ng-click="vm.components=!vm.components">Components</button>
+			<button type="button" class="btn" ng-class="{'btn-success': vm.tomorrow, 'btn-default': !vm.tomorrow}" ng-click="vm.tomorrow=!vm.tomorrow">Tomorrow Only</button>
+		</div>
+		
+		
+		<div class="col-sm-offset-2 col-sm-8" ng-if="form.isedit">
+		<div class="panel panel-default">
+		<div class="panel-heading" ng-bind="form.title"></div>
+		<div class="panel-body">
+    
+  
+		<form name="menuForm">
+			  <div class="form-group">
+				<label for="menuName">Name</label>
+				<input type="text" class="form-control" id="menuName" placeholder="Menu name" ng-model="form.menu.name">
+			  </div>
+			  <div class="form-group">
+				<label for="menuPrice">Price</label>
+				<input type="text" class="form-control" id="menuPrice" placeholder="Menu price" ng-model="form.menu.price">
+			  </div>
+			  <div class="form-group">
+				<label for="ondatePrice">On Date</label>
+				<input type="text" class="form-control" id="menuPrice" placeholder="01.01.2016" ng-model="form.menu.onDate">
+			  </div>
+			  <div class="form-group">
+				<label>Components</label>
+				<div class="input-group many-input-group"  for="menuItems">
+				  <input type="text" class="form-control" placeholder="Name" id="itemName" aria-describedby="menuItems" ng-model="form.menuitem.name">
+				  <span class="input-group-btn"></span>
+				  <input type="text" class="form-control" placeholder="Description" id="itemDesc" aria-describedby="itemName" ng-model="form.menuitem.parts">
+				  <span class="input-group-btn"></span>
+				  <input type="text" class="form-control" placeholder="Weight" aria-describedby="itemDesc" ng-model="form.menuitem.weight">
+				  <span class="input-group-btn">
+					<button class="btn btn-default" type="button" ng-click="form.additem(menuitem)">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					</button>
+					</span>
+				</div>
+			  </div>
+			  <div class="form-group">
+					<table class="table grid" id="grid">
+					  <thead>
+						<tr>
+						  <th>Name</th>
+						  <th>Description</th>
+						  <th>Weight</th>
+						  <th></th>
+						</tr>
+					  </thead>
+					  <tbody>
+						<tr ng-repeat="item in form.menu.items">
+						  <td ng-if="!form.edited(item)">
+							{{item.name}}
+						  </td>
+						  <td ng-if="!form.edited(item)">
+							{{item.description}}
+						  </td>
+						  <td ng-if="!form.edited(item)">
+							{{item.weight}}
+						  </td>
+						  <td ng-if="form.edited(item)"  colspan="4">
+							  <div class="input-group many-input-group"  for="menuItems">
+							  <input type="text" class="form-control" id="edititemName" aria-describedby="menuItems" ng-model="form.editeditem.name">
+							  <span class="input-group-btn"></span>
+							  <input type="text" class="form-control"  id="edititemDesc" aria-describedby="itemName" ng-model="form.editeditem.parts">
+							  <span class="input-group-btn"></span>
+							  <input type="text" class="form-control" id="edititemWeight" ng-model="form.editeditem.weight">
+							  <span class="input-group-btn">
+									<button type="button" class="btn btn-default" ng-click="form.saveitem()" ng-if="form.edited(item)">
+										<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+									</button>
+									<button type="button" class="btn btn-default" ng-click="form.cancelitem()" ng-if="form.edited(item)">
+										<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+									</button>
+								</span>
+							</div>
+						  </td>
+						  <td class="text-right" ng-if="!form.edited(item)" >
+								<div class="btn-group" role="group" >
+									<button type="button" class="btn btn-default" ng-click="form.edititem(item)" >
+										<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+									</button>
+									<button type="button" class="btn btn-default" ng-click="form.deleteitem(item)">
+										<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+									</button>
+								</div>
+							</td>
+						</tr>
+					  </tbody>
+					</table>
+					
+					
+			  </div >
+			  <button type="submit" class="btn btn-default" ng-click="form.save()">Submit</button>
+              <button type="submit" class="btn btn-default" ng-click="form.cancel()">Cancel</button>
+			</form>
+			
+			</div>
+			</div>
+		</div>
+		<div class="col-sm-2">&nbsp;</div>
+        <div ng-repeat="menu in vm.weekmenu">
+             <div class="col-sm-4" ng-if="vm.isshow(menu)" ng-class="{clearfix:$index % 3 == 0}">
+                <div class="panel" ng-class="{'panel-primary': vm.isold(menu.onDate),'panel-default': !vm.isold(menu.onDate)}" >
+
+                    <div class="panel-heading">
+					<div class="btn-group pull-right">
+						<button class="btn btn-default btn-xs" type="button" ng-click="form.edit(menu)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+					</div>
+					{{menu.name}} {{menu.onDate|date:'dd.MM.yyyy'}}
+					</div>
+
+                    <div class="panel-body">
+                        Цена: {{menu.price}} руб.<br />
+                        Заказно: шт.<br />
+                        Итого: руб.<br />
+                    </div>
+
+                    <ul class="list-group" ng-if="vm.components">
+                        <li class="list-group-item" ng-repeat="item in menu.items"><span class="badge">{{item.weight}}</span>{{item.name}}</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
