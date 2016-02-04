@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace Food.Api
 {
-    public class Item
+    public class _Item
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -21,25 +21,25 @@ namespace Food.Api
         public string Weight { get; set; }
     }
 
-    public class Menu
+    public class _Menu
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual List<Item> Items { get; set; }
+        public virtual List<_Item> Items { get; set; }
         public int Price { get; set; }
         public DateTime? OnDate { get; set; }
     }
 
     public class ChudoPechka
     {
-        public static Menu NoChoice = new Menu() { Id = -1, Name = "Без Обеда", Price = 0, OnDate = null };
+        public static _Menu NoChoice = new _Menu() { Id = -1, Name = "Без Обеда", Price = 0, OnDate = null };
         string _url;
         int _id;
         DateTime _monday;
         IEnumerable<HtmlNode> _html_menu;
         string _url_menu;
 
-        private List<Menu> _weekmenu
+        private List<_Menu> _weekmenu
         {
             get; set;
         }
@@ -65,7 +65,7 @@ namespace Food.Api
             _url = "http://chudo-pechka.by/";
             _monday = DateTime.Today.AddDays(1-(int)DateTime.Today.DayOfWeek);
             _id = new Random().Next() + 1;
-            _weekmenu = new List<Menu>();
+            _weekmenu = new List<_Menu>();
             Init();
             ReadData();
         }
@@ -74,7 +74,7 @@ namespace Food.Api
         {
             _weekmenu.Clear();
             _weekmenu.Add(NoChoice);
-            List<Item> items = new List<Item>();
+            List<_Item> items = new List<_Item>();
             // специальные пункты для следующего понедельника в понедельник после 
             // получения нового меню должны заменятся на вновь добавленные
             FillMenu(items, 7);
@@ -82,7 +82,7 @@ namespace Food.Api
             _weekmenu[1].Id = -11;
         }
 
-        public List<Menu> Get()
+        public List<_Menu> Get()
         {
             return _weekmenu;
         }
@@ -101,9 +101,9 @@ namespace Food.Api
             return s;
         }
 
-        private void FillMenu(List<Item> items, int day)
+        private void FillMenu(List<_Item> items, int day)
         {
-            Menu daymenu = new Menu()
+            _Menu daymenu = new _Menu()
             {
                 Id = GetId(),
                 Name = "Полный обед",
@@ -114,13 +114,13 @@ namespace Food.Api
 
             _weekmenu.Add(daymenu);
             
-            items = new List<Item>(items);
+            items = new List<_Item>(items);
             if (items.Count > 2)
             {
                 items.RemoveAt(1);
             }
 
-            daymenu = new Menu()
+            daymenu = new _Menu()
             {
                 Id = GetId(),
                 Name = "Без первого",
@@ -145,7 +145,7 @@ namespace Food.Api
             Word.Document doc = wordApp.Documents.Open(tempfile);
             
             int day = 0;
-            List<Item> items = new List<Item>();
+            List<_Item> items = new List<_Item>();
 
             foreach (Word.Table table in doc.Tables)
             {
@@ -153,7 +153,7 @@ namespace Food.Api
                 {
                     if (table.Rows[row].Cells.Count == 2)
                     {
-                        Item item = new Item();
+                        _Item item = new _Item();
 
                         item.Id = GetId();
                         item.Name = GetText(table.Cell(row, 1));
@@ -202,7 +202,7 @@ namespace Food.Api
             
             foreach (var item in _html_menu)
             {
-                List<Item> items = new List<Item>();
+                List<_Item> items = new List<_Item>();
                 try
                 {
                     string result = HttpUtility.HtmlDecode(item.Element("div").Element("span").InnerText);
@@ -210,7 +210,7 @@ namespace Food.Api
                     foreach (Match m in matches)
                     {
                         items.Add(
-                            new Item()
+                            new _Item()
                             {
                                 Id = GetId(),
                                 Name = m.Groups[1].Value.Trim(),
