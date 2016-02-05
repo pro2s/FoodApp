@@ -2,6 +2,10 @@
      
 }
 
+.glyphicon {
+    line-height: 0.9!important;
+}
+
 .panel-footer.price {
     background: #fff8dc;
 }
