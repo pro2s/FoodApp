@@ -26,7 +26,6 @@
             vm.title = "Users"
         }
         
-        
         function isAdd(id) {
             if (vm.addId == id) {
                 return true;
