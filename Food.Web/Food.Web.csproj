@@ -208,12 +208,20 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App\admin.module.js" />
     <Content Include="App\app.js" />
-    <Content Include="App\controllers\admin.js" />
-    <Content Include="App\controllers\menu.js" />
-    <Content Include="App\controllers\user.js" />
-    <Content Include="App\services\menu.js" />
-    <Content Include="App\services\user.js" />
+    <Content Include="App\controllers\choiceadmin.js" />
+    <Content Include="App\controllers\editmenu.js" />
+    <Content Include="App\controllers\topmenu.js" />
+    <Content Include="App\controllers\useradmin.js" />
+    <Content Include="App\controllers\userchoice.js" />
+    <Content Include="App\controllers\viewmenu.js" />
+    <Content Include="App\menu.module.js" />
+    <Content Include="App\services\dateservice.js" />
+    <Content Include="App\services\menuservice.js" />
+    <Content Include="App\services\userservice.js" />
+    <Content Include="App\user.module.js" />
+    <Content Include="App\userservice.module.js" />
     <Content Include="App\views\admin.html" />
     <Content Include="App\views\food.html" />
     <Content Include="App\views\menu.html" />
@@ -223,6 +231,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="index.html" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\angular-mocks.js" />
