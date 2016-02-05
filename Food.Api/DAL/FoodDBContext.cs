@@ -11,8 +11,9 @@ namespace Food.Api.DAL
     public class FoodDBContext : DbContext
     {
 
-        public FoodDBContext() : base("FoodDBContext")
+        public FoodDBContext() : base("DefaultConnection")
         {
+            Database.SetInitializer<FoodDBContext>(new FoodDBInitializer());
         }
 
         public DbSet<Menu> Menus { get; set; }

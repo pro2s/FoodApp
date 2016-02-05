@@ -7,7 +7,7 @@ using Food.Api.Models;
 
 namespace Food.Api.DAL
 {
-    public class FoodDBInitializer : DropCreateDatabaseIfModelChanges<FoodDBContext>
+    public class FoodDBInitializer : DropCreateDatabaseAlways<FoodDBContext>
     {
         protected override void Seed(FoodDBContext context)
         {
