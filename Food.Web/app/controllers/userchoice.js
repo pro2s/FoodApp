@@ -1,112 +1,155 @@
-(function() {
+﻿(function() {
     'use strict';
     angular
-        .module('app.admin')
+        .module('app.user')
         .controller('UserChoice', UserChoice);
-        
-    UserChoice.$inject = ['$scope', '$q', 'User', 'UserDay' , 'Menu'];    
     
-    function UserChoice($scope, $q, User, UserDay, Menu) {
-        $scope.title = "loading users choice ...";
-        $scope.working = false;
-        $scope.stat = {};
-        $scope.menu = {};
-        $scope.users = {};
-        $scope.sysmenu = {};
-        $scope.weekmenu = {};
-        $scope.days = {};
-        $scope.weekdays = {};
-        $scope.getUser = getUser;
-        $scope.getMenu = getMenu;
-        $scope.confirmSelect = confirmSelect;
+    UserChoice.$inject = ['$q','UserDay','Menu','dateservice'];
+    
+    function UserChoice($q, UserDay, Menu, dateservice) {
+        var uc = this;
+        uc.date = new Date();
+        uc.sysmenu = []
+        uc.weekmenu = []
+        uc.days = []
+        uc.error = true;
+        uc.working = false;
+        uc.correctData = false;
+        uc.sendData = false;
+        uc.title = "Loading ...";
+        uc.status = "Loading food ...";
+        
+       
+        uc.init = activate;
+        uc.answer = answer;
+        uc.isDisable = isDisable;
+        uc.setDaySelect = setDaySelect;
+        uc.sendUserChoice = sendUserChoice;
         
         activate();
         
-        // TODO: Decompose on methods 
         function activate() {
-            $scope.working = true;
-            $scope.title = "Users choice";
-            $scope.users = User.getUsers();
+            uc.status = "Loading food ...";
+            uc.sendData = false;
+            uc.working = true;
+            uc.error = true;
             
-            $scope.sysmenu = Menu.query({system:'none'});
-            $scope.weekmenu = Menu.query();
-            $scope.days = UserDay.query();
+            
+            uc.sysmenu = Menu.query({system:'none'});
+            uc.weekmenu = Menu.query();
+            uc.days = UserDay.query({userid:uc.userid});
             
             $q.all([
-                $scope.sysmenu.$promise,
-                $scope.weekmenu.$promise,
-                $scope.days.$promise
+                uc.sysmenu.$promise,
+                uc.weekmenu.$promise,
+                uc.days.$promise
             ])
             .then(function(result) {
-                $scope.weekdays = {};
-                var nonemenu = $scope.sysmenu.pop();	
-                var menucount = {};   
+                uc.weekdays = {};
+                var nonemenu = uc.sysmenu.pop()
                 var monday = new Date().GetMonday();
-                var day = new Date().getDay();
-                $scope.stat.select =  (day == 0 ? 6: day);
                 
                 // Generate days from Monday current week to next Monday 
                 for (var i = 0; i < 8; i++) {
+                    var menu = [];
+                    menu.push(nonemenu);
+                    
                     var date = new Date(+monday)
-                    var day = {date:date,userselect:[],menu:[],total:0};
+                    var day = {date:date,menu:menu,select:{},userday:{}};
                     var key = date.toDateString();
-                    $scope.weekdays[key] = day;
+                    uc.weekdays[key] = day;
                     monday.setDate(monday.getDate() + 1); 
+                }	
+                
+                // Fill days with menu for this day
+                angular.forEach(uc.weekmenu, function(menu) {
+                    var day = new Date(menu.onDate).getDay()-1;
+                    var key = new Date(menu.onDate).toDateString();
+                    if (uc.weekdays.hasOwnProperty(key)) {
+                        uc.weekdays[key].menu.push(menu);
+                    }
+                }) ;
+                
+                // Delete days without choice 
+                for (var key in uc.weekdays) {
+                    var day = uc.weekdays[key];
+                    if (day.menu.length == 1) {
+                        delete uc.weekdays[key]
+                    }
                 }
                 
-                // Fill days with users choice, count menu and day choice
-                angular.forEach($scope.days, function(day) {
+                // Set user choice to each day
+                angular.forEach(uc.days, function(day) {
                     var key = new Date(day.date).toDateString();
-                    if ($scope.weekdays.hasOwnProperty(key)) {
-                        $scope.weekdays[key].userselect.push(day)
-                        if (day.selectid != nonemenu.id) {
-                            if (typeof menucount[day.selectid] == 'undefined'){
-                                menucount[day.selectid]=1;
-                                $scope.weekdays[key].total++;
-                             } else {
-                                menucount[day.selectid]++;
-                                $scope.weekdays[key].total++;
-                             }
-                        }
+                    if (uc.weekdays.hasOwnProperty(key)) {
+                        angular.forEach(uc.weekdays[key].menu, function(menu) {
+                            if (menu.id == day.selectid){
+                                uc.weekdays[key].select = menu;
+                                uc.weekdays[key].userday = day;
+                            }		
+                        });
                     }
                 });
-                 
-                 // Fill menu array and add property count to each menu 
-                angular.forEach($scope.weekmenu, function(menu) {
-                    $scope.menu[menu.id] = menu;
-                    var key = new Date(menu.onDate).toDateString();
-                    if ($scope.weekdays.hasOwnProperty(key)) {
-                        menu.count = menucount[menu.id];
-                        $scope.weekdays[key].menu.push(menu);
-                    };
-                });    
                 
-                success();    
-            }, failure)
-           
+                success();
+                console.log('all done');            
+                
+            }, failure);
+       };
+        
+        
+        function success() {
+            uc.error = false;
+            uc.working = false;
         };
         
-        function success(){
-            $scope.working = false;
+        function failure() {
+            uc.status = "Oops... something went wrong";
+            uc.error = true;
+            uc.working = false;
         };
         
-        function failure(data){
-            $scope.title = "Oops... something went wrong";
-            $scope.working = false;
+        function answer() {
+            return uc.correctData ? 'Changes accepted' : 'Сhanges rejected';
         };
+
+        function isDisable(day) {
+            return !dateservice.check(day.date) || day.userday.confirm
+        };
+        
+        
+        function setDaySelect(day, menu) {
+            if (dateservice.check(day.date) && !day.userday.confirm) {
+                day.select = menu;
+            }
+        };
+        
+        function sendUserChoice(days) {
+            uc.working = true;
+            uc.sendData = true;
             
-        function getUser(userday) {
-            return $scope.users[userday.userid];
+            for (var key in uc.weekdays) {
+                var day = uc.weekdays[key];
+                
+                if (isEmpty(day.userday)) {
+                    if (!isEmpty(day.select)) {
+                        console.log('save');
+                        var userday = new UserDay({userid:uc.userid, selectid: day.select.id, date:day.date});
+                        userday.$save();
+                    }
+                }
+                else if (day.select.id != day.userday.selectid) {
+                    console.log('update');
+                    day.userday.selectid = day.select.id;
+                    day.userday.$update({id:day.userday.id});
+                }
+            }
+            
+            uc.working = false;
+            
+            // false if error in response
+            uc.correctData = true; 
         };
-        
-        function getMenu(userday) {
-            return $scope.menu[userday.selectid];
-        };
-        
-        function confirmSelect(userday) {
-            userday.confirm = true;
-            userday.$update({id:userday.id});
-            $scope.users[userday.userid].bill = $scope.users[userday.userid].bill - $scope.menu[userday.selectid].price;
-        }
     };
+    
 })(); 
