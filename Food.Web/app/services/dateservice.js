@@ -8,6 +8,7 @@
         var monday = getMonday();
         var service = {
             monday: monday,
+            getMonday:getMonday,
             check: check,
         };
         return service;
