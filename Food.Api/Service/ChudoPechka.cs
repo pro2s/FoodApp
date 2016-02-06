@@ -9,37 +9,38 @@ using System.Web;
 using Word = Microsoft.Office.Interop.Word;
 using System.IO;
 using System.Diagnostics;
-
+using Food.Api.Models;
 
 namespace Food.Api
 {
-    public class _Item
+   /* 
+    public class MenuItem
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Parts { get; set; }
         public string Weight { get; set; }
     }
-
-    public class _Menu
+    
+    public class Menu
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual List<_Item> Items { get; set; }
+        public virtual List<Item> Items { get; set; }
         public int Price { get; set; }
         public DateTime? OnDate { get; set; }
     }
-
+    */
     public class ChudoPechka
     {
-        public static _Menu NoChoice = new _Menu() { Id = -1, Name = "Без Обеда", Price = 0, OnDate = null };
+        public static Menu NoChoice = new Menu() { Id = -1, Name = "Без Обеда", Price = 0, OnDate = null };
         string _url;
-        int _id;
+        
         DateTime _monday;
         IEnumerable<HtmlNode> _html_menu;
         string _url_menu;
 
-        private List<_Menu> _weekmenu
+        private List<Menu> _weekmenu
         {
             get; set;
         }
@@ -64,8 +65,7 @@ namespace Food.Api
         {
             _url = "http://chudo-pechka.by/";
             _monday = DateTime.Today.AddDays(1-(int)DateTime.Today.DayOfWeek);
-            _id = new Random().Next() + 1;
-            _weekmenu = new List<_Menu>();
+            _weekmenu = new List<Menu>();
             Init();
             ReadData();
         }
@@ -74,25 +74,16 @@ namespace Food.Api
         {
             _weekmenu.Clear();
             _weekmenu.Add(NoChoice);
-            List<_Item> items = new List<_Item>();
+            List<MenuItem> items = new List<MenuItem>();
             // специальные пункты для следующего понедельника в понедельник после 
             // получения нового меню должны заменятся на вновь добавленные
             FillMenu(items, 7);
-            _weekmenu[1].Id = -10;
-            _weekmenu[1].Id = -11;
         }
 
-        public List<_Menu> Get()
+        public List<Menu> Get()
         {
             return _weekmenu;
         }
-
-        private int GetId()
-        {
-            ++_id;
-            return _id;
-        }
-      
 
         private string GetText(Word.Cell cell)
         {
@@ -101,32 +92,32 @@ namespace Food.Api
             return s;
         }
 
-        private void FillMenu(List<_Item> items, int day)
+        private void FillMenu(List<MenuItem> items, int day)
         {
-            _Menu daymenu = new _Menu()
+            Menu daymenu = new Menu()
             {
-                Id = GetId(),
                 Name = "Полный обед",
                 Price = 35000,
                 Items = items,
-                OnDate = _monday.AddDays(day)
+                OnDate = _monday.AddDays(day),
+                Type = MenuType.NormalMenu,
             };
-
+            
             _weekmenu.Add(daymenu);
             
-            items = new List<_Item>(items);
+            items = new List<MenuItem>(items);
             if (items.Count > 2)
             {
                 items.RemoveAt(1);
             }
 
-            daymenu = new _Menu()
+            daymenu = new Menu()
             {
-                Id = GetId(),
                 Name = "Без первого",
                 Price = 30000,
                 Items = items,
-                OnDate = _monday.AddDays(day)
+                OnDate = _monday.AddDays(day),
+                Type = MenuType.NormalMenu,
             };
 
             _weekmenu.Add(daymenu);
@@ -145,7 +136,7 @@ namespace Food.Api
             Word.Document doc = wordApp.Documents.Open(tempfile);
             
             int day = 0;
-            List<_Item> items = new List<_Item>();
+            List<MenuItem> items = new List<MenuItem>();
 
             foreach (Word.Table table in doc.Tables)
             {
@@ -153,9 +144,8 @@ namespace Food.Api
                 {
                     if (table.Rows[row].Cells.Count == 2)
                     {
-                        _Item item = new _Item();
+                        MenuItem item = new MenuItem();
 
-                        item.Id = GetId();
                         item.Name = GetText(table.Cell(row, 1));
                         item.Weight = GetText(table.Cell(row, 2));
                         var matches = Regex.Matches(item.Name, "(.*?)/(.*?)/");
@@ -202,7 +192,7 @@ namespace Food.Api
             
             foreach (var item in _html_menu)
             {
-                List<_Item> items = new List<_Item>();
+                List<MenuItem> items = new List<MenuItem>();
                 try
                 {
                     string result = HttpUtility.HtmlDecode(item.Element("div").Element("span").InnerText);
@@ -210,9 +200,8 @@ namespace Food.Api
                     foreach (Match m in matches)
                     {
                         items.Add(
-                            new _Item()
+                            new MenuItem()
                             {
-                                Id = GetId(),
                                 Name = m.Groups[1].Value.Trim(),
                                 Weight = m.Groups[2].Value.Trim()
                             }
