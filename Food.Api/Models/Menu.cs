@@ -19,8 +19,8 @@ namespace Food.Api.Models
         public string Name { get; set; }
         public int Price { get; set; }
         public DateTime? OnDate { get; set; }
-        public MenuType type { get; set; }
+        public MenuType Type { get; set; }
 
-        public virtual List<MenuItem> Items { get; set; }
+        public virtual ICollection<MenuItem> Items { get; set; }
     }
 }

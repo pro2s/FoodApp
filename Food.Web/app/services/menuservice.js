@@ -8,7 +8,7 @@
 
     Menu.$inject = ['$rootScope', '$resource'];    
     function Menu($rootScope, $resource) {
-        return $resource($rootScope.api + 'api/menu/:id', {}, {
+        return $resource('http://localhost:53058/api/menus/:id', {}, {
           query: {method:'GET', params:{id:''}, isArray:true},
           update: {method:'PUT', params:{id:''}, isArray:true},
         });

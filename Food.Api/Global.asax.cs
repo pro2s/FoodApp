@@ -15,7 +15,6 @@ namespace Food.Api
     {
         protected void Application_Start()
         {
-            Database.SetInitializer<FoodDBContext>(new FoodDBInitializer());
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

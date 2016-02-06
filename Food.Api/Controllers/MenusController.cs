@@ -13,14 +13,33 @@ using Food.Api.Models;
 
 namespace Food.Api.Controllers
 {
+    [AllowCrossSiteJson]
     public class MenusController : ApiController
     {
         private FoodDBContext db = new FoodDBContext();
 
         // GET: api/Menus
+        /// <summary>
+        /// Gets menu on week begin from monday.
+        /// </summary>
+        
         public IQueryable<Menu> GetMenus()
         {
-            return db.Menus;
+            return db.Menus.Include("Items"); 
+        }
+
+
+        [Route("api/menus/parse")]
+        [HttpGet]
+        public string ParseMenu()
+        {
+            string result = "OK";
+            ChudoPechka parser = new ChudoPechka();
+            parser.Load();
+            List<Menu> menus = parser.Get();
+            db.Menus.AddRange(menus);
+            db.SaveChanges();
+            return result;
         }
 
         // GET: api/Menus/5
@@ -40,6 +59,23 @@ namespace Food.Api.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutMenu(int id, Menu menu)
         {
+            if (menu.Items != null)
+            {
+                foreach (var item in menu.Items)
+                {
+                    if (item.Id == 0)
+                    {
+                        item.MenuId = menu.Id;
+                        db.MenuItems.Add(item);
+                        db.SaveChanges();
+                        
+                    }
+                }
+                ModelState.Clear();
+               
+            }
+            
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -115,5 +151,16 @@ namespace Food.Api.Controllers
         {
             return db.Menus.Count(e => e.Id == id) > 0;
         }
+
+        /// <summary>
+        /// Return response on OPTION request
+        /// </summary>
+        /// <returns>Always OK</returns>
+        // TODO: Move into BaseApiController
+        public HttpResponseMessage Options()
+        {
+            return new HttpResponseMessage { StatusCode = HttpStatusCode.OK };
+        }
+
     }
 }
