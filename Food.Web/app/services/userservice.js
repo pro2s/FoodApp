@@ -5,19 +5,25 @@
         .factory('User', User)	 
         .factory('UserDay', ['$rootScope','$resource',
           function($rootScope, $resource){
-            return $resource($rootScope.api + 'api/userday/:id', {}, {
+            return $resource($rootScope.api + 'api/userchoices/:id', {}, {
               query: {method:'GET', params:{id:''}, isArray:true},
               update: {method:'PUT', params:{id:''}},
             });
         }])
         .factory('Payment', ['$rootScope','$resource',
           function($rootScope, $resource){
-            return $resource($rootScope.api + 'api/payment/:id', {}, {
+            return $resource($rootScope.api + 'api/payments/:id', {}, {
               query: {method:'GET', params:{id:''},	 isArray:true},
               update: {method:'PUT', params:{id:''}},
             });
         }])	
-        
+        .factory('Account', ['$rootScope', '$resource',
+          function ($rootScope, $resource) {
+              $rootScope.api = 'http://localhost:53058/';
+              return $resource($rootScope.api + 'api/Account/:action', {}, {
+              });
+        }])
+
         User.$inject = ['$rootScope', '$resource'];    
         
         /**
@@ -26,7 +32,7 @@
         * @memberOf Factories
         */
         function User($rootScope, $resource) {
-            return $resource($rootScope.api + 'api/user/:id', {}, {
+            return $resource($rootScope.api + 'api/users/:id', {}, {
                 query: {
                     method:'GET', 
                     params:{id:''}, 

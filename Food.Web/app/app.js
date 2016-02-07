@@ -35,11 +35,13 @@ angular
             controller: 'EditMenu',
             controllerAs: 'form',
         });
-        
+
         // $locationProvider.html5Mode(true);
     }])
-    .run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {
+    .run(['$route', '$rootScope', '$location', 'authservice', function ($route, $rootScope, $location, authservice) {
         
+        authservice.init();
+
         //TODO: temp method to get default user - must be removed
         $rootScope.userid = 5700305828184064;
         $rootScope.username = "User A";

@@ -4,20 +4,38 @@
         .module('app')
         .controller('TopMenu', TopMenu);
 
-    TopMenu.$inject = ['$scope', '$rootScope', '$location', '$route', 'User'];    
+    TopMenu.$inject = ['$rootScope', '$location', '$route', 'User', 'authservice'];    
     
-    function TopMenu($scope, $rootScope, $location, $route, User) {
+    function TopMenu($rootScope, $location, $route, User, authservice) {
         var topmenu = this;
-        topmenu.users = {}
+        topmenu.users = {};
+        topmenu.auth = {};
         topmenu.isActive = isActive;
         topmenu.selectUser = selectUser;
+        topmenu.showLogin = showLogin;
+        topmenu.showRegister = showRegister;
+        topmenu.logout = logout;
         
         activate();
         
         function activate() {
             topmenu.users = User.getUsers();
+            topmenu.auth = authservice.state;
         }
         
+        function showLogin() {
+            authservice.showLogin();
+        }
+
+        function showRegister() {
+            authservice.showRegister();
+        }
+
+        function logout() {
+            authservice.doLogout();
+        }
+
+
         function isActive(viewLocation) {
             var test = $location.path();
             return viewLocation === $location.path();

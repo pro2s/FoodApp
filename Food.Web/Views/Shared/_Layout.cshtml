@@ -8,8 +8,8 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <data ng-init="setAPI('http://mezfiles.appspot.com/')" />
-    <nav class="navbar navbar-default navbar-static-top" ng-controller="TopMenu as topmenu">
+    <data ng-init="setAPI('http://localhost:53058/')" />
+    <nav class="navbar navbar-default navbar-static-top" ng-controller="TopMenu as topmenu" >
         <div class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">FoodApp</a>
@@ -27,11 +27,28 @@
                     </ul>
                 </li>
             </ul>
-            @Html.Partial("_LoginPartial")
+            <ul class="nav navbar-nav navbar-right" ng-if="topmenu.auth.isLogined">
+                <li ng-class="{ active: topmenu.isActive('/user')}" >
+                    <a href="#/user" ng-bind="topmenu.auth.username">User</a>
+                </li>
+                <li><a href="" ng-click="topmenu.logout()">Logout</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" ng-if="!topmenu.auth.isLogined">
+                <li><a href="" ng-click="topmenu.showLogin()">Login</a></li>
+                <li><a href="" ng-click="topmenu.showRegister()">Registration</a></li>
+            </ul>
         </div>
     </nav>
 
     <div class="container" ng-view></div>
+
+
+    <!-- Modal -->
+    <login-form></login-form>    
+    
+
+
+
     <div class="container" body-content>
         @RenderBody()
     </div>
