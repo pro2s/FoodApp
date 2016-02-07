@@ -22,10 +22,23 @@ namespace Food.Api.Controllers
         private FoodDBContext db = new FoodDBContext();
 
         // GET: api/UserChoices
-        public IQueryable<UserChoice> GetUserChoices()
+        public IQueryable<UserChoice> GetUserChoices(string list = "user", DateTime? startdate = null)
         {
+            DateTime monday = DateTime.Today.AddDays(1 - (int)DateTime.Today.DayOfWeek);
             string id = User.Identity.GetUserId();
-            return db.UserChoices.Where(uc => uc.UserID == id);
+            IQueryable <UserChoice> query = db.UserChoices.Where(uc => uc.UserID == id && uc.date >= monday);
+            switch (list)
+            {
+                case "all":
+                    if (User.IsInRole("OrgAdmin"))
+                    {
+                        // TODO: return userchoices for admin organisation
+                        query = db.UserChoices.Where(uc => uc.date >= monday);
+                    }
+                    break;
+            }
+
+            return query;
             
         }
 

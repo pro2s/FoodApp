@@ -77,6 +77,9 @@ namespace Food.Api.Controllers
         [ResponseType(typeof(Payment))]
         public IHttpActionResult PostPayment(Payment payment)
         {
+            payment.Date = DateTime.Today;
+            Validate(payment);
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

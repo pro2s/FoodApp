@@ -17,6 +17,8 @@ using Food.Api.Models;
 using Food.Api.Providers;
 using Food.Api.Results;
 using System.Web.Http.Cors;
+using Food.Api.DAL;
+using System.Linq;
 
 namespace Food.Api.Controllers
 {
@@ -351,15 +353,19 @@ namespace Food.Api.Controllers
         [Route("~/api/Users")]
         public List<UsersViewModel> GetUsers()
         {
+            FoodDBContext db = new FoodDBContext();
             List<UsersViewModel> result = new List<UsersViewModel>();
             foreach (var user in UserManager.Users)
             {
+                int bill = db.Payments.Where(p => p.UserID == user.Id).Sum(p => (int?)p.Sum ) ?? 0;
+                
                 result.Add(new UsersViewModel()
-                    {
+                {
                     Id = user.Id,
                     Name = user.UserName,
-                    Bill = 0
-                    });
+                    // TODO: Add join userchoice 
+                    Bill = bill
+                });
             }
                 
             return result; 
