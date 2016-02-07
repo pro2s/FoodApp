@@ -73,7 +73,7 @@
                     var key = new Date(day.date).toDateString();
                     if (uc.weekdays.hasOwnProperty(key)) {
                         angular.forEach(uc.weekdays[key].menu, function(menu) {
-                            if (menu.id == day.selectid){
+                            if (menu.id == day.menuId){
                                 uc.weekdays[key].select = menu;
                                 uc.weekdays[key].userday = day;
                             }		
@@ -139,13 +139,13 @@
                 if (isEmpty(day.userday)) {
                     if (!isEmpty(day.select)) {
                         console.log('save');
-                        var userday = new UserDay({userid:uc.userid, selectid: day.select.id, date:day.date});
+                        var userday = new UserDay({ userid: uc.userid, menuId: day.select.id, date: day.date });
                         userday.$save();
                     }
                 }
-                else if (day.select.id != day.userday.selectid) {
+                else if (day.select.id != day.userday.menuId) {
                     console.log('update');
-                    day.userday.selectid = day.select.id;
+                    day.userday.menuId = day.select.id;
                     day.userday.$update({id:day.userday.id});
                 }
             }

@@ -94,6 +94,12 @@ namespace Food.Api.Controllers
         [ResponseType(typeof(UserChoice))]
         public IHttpActionResult PostUserChoice(UserChoice userChoice)
         {
+            if (userChoice.UserID == null)
+            {
+                userChoice.UserID = User.Identity.GetUserId();
+                Validate(userChoice);
+            } 
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
