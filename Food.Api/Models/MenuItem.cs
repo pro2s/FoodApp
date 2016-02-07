@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Food.Api.Models
 {
-    public class MenuItem
+    public class MenuItem : ICloneable
     {
         public int Id { get; set; }
 
@@ -17,5 +17,17 @@ namespace Food.Api.Models
         public string Name { get; set; }
         public string Parts { get; set; }
         public string Weight { get; set; }
+
+        public object Clone()
+        {
+            var item = new MenuItem
+            {
+                Name = Name,
+                Parts = Parts,
+                Weight = Weight,
+            };
+            return item;
+        }
+        
     }
 }

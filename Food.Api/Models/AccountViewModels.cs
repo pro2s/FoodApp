@@ -40,4 +40,17 @@ namespace Food.Api.Models
 
         public string ProviderKey { get; set; }
     }
+    
+    /// <summary>
+    /// Temporaly view model for users list
+    /// </summary>
+    public class UsersViewModel
+    {
+
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        public int Bill { get; set; }
+    }
 }

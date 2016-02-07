@@ -13,27 +13,27 @@ using Food.Api.Models;
 
 namespace Food.Api
 {
-   /* 
-    public class MenuItem
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Parts { get; set; }
-        public string Weight { get; set; }
-    }
-    
-    public class Menu
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public virtual List<Item> Items { get; set; }
-        public int Price { get; set; }
-        public DateTime? OnDate { get; set; }
-    }
-    */
+    /* 
+     public class MenuItem
+     {
+         public int Id { get; set; }
+         public string Name { get; set; }
+         public string Parts { get; set; }
+         public string Weight { get; set; }
+     }
+
+     public class Menu
+     {
+         public int Id { get; set; }
+         public string Name { get; set; }
+         public virtual List<Item> Items { get; set; }
+         public int Price { get; set; }
+         public DateTime? OnDate { get; set; }
+     }
+     */
+
     public class ChudoPechka
     {
-        public static Menu NoChoice = new Menu() { Id = -1, Name = "Без Обеда", Price = 0, OnDate = null };
         string _url;
         
         DateTime _monday;
@@ -73,11 +73,7 @@ namespace Food.Api
         private void Init()
         {
             _weekmenu.Clear();
-            _weekmenu.Add(NoChoice);
             List<MenuItem> items = new List<MenuItem>();
-            // специальные пункты для следующего понедельника в понедельник после 
-            // получения нового меню должны заменятся на вновь добавленные
-            FillMenu(items, 7);
         }
 
         public List<Menu> Get()
@@ -104,18 +100,20 @@ namespace Food.Api
             };
             
             _weekmenu.Add(daymenu);
+
+            List<MenuItem> copy_items = new List<MenuItem>();
+            copy_items = items.ConvertAll(item => (MenuItem)item.Clone());
             
-            items = new List<MenuItem>(items);
-            if (items.Count > 2)
+            if (copy_items.Count > 2)
             {
-                items.RemoveAt(1);
+                copy_items.RemoveAt(1);
             }
 
             daymenu = new Menu()
             {
                 Name = "Без первого",
                 Price = 30000,
-                Items = items,
+                Items = copy_items,
                 OnDate = _monday.AddDays(day),
                 Type = MenuType.NormalMenu,
             };

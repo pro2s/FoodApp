@@ -10,10 +10,11 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Food.Api.DAL;
 using Food.Api.Models;
+using System.Web.Http.Cors;
 
 namespace Food.Api.Controllers
 {
-    [AllowCrossSiteJson]
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class MenusController : ApiController
     {
         private FoodDBContext db = new FoodDBContext();
@@ -23,9 +24,16 @@ namespace Food.Api.Controllers
         /// Gets menu on week begin from monday.
         /// </summary>
         
-        public IQueryable<Menu> GetMenus()
+        public IQueryable<Menu> GetMenus(string system = "normal")
         {
-            return db.Menus.Include("Items"); 
+            MenuType get_type = MenuType.NormalMenu;
+            switch (system)
+            {
+                case "none":
+                    get_type = MenuType.NoneMenu;
+                    break;
+            }
+            return db.Menus.Include("Items").Where(m => m.Type == get_type); 
         }
 
 

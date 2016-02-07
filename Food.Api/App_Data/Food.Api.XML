@@ -481,7 +481,13 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="M:Food.Api.Controllers.MenusController.GetMenus">
+        <member name="M:Food.Api.Controllers.AccountController.GetUsers">
+            <summary>
+            Get users info
+            </summary>
+            <returns>List users</returns>
+        </member>
+        <member name="M:Food.Api.Controllers.MenusController.GetMenus(System.String)">
             <summary>
             Gets menu on week begin from monday.
             </summary>
@@ -491,6 +497,11 @@
             Return response on OPTION request
             </summary>
             <returns>Always OK</returns>
+        </member>
+        <member name="T:Food.Api.Models.UsersViewModel">
+            <summary>
+            Temporaly view model for users list
+            </summary>
         </member>
     </members>
 </doc>

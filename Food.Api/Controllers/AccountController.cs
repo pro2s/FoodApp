@@ -16,9 +16,11 @@ using Microsoft.Owin.Security.OAuth;
 using Food.Api.Models;
 using Food.Api.Providers;
 using Food.Api.Results;
+using System.Web.Http.Cors;
 
 namespace Food.Api.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
@@ -338,6 +340,29 @@ namespace Food.Api.Controllers
             }
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Get users info
+        /// </summary>
+        /// <returns>List users</returns>
+        // POST api/Users
+        [AllowAnonymous]
+        [Route("~/api/Users")]
+        public List<UsersViewModel> GetUsers()
+        {
+            List<UsersViewModel> result = new List<UsersViewModel>();
+            foreach (var user in UserManager.Users)
+            {
+                result.Add(new UsersViewModel()
+                    {
+                    Id = user.Id,
+                    Name = user.UserName,
+                    Bill = 0
+                    });
+            }
+                
+            return result; 
         }
 
         // POST api/Account/RegisterExternal

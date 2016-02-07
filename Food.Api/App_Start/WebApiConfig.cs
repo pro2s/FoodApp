@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
+using System.Web.Http.Cors;
 
 namespace Food.Api
 {
@@ -12,6 +13,7 @@ namespace Food.Api
     {
         public static void Register(HttpConfiguration config)
         {
+            config.EnableCors();
             // Конфигурация и службы Web API
             // Настройка Web API для использования только проверки подлинности посредством маркера-носителя.
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
