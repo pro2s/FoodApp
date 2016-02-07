@@ -5,9 +5,9 @@
         .controller('UserAdmin', UserAdmin)
         
     
-    UserAdmin.$inject = ['$scope', 'User', 'Payment'];        
+    UserAdmin.$inject = ['User', 'Payment'];        
     
-    function UserAdmin($scope, User, Payment) {
+    function UserAdmin(User, Payment) {
         var vm = this;
         
         vm.title = "loading users ...";

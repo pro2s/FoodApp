@@ -43,6 +43,7 @@
                 $http.defaults.headers.common['Authorization'] = token;
                 var info = Account.get({ action: "UserInfo" }, function () {
                     state.username = info.email;
+                    state.isLogined = true;
                 });
             }
 

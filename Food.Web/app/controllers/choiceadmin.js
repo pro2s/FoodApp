@@ -33,7 +33,7 @@
             
             var sysmenu = Menu.query({system:'none'});
             var weekmenu = Menu.query();
-            var days = UserDay.query();
+            var days = UserDay.query({list:'all'});
             
             $q.all([
                 sysmenu.$promise,

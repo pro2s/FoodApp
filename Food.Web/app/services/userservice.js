@@ -45,7 +45,7 @@
                 getUsers: {
                     method:'GET', 
                     params:{id:''}, 
-                    cache: true,
+                    //cache: true, // nedd cache invalidate when add user payment
                     transformResponse: getUsers, 
                     },
             });
