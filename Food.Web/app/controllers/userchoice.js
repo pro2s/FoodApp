@@ -45,21 +45,11 @@
                 uc.days.$promise
             ])
             .then(function(result) {
-                uc.weekdays = {};
-                var nonemenu = uc.sysmenu.pop()
-                var monday = new Date().GetMonday();
                 
+                var nonemenu = uc.sysmenu.pop()
+
                 // Generate days from Monday current week to next Monday 
-                for (var i = 0; i < 8; i++) {
-                    var menu = [];
-                    menu.push(nonemenu);
-                    
-                    var date = new Date(+monday)
-                    var day = {date:date,menu:menu,select:{},userday:{}};
-                    var key = date.toDateString();
-                    uc.weekdays[key] = day;
-                    monday.setDate(monday.getDate() + 1); 
-                }	
+                uc.weekdays = FillWeek(nonemenu);
                 
                 // Fill days with menu for this day
                 angular.forEach(uc.weekmenu, function(menu) {
@@ -97,6 +87,21 @@
             }, failure);
        };
         
+        function FillWeek(nonemenu) {
+            var week = {}
+            var monday = dateservice.getMonday();
+            for (var i = 0; i < 8; i++) {
+                var menu = [];
+                menu.push(nonemenu);
+                
+                var date = new Date(+monday)
+                var day = {date:date,menu:menu,select:{},userday:{}};
+                var key = date.toDateString();
+                week[key] = day;
+                monday.setDate(monday.getDate() + 1); 
+            }
+            return week;
+        }
         
         function success() {
             uc.error = false;

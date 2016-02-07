@@ -4,109 +4,111 @@
         .module('app.admin')
         .controller('ChoiceAdmin', ChoiceAdmin);
         
-    ChoiceAdmin.$inject = ['$scope', '$q', 'User', 'UserDay' , 'Menu'];    
+    ChoiceAdmin.$inject = ['$q', 'User', 'UserDay' , 'Menu'];    
     
-    function ChoiceAdmin($scope, $q, User, UserDay, Menu) {
-        $scope.title = "loading users choice ...";
-        $scope.working = false;
-        $scope.stat = {};
-        $scope.menu = {};
-        $scope.users = {};
-        $scope.sysmenu = {};
-        $scope.weekmenu = {};
-        $scope.days = {};
-        $scope.weekdays = {};
-        $scope.getUser = getUser;
-        $scope.getMenu = getMenu;
-        $scope.confirmSelect = confirmSelect;
+    function ChoiceAdmin($q, User, UserDay, Menu) {
+        var ca = this;
+        ca.title = "loading users choice ...";
+        ca.working = false;
+        ca.activeday = {};
+        ca.menu = {};
+        ca.users = {};
+        ca.weekdays = {};
+        
+        ca.getUser = getUser;
+        ca.getMenu = getMenu;
+        ca.confirmSelect = confirmSelect;
         
         activate();
         
         // TODO: Decompose on methods 
         function activate() {
-            $scope.working = true;
-            $scope.title = "Users choice";
-            $scope.users = User.getUsers();
+            ca.working = true;
+            ca.title = "Users choice";
             
-            $scope.sysmenu = Menu.query({system:'none'});
-            $scope.weekmenu = Menu.query();
-            $scope.days = UserDay.query();
+            var day = new Date().getDay();
+            ca.activeday =  (day == 0 ? 6: day);
+                
+            ca.users = User.getUsers();
+            
+            var sysmenu = Menu.query({system:'none'});
+            var weekmenu = Menu.query();
+            var days = UserDay.query();
             
             $q.all([
-                $scope.sysmenu.$promise,
-                $scope.weekmenu.$promise,
-                $scope.days.$promise
+                sysmenu.$promise,
+                weekmenu.$promise,
+                days.$promise
             ])
             .then(function(result) {
-                $scope.weekdays = {};
-                var nonemenu = $scope.sysmenu.pop();	
+                
+                var nonemenu = sysmenu.pop();	
                 var menucount = {};   
-                var monday = new Date().GetMonday();
-                var day = new Date().getDay();
-                $scope.stat.select =  (day == 0 ? 6: day);
                 
                 // Generate days from Monday current week to next Monday 
+                ca.weekdays = {};
+                var monday = new Date().GetMonday();
                 for (var i = 0; i < 8; i++) {
                     var date = new Date(+monday)
                     var day = {date:date,userselect:[],menu:[],total:0};
                     var key = date.toDateString();
-                    $scope.weekdays[key] = day;
+                    ca.weekdays[key] = day;
                     monday.setDate(monday.getDate() + 1); 
                 }
                 
                 // Fill days with users choice, count menu and day choice
-                angular.forEach($scope.days, function(day) {
+                angular.forEach(days, function(day) {
                     var key = new Date(day.date).toDateString();
-                    if ($scope.weekdays.hasOwnProperty(key)) {
-                        $scope.weekdays[key].userselect.push(day)
+                    if (ca.weekdays.hasOwnProperty(key)) {
+                        ca.weekdays[key].userselect.push(day)
                         if (day.selectid != nonemenu.id) {
                             if (typeof menucount[day.selectid] == 'undefined'){
                                 menucount[day.selectid]=1;
-                                $scope.weekdays[key].total++;
-                             } else {
+                                ca.weekdays[key].total++;
+                            } else {
                                 menucount[day.selectid]++;
-                                $scope.weekdays[key].total++;
-                             }
+                                ca.weekdays[key].total++;
+                            }
                         }
                     }
                 });
-                 
-                 // Fill menu array and add property count to each menu 
-                angular.forEach($scope.weekmenu, function(menu) {
-                    $scope.menu[menu.id] = menu;
+                
+                // Fill menu array and add property count to each menu 
+                angular.forEach(weekmenu, function(menu) {
+                    ca.menu[menu.id] = menu;
                     var key = new Date(menu.onDate).toDateString();
-                    if ($scope.weekdays.hasOwnProperty(key)) {
+                    if (ca.weekdays.hasOwnProperty(key)) {
                         menu.count = menucount[menu.id];
-                        $scope.weekdays[key].menu.push(menu);
+                        ca.weekdays[key].menu.push(menu);
                     };
                 });    
                 
                 success();    
             }, failure)
-           
+            
         };
         
         function success(){
-            $scope.working = false;
+            ca.working = false;
         };
         
         function failure(data){
-            $scope.title = "Oops... something went wrong";
-            $scope.working = false;
+            ca.title = "Oops... something went wrong";
+            ca.working = false;
         };
             
         function getUser(userday) {
-            return $scope.users[userday.userid];
+            return ca.users[userday.userid];
         };
         
         function getMenu(userday) {
-            return $scope.menu[userday.selectid];
+            return ca.menu[userday.selectid];
         };
         
         function confirmSelect(userday) {
             userday.confirm = true;
             userday.$update({id:userday.id});
-            $scope.users[userday.userid].bill = $scope.users[userday.userid].bill - $scope.menu[userday.selectid].price;
+            ca.users[userday.userid].bill =ca.users[userday.userid].bill -ca.menu[userday.selectid].price;
         }
     };
 })(); 

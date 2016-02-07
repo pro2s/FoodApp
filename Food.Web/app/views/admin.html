@@ -43,18 +43,18 @@
     </div>
 	
         
-    <div class="col-md-6" ng-controller="ChoiceAdmin">
+    <div class="col-md-6" ng-controller="ChoiceAdmin as ca">
         <div class="lead" ng-bind="title"></div>
-        <div class="panel panel-default" ng-repeat="day in weekdays" ng-class="{'panel-success':stat.select==$index}"  ng-if="day.total>0">
+        <div class="panel panel-default" ng-repeat="day in ca.weekdays" ng-class="{'panel-success':ca.activeday==$index}"  ng-if="day.total>0">
         <div class="panel-heading">
-            <a href="" ng-click="stat.select=$index">{{day.date|date:'dd.MM.yyyy'}} {{day.date|date:'(EEEE)'}}</a>
+            <a href="" ng-click="ca.activeday=$index">{{day.date|date:'dd.MM.yyyy'}} {{day.date|date:'(EEEE)'}}</a>
         </div>
-        <ul class="list-group" ng-show="stat.select==$index">
+        <ul class="list-group" ng-show="ca.activeday==$index">
             <li ng-repeat="select in day.userselect track by $index" class="list-group-item">
-                {{$parent.getUser(select).name}} - {{$parent.getMenu(select).name}} ({{$parent.getMenu(select).price}}) 
+                {{ca.getUser(select).name}} - {{ca.getMenu(select).name}} ({{ca.getMenu(select).price}}) 
 				<button class="btn btn-sm" 
 					ng-class="{'btn-success':select.confirm, 'btn-default':!select.confirm}" 
-					ng-click="confirmSelect(select)" 
+					ng-click="ca.confirmSelect(select)" 
 					ng-disabled="select.confirm">{{select.confirm?"получено":"выдать"}}</button>
             </li>
             <li class="list-group-item"><b>Итого по меню</b></li>
