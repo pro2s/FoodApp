@@ -25,6 +25,11 @@ angular
             controller: 'UserChoice',
             controllerAs: 'uc',
         })
+        .when('/user', {
+            templateUrl: 'app/views/userview.html',
+            controller: 'UserView',
+            controllerAs: 'vm',
+        })
         .when('/admin', {
             templateUrl: 'app/views/admin.html',
             controller: 'UserAdmin',

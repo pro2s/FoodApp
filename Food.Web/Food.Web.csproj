@@ -215,6 +215,7 @@
     <Content Include="App\controllers\topmenu.js" />
     <Content Include="App\controllers\useradmin.js" />
     <Content Include="App\controllers\userchoice.js" />
+    <Content Include="App\controllers\userview.js" />
     <Content Include="App\controllers\viewmenu.js" />
     <Content Include="App\directives\loginform.js" />
     <Content Include="App\menu.module.js" />
@@ -229,6 +230,7 @@
     <Content Include="App\views\login.html" />
     <Content Include="App\views\menu.html" />
     <Content Include="App\views\user.html" />
+    <Content Include="App\views\userview.html" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
