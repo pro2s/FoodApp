@@ -61,12 +61,12 @@
                     var key = new Date(day.date).toDateString();
                     if (ca.weekdays.hasOwnProperty(key)) {
                         ca.weekdays[key].userselect.push(day)
-                        if (day.selectid != nonemenu.id) {
+                        if (day.menuId != nonemenu.id) {
                             if (typeof menucount[day.menuId] == 'undefined'){
                                 menucount[day.menuId]=1;
                                 ca.weekdays[key].total++;
                             } else {
-                                menucount[day.selectid]++;
+                                menucount[day.menuId]++;
                                 ca.weekdays[key].total++;
                             }
                         }
@@ -98,7 +98,7 @@
         };
             
         function getUser(userday) {
-            return ca.users[userday.userid];
+            return ca.users[userday.userID];
         };
         
         function getMenu(userday) {
