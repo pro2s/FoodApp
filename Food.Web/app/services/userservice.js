@@ -3,36 +3,35 @@
     angular
         .module('app.userservice')
         .factory('User', User)	 
-        .factory('UserDay', ['$rootScope','$resource',
-          function($rootScope, $resource){
-            return $resource($rootScope.api + 'api/userchoices/:id', {}, {
+        .factory('UserDay', ['Config','$resource',
+          function(Config, $resource){
+            return $resource(Config.get('api') + 'api/userchoices/:id', {}, {
               query: {method:'GET', params:{id:''}, isArray:true},
               update: {method:'PUT', params:{id:''}},
             });
         }])
-        .factory('Payment', ['$rootScope','$resource',
-          function($rootScope, $resource){
-            return $resource($rootScope.api + 'api/payments/:id', {}, {
+        .factory('Payment', ['Config','$resource',
+          function(Config, $resource){
+            return $resource(Config.get('api') + 'api/payments/:id', {}, {
               query: {method:'GET', params:{id:''},	 isArray:true},
               update: {method:'PUT', params:{id:''}},
             });
         }])	
-        .factory('Account', ['$rootScope', '$resource',
-          function ($rootScope, $resource) {
-              $rootScope.api = 'http://localhost:53058/';
-              return $resource($rootScope.api + 'api/Account/:action', {}, {
+        .factory('Account', ['Config', '$resource',
+          function (Config, $resource) {
+              return $resource(Config.get('api') + 'api/Account/:action', {}, {
               });
         }])
 
-        User.$inject = ['$rootScope', '$resource'];    
+        User.$inject = ['Config', '$resource'];    
         
         /**
         * @namespace User
         * @desc Get User data from api 
         * @memberOf Factories
         */
-        function User($rootScope, $resource) {
-            return $resource($rootScope.api + 'api/users/:id', {}, {
+        function User(Config, $resource) {
+            return $resource(Config.get('api') + 'api/users/:id', {}, {
                 query: {
                     method:'GET', 
                     params:{id:''}, 

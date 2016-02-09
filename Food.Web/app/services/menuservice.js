@@ -6,17 +6,17 @@
         .factory('MenuItem', MenuItem) 
         .factory('GlobalMenu', GlobalMenu);
 
-    Menu.$inject = ['$rootScope', '$resource'];    
-    function Menu($rootScope, $resource) {
-        return $resource($rootScope.api + 'api/menus/:id', {}, {
+    Menu.$inject = ['Config', '$resource'];    
+    function Menu(Config, $resource) {
+        return $resource(Config.get('api') + 'api/menus/:id', {}, {
           query: {method:'GET', params:{id:''}, isArray:true},
           update: {method:'PUT', params:{id:''}, isArray:true},
         });
     }
 
-    MenuItem.$inject = ['$rootScope', '$resource'];    
-    function MenuItem($rootScope, $resource) {
-        return $resource($rootScope.api + 'api/menuitems/:id', {}, {
+    MenuItem.$inject = ['Config', '$resource'];    
+    function MenuItem(Config, $resource) {
+        return $resource(Config.get('api') + 'api/menuitems/:id', {}, {
           query: {method:'GET', params:{id:''}, isArray:true},
           update: {method:'PUT', params:{id:''}, isArray:true}
         });
