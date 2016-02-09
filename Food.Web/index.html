@@ -9,16 +9,13 @@
 	<link href="./Content/site.css" rel="stylesheet"/>
 </head>
 <body>
-    <data ng-init="setAPI('http://mezfiles.appspot.com/')"/>
     <nav class="navbar navbar-default navbar-static-top" ng-controller="TopMenu as topmenu">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">FoodApp</a>
+                <a class="navbar-brand" href="#/">FoodApp</a>
             </div>
             <ul class="nav navbar-nav">
-                <li ng-class="{ active: topmenu.isActive('/')}"><a href="#/">Home</a></li>
-                <li ng-class="{ active: topmenu.isActive('/admin')}"><a href="#/admin">Admin</a></li>
-                <li ng-class="{ active: topmenu.isActive('/menu')}"><a href="#/menu">Menu</a></li>
+                <li ng-repeat="item in topmenu.menu" ng-class="{ active: topmenu.isActive(item.url)}"><a href="#{{item.url}}" ng-bind="item.name"></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
@@ -28,14 +25,23 @@
                     </ul>
                 </li>  
             </ul>
+            <ul class="nav navbar-nav navbar-right" ng-if="topmenu.auth.isLogined">
+                <li ng-class="{ active: topmenu.isActive('/user')}" >
+                    <a href="#/user" ng-bind="topmenu.auth.username">User</a>
+                </li>
+                <li><a href="" ng-click="topmenu.logout()">Logout</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" ng-if="!topmenu.auth.isLogined">
+                <li><a href="" ng-click="topmenu.showLogin()">Login</a></li>
+                <li><a href="" ng-click="topmenu.showRegister()">Registration</a></li>
+            </ul>
         </div>
     </nav>
 	
-    <div class="container" ng-view>
-        
-    </div>
+    <div class="container" ng-view></div>
     
-    
+    <!-- Modal -->
+    <login-form></login-form>    
 
     <script src="./scripts/jquery-1.10.2.js"></script>
 
@@ -46,8 +52,13 @@
     <script src="./scripts/bootstrap.js"></script>
 
     <script src="./app/app.js"></script>
+    <script src="./app/services/config.js"></script>
     <script src="./app/services/dateservice.js"></script>
+    <script src="./app/services/authservice.js"></script>
     <script src="./app/controllers/topmenu.js"></script>
+    
+    
+    <script src="./app/directives/loginform.js"></script>
     
     <script src="./app/admin.module.js"></script>
     <script src="./app/controllers/useradmin.js"></script>
@@ -59,6 +70,7 @@
     
     <script src="./app/user.module.js"></script>
     <script src="./app/controllers/userchoice.js"></script>
+    <script src="./app/controllers/userview.js"></script>
     
     <script src="./app/services/menuservice.js"></script>
     

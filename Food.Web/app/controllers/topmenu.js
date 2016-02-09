@@ -8,6 +8,7 @@
     
     function TopMenu($rootScope, $location, $route, User, authservice) {
         var topmenu = this;
+        topmenu.menu = [];
         topmenu.users = {};
         topmenu.auth = {};
         topmenu.isActive = isActive;
@@ -21,6 +22,19 @@
         function activate() {
             topmenu.users = User.getUsers();
             topmenu.auth = authservice.state;
+            topmenu.menu = getTopMenu();
+        }
+        
+        function getTopMenu() {
+            var menu = [];
+            angular.forEach($route.routes,function (config,route) {
+                if (config.menuname) {
+                    if (authservice.checkAccess(config.access, config.roles)) {
+                        menu.push({url:route, name:config.menuname});
+                    }
+                }
+            });
+            return menu;
         }
         
         function showLogin() {

@@ -4,9 +4,9 @@
         .module('app.user')
         .controller('UserChoice', UserChoice);
     
-    UserChoice.$inject = ['$q','UserDay','Menu','dateservice'];
+    UserChoice.$inject = ['$q','UserDay','Menu','dateservice', 'authservice'];
     
-    function UserChoice($q, UserDay, Menu, dateservice) {
+    function UserChoice($q, UserDay, Menu, dateservice, authservice) {
         var uc = this;
         uc.date = new Date();
         uc.sysmenu = []
@@ -29,6 +29,14 @@
         activate();
         
         function activate() {
+            uc.readonly = true;
+            if (authservice.checkAccess('isAuthenticated',[])) {
+                 FillUserChoice();
+                 uc.readonly = false;
+            }
+        };
+        
+        function FillUserChoice() {
             uc.status = "Loading food ...";
             uc.sendData = false;
             uc.working = true;
@@ -85,7 +93,8 @@
                 console.log('all done');            
                 
             }, failure);
-       };
+        }
+        
         
         function FillWeek(nonemenu) {
             var week = {}

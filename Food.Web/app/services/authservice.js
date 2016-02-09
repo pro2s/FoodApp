@@ -4,9 +4,9 @@
         .module('app')
         .factory('authservice', authService);
 
-    authService.$inject = ['$http', '$rootScope', 'Account'];
-    function authService($http, $rootScope, Account) {
-        var form = {
+    authService.$inject = ['$http', 'Config', 'Account'];
+    function authService($http, Config, Account) {
+        var _form = {
             title: "Login",
             btnText: "Login",
             registred: true,
@@ -16,15 +16,26 @@
             repassword: '',
         }
 
-        var state = {
-            isLogined: false,
-            username: ''
+        var _state = {
+            isLogged: false,
+            roles:'',
+            email:'',
+            username: '',
         };
+        
+        var _view = {
+            show: function() {},
+            hide: function() {},
+        }
 
         var service = {
             init: init,
-            form: form,
-            state: state,
+            view: _view,
+            form: _form,
+            state: _state,
+            checkAccess: checkAccess,
+            checkRoles: checkRoles,
+            setView: setView,
             showLogin: showLogin,
             showRegister: showRegister,
             doLogin: doLogin,
@@ -32,72 +43,114 @@
         };
 
         return service;
-
-        function init() {
-            var type = sessionStorage.getItem('tokenType');
-            var key = sessionStorage.getItem('tokenKey');
-            var token = type + ' ' + key;
-
-            if (token.length > 0) {
-                
-                $http.defaults.headers.common['Authorization'] = token;
-                var info = Account.get({ action: "UserInfo" }, function () {
-                    state.username = info.email;
-                    state.isLogined = true;
-                });
+        
+        
+        function checkAccess(access, roles) {
+            var allow = true;
+            if (access && access != 'isAnonymous') {
+                if (access == 'isAuthenticated') {
+                    allow = _state.isLogged;
+                    if (roles && allow) {
+                        allow = !checkRoles(roles);
+                    } 
+                }
             }
-
+            return allow;
+        }
+        
+        function checkRoles(roles) {
+            var result = false;
+            for (var i = 0; i < roles.length; i++) {
+                if (_state.role.indexOf(roles[i]) != -1) {
+                    result = true;
+                    break;
+                };
+            }
+            return result;
+        }
+        
+        function init(type) {
+            var key = sessionStorage.getItem('tokenKey');
+            if (key) {
+                $http.defaults.headers.common['Authorization'] = key;
+                var info = Account.get({ action: "UserInfo" }, setInfo(data), errorInit(type));
+            }
+        }
+                
+        function setInfo(data) {
+            _state.isLogged = true;
+            _state.username = data.email;
+        }
+        
+        function errorInit(type) {
+            doLogout();
+            if(type && type == 'form') {
+                _form.msg = 'Failed get user info, try again';
+                _form.error = true;
+                _view.show();
+            }
         }
 
-        function setInfo(data) {
-            state.isLogined = true;
-            state.username = data.email;
+                
+        function setView(view) {
+            _view = view
         }
 
         function showLogin() {
-            form.title = "Login";
-            form.btnText = "Login";
-            form.registred = true;
-            $('#loginModal').modal('show');
-
+            _form.title = "Login";
+            _form.btnText = "Login";
+            _form.registred = true;
+            _view.show();
         }
 
         function showRegister() {
-            form.title = "Register";
-            form.btnText = "Register";
-            form.registred = false;
-            $('#loginModal').modal('show');
+            _form.title = "Register";
+            _form.btnText = "Register";
+            _form.registred = false;
+            _view.show();
         };
 
         function doLogin() {
-            var data = "grant_type=password&username=" + form.email + "&password=" + form.password;
+            var data = "grant_type=password&username=" + _form.email + "&password=" + _form.password;
             var config = {
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             }
-            $http.post($rootScope.api + 'token', data, config).success(successLogin).error(failedLogin);
+            $http.post(Config.get('api') + 'token', data, config).then(successLogin, failedLogin);
         }
 
         function successLogin(data) {
-            form.error = false;
-            form.msg = "";
-            $('#loginModal').modal('hide');
-            state.isLogined = true;
-            state.username = data.userName;
-            sessionStorage.setItem('tokenKey', data.access_token);
-            sessionStorage.setItem('tokenType', data.token_type);
-            init();
+            _form.error = false;
+            _form.msg = "";
+            
+            if (data.token_type && data.access_token) {
+                _view.hide();
+                if (data.userName) {
+                    _state.username = data.userName;
+                }
+                sessionStorage.setItem('tokenKey', data.token_type + '  ' + data.access_token);
+                init('form');
+            } else {
+                _form.error = true;
+                var msg = 'Authorization failed';
+            }
+            
         }
 
         function failedLogin(data) {
-            state.isLogined = false;
-            form.error = true;
-            form.msg = data.error_description;
+             doLogout();
+            _form.error = true;
+            if (data.error_description) {
+                _form.msg = data.error_description;
+            } else {
+                _form.msg = 'Password or email is incorrect';
+            }
         }
 
         function doLogout() {
-            state.isLogined = false;
+            _state.isLogged = false;
+            _state.username = '';
             sessionStorage.removeItem('tokenKey');
-            sessionStorage.removeItem('tokenType');
+            delete $http.defaults.headers.common['Authorization'];
         }
     };
 

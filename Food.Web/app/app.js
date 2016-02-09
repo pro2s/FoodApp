@@ -24,21 +24,30 @@ angular
             templateUrl: 'app/views/user.html',
             controller: 'UserChoice',
             controllerAs: 'uc',
+            access: 'isAnonymous',
+            menuname:'Home',
         })
         .when('/user', {
             templateUrl: 'app/views/userview.html',
             controller: 'UserView',
             controllerAs: 'vm',
+            access: 'isAuthenticated',
         })
         .when('/admin', {
             templateUrl: 'app/views/admin.html',
             controller: 'UserAdmin',
             controllerAs: 'vm',
+            access: 'isAuthenticated',
+            roles: ['Admin'],
+            menuname:'User admin',
         })
         .when('/menu', {
             templateUrl: 'app/views/editmenu.html',
             controller: 'EditMenu',
             controllerAs: 'form',
+            access: 'isAuthenticated',
+            roles: ['Admin','GlobalAdmin'],
+            menuname:'Menu admin',
         });
 
         // $locationProvider.html5Mode(true);
@@ -46,16 +55,23 @@ angular
     .run(['$route', '$rootScope', '$location', 'authservice', function ($route, $rootScope, $location, authservice) {
         
         authservice.init();
+        
+        $rootScope.$on('$routeChangeStart', function (event, next, current) {
+            var allow= authservice.checkAccess(next.access, next.roles);
+            
+            if (allow) {
+                console.log('ALLOW');
+            } else {
+                console.log('DENY');
+            }
+        });
 
         //TODO: temp method to get default user - must be removed
         $rootScope.userid = 5700305828184064;
         $rootScope.username = "User A";
         $rootScope.api = "http://localhost/"
         
-        //Set api url from index template
-        $rootScope.setAPI = function (apiurl) {
-            $rootScope.api = apiurl;
-        };
+       
     }]);
     
    
