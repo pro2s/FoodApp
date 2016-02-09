@@ -33,11 +33,13 @@
         
         
             function showLogin() {
-                $('#'+login.id).modal('show');
+                login.form.active = true;
+                $('#' + login.id).modal('show');
             }
 
             function hideLogin() {
-                $('#'+login.id).modal('hide');
+                login.form.active = false;
+                $('#' + login.id).modal('hide');
             }
 
             function register() {

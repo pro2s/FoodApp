@@ -29,13 +29,19 @@
         activate();
         
         function activate() {
+            CheckUser();
+            authservice.registerEvent('UserLogged', CheckUser);
+            authservice.registerEvent('UserLogout', CheckUser);
+        };
+        
+        function CheckUser() {
             uc.readonly = true;
             if (authservice.checkAccess('isAuthenticated',[])) {
                  FillUserChoice();
                  uc.readonly = false;
             }
-        };
-        
+        }
+
         function FillUserChoice() {
             uc.status = "Loading food ...";
             uc.sendData = false;

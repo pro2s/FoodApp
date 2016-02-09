@@ -10,5 +10,17 @@
     function UserView(User, Account, Payment, authservice) {
         var vm = this;
         vm.auth = authservice.state
+        vm.setAdmin = setAdmin;
+
+        activate();
+
+        function activate() {
+
+        }
+
+        function setAdmin() {
+            var acc = new Account({Role:'Admin'});
+            acc.$save({ action: 'SetRole'});
+        }
     }
 })();

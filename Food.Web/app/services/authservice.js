@@ -14,11 +14,12 @@
             email: '',
             password: '',
             repassword: '',
+            active: false,
         }
 
         var _state = {
             isLogged: false,
-            roles:'',
+            roles:[],
             email:'',
             username: '',
         };
@@ -28,7 +29,11 @@
             hide: function() {},
         }
 
+        var _handlers = {};
+        
         var service = {
+            registerEvent: registerEvent,
+            authEvent: authEvent,
             init: init,
             view: _view,
             form: _form,
@@ -43,15 +48,29 @@
         };
 
         return service;
-        
+
+        function authEvent(eventName, objData) {
+            if (_handlers[eventName]) {
+                for (var i = 0; i < _handlers[eventName].length; i++) {
+                    _handlers[eventName][i](objData);
+                }
+            }
+        }
+
+        function registerEvent(eventName, handler) {
+            if (typeof _handlers[eventName] == 'undefined') {
+                _handlers[eventName] = [];
+            }
+            _handlers[eventName].push(handler);
+        }
         
         function checkAccess(access, roles) {
             var allow = true;
             if (access && access != 'isAnonymous') {
                 if (access == 'isAuthenticated') {
                     allow = _state.isLogged;
-                    if (roles && allow) {
-                        allow = !checkRoles(roles);
+                    if (roles && roles.length > 0 && allow) {
+                        allow = checkRoles(roles);
                     } 
                 }
             }
@@ -61,7 +80,7 @@
         function checkRoles(roles) {
             var result = false;
             for (var i = 0; i < roles.length; i++) {
-                if (_state.role.indexOf(roles[i]) != -1) {
+                if (_state.roles.indexOf(roles[i]) != -1) {
                     result = true;
                     break;
                 };
@@ -69,25 +88,31 @@
             return result;
         }
         
-        function init(type) {
+        function init() {
             var key = sessionStorage.getItem('tokenKey');
             if (key) {
-                $http.defaults.headers.common['Authorization'] = key;
-                var info = Account.get({ action: "UserInfo" }, setInfo(data), errorInit(type));
+                $http.defaults.headers.common.Authorization = key;
+                Account.get({ action: "UserInfo" }, successInit, failedInit);
             }
         }
                 
-        function setInfo(data) {
+        function successInit(data) {
             _state.isLogged = true;
-            _state.username = data.email;
+            _state.username = data.userName;
+            _state.roles = data.roles;
+
+            if (_form.active) {
+                _view.hide();
+            }
+
+            authEvent('UserLogged', _state);
         }
         
-        function errorInit(type) {
+        function failedInit(type) {
             doLogout();
-            if(type && type == 'form') {
+            if( _form.active) {
                 _form.msg = 'Failed get user info, try again';
                 _form.error = true;
-                _view.show();
             }
         }
 
@@ -118,17 +143,17 @@
             $http.post(Config.get('api') + 'token', data, config).then(successLogin, failedLogin);
         }
 
-        function successLogin(data) {
+        function successLogin(response) {
+            var data = response.data
             _form.error = false;
             _form.msg = "";
             
             if (data.token_type && data.access_token) {
-                _view.hide();
                 if (data.userName) {
                     _state.username = data.userName;
                 }
                 sessionStorage.setItem('tokenKey', data.token_type + '  ' + data.access_token);
-                init('form');
+                init();
             } else {
                 _form.error = true;
                 var msg = 'Authorization failed';
@@ -136,7 +161,8 @@
             
         }
 
-        function failedLogin(data) {
+        function failedLogin(response) {
+            var data = response.data
              doLogout();
             _form.error = true;
             if (data.error_description) {
@@ -151,6 +177,7 @@
             _state.username = '';
             sessionStorage.removeItem('tokenKey');
             delete $http.defaults.headers.common['Authorization'];
+            authEvent('UserLogout');
         }
     };
 

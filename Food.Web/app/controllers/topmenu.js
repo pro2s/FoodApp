@@ -22,10 +22,16 @@
         function activate() {
             topmenu.users = User.getUsers();
             topmenu.auth = authservice.state;
-            topmenu.menu = getTopMenu();
+            topmenu.menu = getMenu();
+            authservice.registerEvent('UserLogged', updateMenu)
+            authservice.registerEvent('UserLogout', updateMenu)
+        }
+
+        function updateMenu() {
+            topmenu.menu = getMenu();
         }
         
-        function getTopMenu() {
+        function getMenu() {
             var menu = [];
             angular.forEach($route.routes,function (config,route) {
                 if (config.menuname) {
