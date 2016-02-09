@@ -62,8 +62,8 @@
                     if (ca.weekdays.hasOwnProperty(key)) {
                         ca.weekdays[key].userselect.push(day)
                         if (day.selectid != nonemenu.id) {
-                            if (typeof menucount[day.selectid] == 'undefined'){
-                                menucount[day.selectid]=1;
+                            if (typeof menucount[day.menuId] == 'undefined'){
+                                menucount[day.menuId]=1;
                                 ca.weekdays[key].total++;
                             } else {
                                 menucount[day.selectid]++;
@@ -102,13 +102,13 @@
         };
         
         function getMenu(userday) {
-            return ca.menu[userday.selectid];
+            return ca.menu[userday.menuId];
         };
         
         function confirmSelect(userday) {
             userday.confirm = true;
             userday.$update({id:userday.id});
-            ca.users[userday.userid].bill =ca.users[userday.userid].bill -ca.menu[userday.selectid].price;
+            ca.users[userday.menuId].bill =ca.users[userday.menuId].bill -ca.menu[userday.menuId].price;
         }
     };
 })(); 
