@@ -6,10 +6,11 @@
 
     loginForm.$inject = ['authservice'];
     function loginForm(authservice) {
-
+        
         var directive = {
             restrict: 'E',
             replace: true,
+            scope: {},
             templateUrl: 'app/views/login.html',
             controller: Login,
             controllerAs: 'login',
@@ -19,19 +20,34 @@
 
         function Login() {
             var login = this;
+            login.id = 'modalLoginForm';
             login.form = authservice.form;
             login.register = register;
             login.doLogin = doLogin;
-        }
+            var view = {
+                name:'Bootstrap Modal Login Form',
+                show: showLogin,
+                hide: hideLogin
+            }            
+            authservice.setView(view);
+        
+        
+            function showLogin() {
+                $('#'+login.id).modal('show');
+            }
 
-        function register() {
-            authservice.showRegister();
-        }
+            function hideLogin() {
+                $('#'+login.id).modal('hide');
+            }
 
-        function doLogin() {
-            authservice.doLogin();
-        }
+            function register() {
+                authservice.showRegister();
+            }
 
+            function doLogin() {
+                authservice.doLogin();
+            }
+        }
       
 
     };
