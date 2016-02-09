@@ -81,4 +81,13 @@ namespace Food.Api.Models
         [Compare("NewPassword", ErrorMessage = "Новый пароль и его подтверждение не совпадают.")]
         public string ConfirmPassword { get; set; }
     }
+
+
+
+    public class SetRoleBindingModel
+    {
+        [Required]
+        [Display(Name = "Роль пользователя")]
+        public string Role { get; set; }
+    }
 }

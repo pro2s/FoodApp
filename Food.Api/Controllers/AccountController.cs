@@ -20,6 +20,7 @@ using System.Web.Http.Cors;
 using Food.Api.DAL;
 using System.Linq;
 
+
 namespace Food.Api.Controllers
 {
     [EnableCors(origins: "*", headers: "*", methods: "*")]
@@ -61,9 +62,11 @@ namespace Food.Api.Controllers
         public UserInfoViewModel GetUserInfo()
         {
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
-
+            List<string> roles = UserManager.GetRoles(User.Identity.GetUserId()).ToList();
             return new UserInfoViewModel
             {
+                Roles = roles,
+                UserName = User.Identity.GetUserName(),
                 Email = User.Identity.GetUserName(),
                 HasRegistered = externalLogin == null,
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
@@ -148,6 +151,26 @@ namespace Food.Api.Controllers
             }
 
             IdentityResult result = await UserManager.AddPasswordAsync(User.Identity.GetUserId(), model.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            return Ok();
+        }
+
+        // POST api/Account/SetRole
+        [Route("SetRole")]
+        public async Task<IHttpActionResult> SetRole(SetRoleBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            
+            IdentityResult result = await UserManager.AddToRoleAsync(User.Identity.GetUserId(), model.Role);
 
             if (!result.Succeeded)
             {
