@@ -175,8 +175,10 @@
         function doLogout() {
             _state.isLogged = false;
             _state.username = '';
+            _state.roles = [];
             sessionStorage.removeItem('tokenKey');
             delete $http.defaults.headers.common['Authorization'];
+            Account.get({ action: "UserLogout" });
             authEvent('UserLogout');
         }
     };
