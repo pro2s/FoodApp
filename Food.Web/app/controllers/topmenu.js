@@ -12,7 +12,6 @@
         topmenu.users = {};
         topmenu.auth = {};
         topmenu.isActive = isActive;
-        topmenu.selectUser = selectUser;
         topmenu.showLogin = showLogin;
         topmenu.showRegister = showRegister;
         topmenu.logout = logout;
@@ -55,22 +54,10 @@
             authservice.doLogout();
         }
 
-
         function isActive(viewLocation) {
             var test = $location.path();
             return viewLocation === $location.path();
         };
-        
-        function selectUser(user) {
-            $rootScope.userid = user.id;
-            $rootScope.username = user.name;
-            if  ($location.path() == '/') {
-                $route.reload();
-            } else {
-                $location.path('/').replace();
-            }
-        }
-        
     }
 
 })();    

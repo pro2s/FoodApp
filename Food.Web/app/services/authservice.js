@@ -165,7 +165,7 @@
             var data = response.data
              doLogout();
             _form.error = true;
-            if (data.error_description) {
+            if (data) {
                 _form.msg = data.error_description;
             } else {
                 _form.msg = 'Password or email is incorrect';

@@ -65,12 +65,6 @@ angular
                 console.log('DENY');
             }
         });
-
-        //TODO: temp method to get default user - must be removed
-        $rootScope.userid = 5700305828184064;
-        $rootScope.username = "User A";
-        $rootScope.api = "http://localhost/"
-        
        
     }]);
     
