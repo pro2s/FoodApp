@@ -19,12 +19,12 @@
         activate();
         
         function activate() {
-            topmenu.users = User.getUsers();
             topmenu.auth = authservice.state;
-            topmenu.menu = getMenu();
+            updateMenu();
             authservice.registerEvent('UserLogged', updateMenu)
             authservice.registerEvent('UserLogout', updateMenu)
         }
+            
 
         function updateMenu() {
             topmenu.menu = getMenu();
@@ -52,6 +52,7 @@
 
         function logout() {
             authservice.doLogout();
+            $location.path('/');
         }
 
         function isActive(viewLocation) {

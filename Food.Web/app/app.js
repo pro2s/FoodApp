@@ -63,6 +63,7 @@ angular
                 console.log('ALLOW');
             } else {
                 console.log('DENY');
+                $location.path('/');
             }
         });
        

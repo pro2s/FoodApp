@@ -44,7 +44,7 @@
 	
         
     <div class="col-md-6" ng-controller="ChoiceAdmin as ca">
-        <div class="lead" ng-bind="title"></div>
+        <div class="lead" ng-bind="ca.title"></div>
         <div class="panel panel-default" ng-repeat="day in ca.weekdays" ng-class="{'panel-success':ca.activeday==$index}"  ng-if="day.total>0">
         <div class="panel-heading">
             <a href="" ng-click="ca.activeday=$index">{{day.date|date:'dd.MM.yyyy'}} {{day.date|date:'(EEEE)'}}</a>
