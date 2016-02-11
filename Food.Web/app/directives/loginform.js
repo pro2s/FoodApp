@@ -12,36 +12,53 @@
             replace: true,
             scope: {},
             templateUrl: 'app/views/login.html',
-            controller: Login,
+            controller: LoginController,
             controllerAs: 'login',
         };
         return directive;
 
 
-        function Login() {
+        function LoginController() {
             var login = this;
+            login.form = {};
             login.id = 'modalLoginForm';
-            login.form = authservice.form;
-            login.register = register;
-            login.doLogin = doLogin;
             var view = {
                 name:'Bootstrap Modal Login Form',
                 show: showLogin,
                 hide: hideLogin
             }            
-            authservice.setView(view);
-        
-        
-            function showLogin() {
+            login.register = register;
+            login.doLogin = doLogin;
+            login.hideLogin = hideLogin;
+            
+            activate();
+            
+            function activate() {
+                login.form = authservice.form;
+                $(document).on('hide.bs.modal', '#' + login.id, onHide);
+                $(document).on('show.bs.modal', '#' + login.id, onShow);
+                authservice.setView(view);
+            }
+            
+            function onShow() {
                 login.form.active = true;
+            }
+            
+            function onHide() {
+                login.form.active = false;
+            }
+            
+            
+            function showLogin() {
                 $('#' + login.id).modal('show');
             }
 
             function hideLogin() {
-                login.form.active = false;
                 $('#' + login.id).modal('hide');
             }
-
+            
+            
+            
             function register() {
                 authservice.showRegister();
             }
