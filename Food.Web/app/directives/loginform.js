@@ -25,7 +25,8 @@
             var view = {
                 name:'Bootstrap Modal Login Form',
                 show: showLogin,
-                hide: hideLogin
+                hide: hideLogin,
+                isError: isError,
             }            
             login.register = register;
             login.doLogin = doLogin;
@@ -48,7 +49,6 @@
                 login.form.active = false;
             }
             
-            
             function showLogin() {
                 $('#' + login.id).modal('show');
             }
@@ -57,14 +57,21 @@
                 $('#' + login.id).modal('hide');
             }
             
-            
-            
             function register() {
                 authservice.showRegister();
             }
 
             function doLogin() {
-                authservice.doLogin();
+                if (login.form.registred) {
+                    authservice.doLogin();
+                } else {
+                    authservice.doRegister();
+                }
+                
+            }
+
+            function isError() {
+
             }
         }
       

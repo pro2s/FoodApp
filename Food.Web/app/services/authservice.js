@@ -11,9 +11,10 @@
             btnText: "Login",
             registred: true,
             error: false,
+            errors: {},
             email: '',
             password: '',
-            repassword: '',
+            confirmPassword: '',
             active: false,
         }
 
@@ -26,7 +27,8 @@
         
         var _view = {
             show: function() {},
-            hide: function() {},
+            hide: function () { },
+            isError: function () { },
         }
 
         var _handlers = {};
@@ -44,6 +46,7 @@
             showLogin: showLogin,
             showRegister: showRegister,
             doLogin: doLogin,
+            doRegister: doRegister,
             doLogout: doLogout,
         };
 
@@ -143,6 +146,7 @@
             $http.post(Config.get('api') + 'token', data, config).then(successLogin, failedLogin);
         }
 
+
         function successLogin(response) {
             var data = response.data
             _form.error = false;
@@ -163,7 +167,7 @@
 
         function failedLogin(response) {
             var data = response.data
-             doLogout();
+            doLogout();
             _form.error = true;
             if (data) {
                 _form.msg = data.error_description;
@@ -172,13 +176,45 @@
             }
         }
 
+
+        function doRegister() {
+            var data = {
+                email: _form.email,
+                password: _form.password,
+                confirmPassword: _form.confirmPassword
+            };
+            var reg = new Account(data);
+            reg.$save({ action: "Register" }, successRegister, failedRegister)
+        }
+
+        function successRegister() {
+            console.log('Registred');
+            _form.registred = true;
+            doLogin();
+        }
+
+        function failedRegister(response) {
+            //TODO: Parse registr error
+            var data = response.data
+            _form.error = true;
+            if (data) {
+                _form.msg = data.message;
+                _form.errors['email'] = data.modelState['model.Email'];
+                _form.errors['password'] = data.modelState['model.Password'];
+            } else {
+                _form.msg = 'Registration failed';
+            }
+            _view.isError();
+        }
+
         function doLogout() {
             _state.isLogged = false;
             _state.username = '';
             _state.roles = [];
+            var acc = new Account({});
+            acc.$save({ action: "Logout" });
             sessionStorage.removeItem('tokenKey');
             delete $http.defaults.headers.common['Authorization'];
-            Account.get({ action: "UserLogout" });
             authEvent('UserLogout');
         }
     };
