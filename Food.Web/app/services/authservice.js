@@ -201,6 +201,7 @@
                 _form.msg = data.message;
                 _form.errors['email'] = data.modelState['model.Email'];
                 _form.errors['password'] = data.modelState['model.Password'];
+                _form.errors['confirmPassword'] = data.modelState['model.ConfirmPassword'];
             } else {
                 _form.msg = 'Registration failed';
             }

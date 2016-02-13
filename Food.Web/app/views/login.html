@@ -8,7 +8,7 @@
                     <h4 class="modal-title" id="myModalLabel" ng-bind="login.form.title"></h4>
                 </div>
                 <div class="modal-body">
-
+                    
                     <div class="alert alert-danger" role="alert" ng-bind="login.form.msg" ng-if="login.form.error"></div>
 
                     <div class="form-group" ng-if="!login.form.registred">
@@ -31,6 +31,7 @@
                     <div class="form-group" ng-if="!login.form.registred">
                         <label for="loginConfirmPassword">Confirm Password</label>
                         <input type="password" class="form-control" id="loginConfirmPassword" placeholder="Confirm Password" ng-model="login.form.confirmPassword">
+                        <p class="text-danger" ng-repeat="error in login.form.errors.confirmPassword" ng-bind="error"></p>
                     </div>
 
                     <a href="" ng-if="login.form.registred" ng-click="login.register()">Registration</a>
