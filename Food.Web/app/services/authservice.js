@@ -40,6 +40,7 @@
             view: _view,
             form: _form,
             state: _state,
+            authExternalProvider: authExternalProvider,
             checkAccess: checkAccess,
             checkRoles: checkRoles,
             setView: setView,
@@ -48,6 +49,7 @@
             doLogin: doLogin,
             doRegister: doRegister,
             doLogout: doLogout,
+            authCompleted: authCompleted
         };
 
         return service;
@@ -194,7 +196,6 @@
         }
 
         function failedRegister(response) {
-            //TODO: Parse registr error
             var data = response.data
             _form.error = true;
             if (data) {
@@ -212,11 +213,28 @@
             _state.isLogged = false;
             _state.username = '';
             _state.roles = [];
+            // TODO: send request only if set tokenKey
             var acc = new Account({});
             acc.$save({ action: "Logout" });
+
             sessionStorage.removeItem('tokenKey');
             delete $http.defaults.headers.common['Authorization'];
             authEvent('UserLogout');
+        }
+
+        function authExternalProvider(provider) {
+            var redirectUri = location.protocol + '//' + location.host + '/authcomplete.html';
+            var externalProviderUrl = Config.get('api') + "api/Account/ExternalLogin?provider=" + provider
+                                                        + "&response_type=token&client_id=self" 
+                                                        + "&redirect_uri=" + redirectUri;
+            window.$windowScope = service;
+            var oauthWindow = window.open(externalProviderUrl, "Authenticate Account", "location=0,status=0,width=600,height=750");
+        };
+
+        function authCompleted(fragment) {
+            
+            var response = { data: fragment };
+            successLogin(response);
         }
     };
 

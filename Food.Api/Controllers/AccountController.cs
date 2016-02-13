@@ -61,8 +61,14 @@ namespace Food.Api.Controllers
         [Route("UserInfo")]
         public UserInfoViewModel GetUserInfo()
         {
+            List<string> roles = new List<string>();
+
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
-            List<string> roles = UserManager.GetRoles(User.Identity.GetUserId()).ToList();
+            if (externalLogin == null)
+            {
+                roles = UserManager.GetRoles(User.Identity.GetUserId()).ToList();
+            }
+            
             return new UserInfoViewModel
             {
                 Roles = roles,
@@ -265,6 +271,7 @@ namespace Food.Api.Controllers
             }
 
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
+            var info = await Authentication.GetExternalLoginInfoAsync();
 
             if (externalLogin == null)
             {
@@ -281,6 +288,30 @@ namespace Food.Api.Controllers
                 externalLogin.ProviderKey));
 
             bool hasRegistered = user != null;
+            if (!hasRegistered)
+            {
+                user = UserManager.Users.FirstOrDefault(x => x.Email == info.Email);
+                if (user != null)
+                {
+                    IdentityResult result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                    if (!result.Succeeded)
+                    {
+                        return GetErrorResult(result);
+                    }
+                }
+                else
+                {
+                    user = new ApplicationUser() { UserName = externalLogin.UserName, Email = info.Email };
+                    IdentityResult result = await UserManager.CreateAsync(user);
+                    if (!result.Succeeded)
+                    {
+                        return GetErrorResult(result);
+                    }
+                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                }
+            }
+
+            hasRegistered = user != null;
 
             if (hasRegistered)
             {
@@ -394,6 +425,27 @@ namespace Food.Api.Controllers
             return result; 
         }
 
+        private async Task<ExternalLoginInfo> AuthenticationManager_GetExternalLoginInfoAsync_WithExternalBearer()
+        {
+            ExternalLoginInfo loginInfo = null;
+
+            var result = await Authentication.AuthenticateAsync(DefaultAuthenticationTypes.ExternalBearer);
+
+            if (result != null && result.Identity != null)
+            {
+                var idClaim = result.Identity.FindFirst(ClaimTypes.NameIdentifier);
+                if (idClaim != null)
+                {
+                    loginInfo = new ExternalLoginInfo()
+                    {
+                        DefaultUserName = result.Identity.Name == null ? "" : result.Identity.Name.Replace(" ", ""),
+                        Login = new UserLoginInfo(idClaim.Issuer, idClaim.Value)
+                    };
+                }
+            }
+            return loginInfo;
+        }
+
         // POST api/Account/RegisterExternal
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
@@ -405,7 +457,8 @@ namespace Food.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var info = await Authentication.GetExternalLoginInfoAsync();
+            var info = await AuthenticationManager_GetExternalLoginInfoAsync_WithExternalBearer();
+            //Authentication.GetExternalLoginInfoAsync();
             if (info == null)
             {
                 return InternalServerError();
@@ -518,6 +571,7 @@ namespace Food.Api.Controllers
                     LoginProvider = providerKeyClaim.Issuer,
                     ProviderKey = providerKeyClaim.Value,
                     UserName = identity.FindFirstValue(ClaimTypes.Name)
+
                 };
             }
         }

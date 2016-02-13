@@ -5,16 +5,33 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.Google;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using Food.Api.Providers;
 using Food.Api.Models;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace Food.Api
 {
     public partial class Startup
     {
+        public class FacebookBackChannelHandler : HttpClientHandler
+        {
+            protected override async System.Threading.Tasks.Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, System.Threading.CancellationToken cancellationToken)
+            {
+                // Replace the RequestUri so it's not malformed
+                if (!request.RequestUri.AbsolutePath.Contains("/oauth"))
+                {
+                    request.RequestUri = new Uri(request.RequestUri.AbsoluteUri.Replace("?access_token", "&access_token"));
+                }
+
+                return await base.SendAsync(request, cancellationToken);
+            }
+        }
         public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
 
         public static string PublicClientId { get; private set; }
@@ -54,11 +71,18 @@ namespace Food.Api
             //app.UseTwitterAuthentication(
             //    consumerKey: "",
             //    consumerSecret: "");
+ 
 
-            //app.UseFacebookAuthentication(
-            //    appId: "",
-            //    appSecret: "");
-
+            var options = new FacebookAuthenticationOptions
+            {
+                AppId = "1022668231126476",
+                AppSecret = "c46522637e6190a19352a7cc49ff17cf",
+                BackchannelHttpHandler = new FacebookBackChannelHandler(),
+                UserInformationEndpoint = "https://graph.facebook.com/v2.4/me?fields=id,name,email",
+            };
+            options.Scope.Add("email");
+            app.UseFacebookAuthentication(options);
+        
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
             //    ClientId = "",

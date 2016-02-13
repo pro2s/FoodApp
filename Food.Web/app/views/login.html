@@ -8,6 +8,9 @@
                     <h4 class="modal-title" id="myModalLabel" ng-bind="login.form.title"></h4>
                 </div>
                 <div class="modal-body">
+                    <div ng-if="login.form.registred">
+                        <button type="button" class="btn btn-default" ng-click="login.doFacebook()">Facebook</button>
+                    </div>
                     
                     <div class="alert alert-danger" role="alert" ng-bind="login.form.msg" ng-if="login.form.error"></div>
 

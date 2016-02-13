@@ -31,6 +31,7 @@
             login.register = register;
             login.doLogin = doLogin;
             login.hideLogin = hideLogin;
+            login.doFacebook = doFacebook;
             
             activate();
             
@@ -47,6 +48,9 @@
             
             function onHide() {
                 login.form.active = false;
+                login.form.error = false;
+                login.form.errors = {};
+
             }
             
             function showLogin() {
@@ -72,6 +76,10 @@
 
             function isError() {
 
+            }
+
+            function doFacebook() {
+                authservice.authExternalProvider('Facebook');
             }
         }
       
