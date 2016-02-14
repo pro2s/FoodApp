@@ -83,11 +83,11 @@ namespace Food.Api
             options.Scope.Add("email");
             app.UseFacebookAuthentication(options);
         
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "354271380179-ij0k2ijlg5gq2jlg492ppgf77m502lg0.apps.googleusercontent.com",
+                ClientSecret = "ClOTRO7isHvu6d5HfRfkQX2c"
+            });
 
 
             // Настройка ролей

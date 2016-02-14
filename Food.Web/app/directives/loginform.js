@@ -31,7 +31,7 @@
             login.register = register;
             login.doLogin = doLogin;
             login.hideLogin = hideLogin;
-            login.doFacebook = doFacebook;
+            login.externalLogin = externalLogin;
             
             activate();
             
@@ -78,8 +78,8 @@
 
             }
 
-            function doFacebook() {
-                authservice.authExternalProvider('Facebook');
+            function externalLogin(provider) {
+                authservice.authExternalProvider(provider);
             }
         }
       
