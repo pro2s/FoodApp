@@ -9,8 +9,12 @@
                 </div>
                 <div class="modal-body">
                     <div ng-if="login.form.registred">
-                        <button type="button" class="btn btn-default" ng-click="login.externalLogin('Facebook')">Facebook</button>
-                        <button type="button" class="btn btn-default" ng-click="login.externalLogin('Google')">Google</button>
+                        <a class="btn btn-social btn-facebook" ng-click="login.externalLogin('Facebook')">
+                            <span class="fa fa-facebook"></span> Sign in with Facebook
+                        </a>
+                        <a class="btn btn-social btn-google" ng-click="login.externalLogin('Google')">
+                            <span class="fa fa-google"></span> Sign in with Google
+                        </a>
                     </div>
                     
                     <div class="alert alert-danger" role="alert" ng-bind="login.form.msg" ng-if="login.form.error"></div>
