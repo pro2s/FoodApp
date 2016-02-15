@@ -7,16 +7,9 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel" ng-bind="login.form.title"></h4>
                 </div>
-                <div class="modal-body">
-                    <div ng-if="login.form.registred">
-                        <a class="btn btn-social btn-facebook" ng-click="login.externalLogin('Facebook')">
-                            <span class="fa fa-facebook"></span> Sign in with Facebook
-                        </a>
-                        <a class="btn btn-social btn-google" ng-click="login.externalLogin('Google')">
-                            <span class="fa fa-google"></span> Sign in with Google
-                        </a>
-                    </div>
-                    
+                <div class="modal-body row">
+                
+                <div class="col-sm-6">   
                     <div class="alert alert-danger" role="alert" ng-bind="login.form.msg" ng-if="login.form.error"></div>
 
                     <div class="form-group" ng-if="!login.form.registred">
@@ -43,7 +36,16 @@
                     </div>
 
                     <a href="" ng-if="login.form.registred" ng-click="login.register()">Registration</a>
-
+                </div>
+                <div class="col-sm-6">   
+                        <label for="loginUserName">Social sign in</label>
+                        <a class="btn btn-block btn-social btn-facebook" ng-click="login.externalLogin('Facebook')">
+                            <span class="fa fa-facebook"></span> Sign in with Facebook
+                        </a>
+                        <a class="btn btn-block btn-social btn-google" ng-click="login.externalLogin('Google')">
+                            <span class="fa fa-google"></span> Sign in with Google
+                        </a>
+                </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
