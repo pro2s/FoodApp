@@ -5,3 +5,5 @@
 Logins:  
 User - test@test.tt  
 Admin - admin@test.tt  
+
+[Feature list](https://github.com/pro2s/FoodApp/wiki/Feature-list) 
