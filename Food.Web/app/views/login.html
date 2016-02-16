@@ -38,13 +38,16 @@
                     <a href="" ng-if="login.form.registred" ng-click="login.register()">Registration</a>
                 </div>
                 <div class="col-sm-6">   
-                        <label for="loginUserName">Social sign in</label>
+                        <a class="btn btn-block btn-social btn-microsoft" ng-click="login.NTLMLogin()">
+                            <span class="fa fa-windows"></span> Sign in with local Domain
+                        </a>
                         <a class="btn btn-block btn-social btn-facebook" ng-click="login.externalLogin('Facebook')">
                             <span class="fa fa-facebook"></span> Sign in with Facebook
                         </a>
                         <a class="btn btn-block btn-social btn-google" ng-click="login.externalLogin('Google')">
                             <span class="fa fa-google"></span> Sign in with Google
                         </a>
+                        
                 </div>
                 </div>
                 <div class="modal-footer">
