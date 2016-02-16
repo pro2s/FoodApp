@@ -31,7 +31,7 @@
                 
             ca.users = User.getUsers();
             
-            var sysmenu = Menu.query({system:'none'});
+            var sysmenu = Menu.query({menu:'none'});
             var weekmenu = Menu.query();
             var days = UserDay.query({list:'all'});
             

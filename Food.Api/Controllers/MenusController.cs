@@ -24,16 +24,24 @@ namespace Food.Api.Controllers
         /// Gets menu on week begin from monday.
         /// </summary>
         
-        public IQueryable<Menu> GetMenus(string system = "normal")
+        public IQueryable<Menu> GetMenus(string menu = "normal")
         {
             MenuType get_type = MenuType.NormalMenu;
-            switch (system)
+            DateTime monday = DateTime.Today.AddDays(1 - (int)DateTime.Today.DayOfWeek);
+            var query = db.Menus.Include("Items").Where(m => m.Type == get_type && m.OnDate >= monday);
+
+            switch (menu)
             {
                 case "none":
                     get_type = MenuType.NoneMenu;
+                    query = db.Menus.Include("Items").Where(m => m.Type == get_type);
+                    break;
+                case "all":
+                    query = db.Menus.Include("Items").Where(m => m.Type == get_type);
                     break;
             }
-            return db.Menus.Include("Items").Where(m => m.Type == get_type); 
+
+            return query;
         }
 
 
