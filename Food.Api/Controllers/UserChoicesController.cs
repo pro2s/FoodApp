@@ -30,7 +30,7 @@ namespace Food.Api.Controllers
             switch (list)
             {
                 case "all":
-                    if (User.IsInRole("OrgAdmin"))
+                    if (User.IsInRole("Admin") || User.IsInRole("GlobalAdmin"))
                     {
                         // TODO: return userchoices for admin organisation
                         query = db.UserChoices.Where(uc => uc.date >= monday);

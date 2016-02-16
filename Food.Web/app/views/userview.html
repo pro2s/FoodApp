@@ -16,7 +16,7 @@
     </div>
     <div class="col-md-6">
         <div><b>User orders</b></div>
-        <div ng-repeat="choice in vm.userchoices">{{choice.date|date:'dd.MM.yyyy'}} - {{choice.menu.name}} ({{choice.menu.price}})</div>
+        <div ng-class="{'text-success':choice.confirm}" ng-repeat="choice in vm.userchoices">{{choice.date|date:'dd.MM.yyyy'}} - {{choice.menu.name}} ({{choice.menu.price}})&nbsp;<span ng-if="choice.confirm" class="glyphicon glyphicon-ok"></span></div>
         <div><b>Total:</b> {{vm.getChoicesSum()}}</div>
     </div>
 </div>

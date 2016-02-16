@@ -15,6 +15,7 @@
         vm.userchoices = [];
         vm.getPaymentSum = getPaymentSum;
         vm.getChoicesSum = getChoicesSum;
+        
         activate();
 
         function activate() {
@@ -55,7 +56,9 @@
         function getChoicesSum() {
             var sum = 0;
             angular.forEach(vm.userchoices, function (choice) {
-                sum += choice.menu.price;
+                if (choice.confirm) {
+                    sum += choice.menu.price;
+                }
             })
             return sum;
         }
