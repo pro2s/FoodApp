@@ -26,7 +26,7 @@ namespace Food.Api.Controllers
         {
             DateTime monday = DateTime.Today.AddDays(1 - (int)DateTime.Today.DayOfWeek);
             string id = User.Identity.GetUserId();
-            IQueryable <UserChoice> query = db.UserChoices.Where(uc => uc.UserID == id && uc.date >= monday);
+            IQueryable <UserChoice> query = db.UserChoices.Include("Menu").Where(uc => uc.UserID == id && uc.date >= monday);
             switch (list)
             {
                 case "all":
@@ -35,6 +35,9 @@ namespace Food.Api.Controllers
                         // TODO: return userchoices for admin organisation
                         query = db.UserChoices.Where(uc => uc.date >= monday);
                     }
+                    break;
+                case "personal":
+                    query = db.UserChoices.Include("Menu").Where(uc => uc.UserID == id);
                     break;
             }
 

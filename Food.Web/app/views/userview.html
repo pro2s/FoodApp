@@ -1,6 +1,22 @@
 ﻿<div class="row">
     <div class="users col-md-6">
         <p ng-bind="vm.auth.username"></p>
+        <p ng-bind="vm.auth.email"></p>
+    </div>
+    <div class="users col-md-6">
         <a href="" ng-click="vm.setAdmin()">Стать администратором</a>
+    </div>
+</div>
+<div class="col-md-12 alert alert-info text-center" role="alert">Bill: {{vm.getPaymentSum()-vm.getChoicesSum()}}</div>
+<div class="row">
+    <div class="col-md-6">
+        <div><b>User payments</b></div>
+        <div ng-repeat="payment in vm.payments">{{payment.date|date:'dd.MM.yyyy'}} - {{payment.sum}}</div>
+        <div><b>Total:</b> {{vm.getPaymentSum()}}</div>
+    </div>
+    <div class="col-md-6">
+        <div><b>User orders</b></div>
+        <div ng-repeat="choice in vm.userchoices">{{choice.date|date:'dd.MM.yyyy'}} - {{choice.menu.name}} ({{choice.menu.price}})</div>
+        <div><b>Total:</b> {{vm.getChoicesSum()}}</div>
     </div>
 </div>

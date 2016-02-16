@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 using Food.Api.DAL;
 using Food.Api.Models;
 using System.Web.Http.Cors;
+using Microsoft.AspNet.Identity;
 
 namespace Food.Api.Controllers
 {
@@ -20,9 +21,18 @@ namespace Food.Api.Controllers
         private FoodDBContext db = new FoodDBContext();
 
         // GET: api/Payments
-        public IQueryable<Payment> GetPayments()
+        public IQueryable<Payment> GetPayments(string list = "user")
         {
-            return db.Payments;
+            string id = User.Identity.GetUserId();
+            if (User.IsInRole("Admin") && list == "all")
+            {
+                return db.Payments;
+            }
+            else
+            {
+                return db.Payments.Where(p => p.UserID == id);
+            }
+            
         }
 
         // GET: api/Payments/5
