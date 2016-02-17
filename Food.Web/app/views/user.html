@@ -75,7 +75,9 @@
         <div class="col-md-3" ng-if="vm.isshow(menu)">
             <div class="panel" ng-class="{'panel-primary': vm.isold(menu.onDate),'panel-default': !vm.isold(menu.onDate)}">
 
-                <div class="panel-heading">{{menu.name}} на {{menu.onDate|date:'dd.MM.yyyy'}}</div>
+                <div class="panel-heading">{{menu.name}} на {{menu.onDate|date:'dd.MM.yyyy'}} 
+                    <div star-rating ng-model="menu.rating" on-rating-select="" readonly="uc.readonly"></div>
+                </div>
 
                 <ul class="list-group">
                     <li class="list-group-item" ng-repeat="item in menu.items"><span class="badge">{{item.weight}}</span>{{item.name}}</li>

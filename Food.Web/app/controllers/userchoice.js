@@ -18,7 +18,7 @@
         uc.sendData = false;
         uc.title = "Loading ...";
         uc.status = "Loading food ...";
-        
+        uc.readonly = true;
        
         uc.init = activate;
         uc.answer = answer;
