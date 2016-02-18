@@ -21,6 +21,11 @@ namespace Food.Api.Models
         public DateTime? OnDate { get; set; }
         public MenuType Type { get; set; }
 
-        public virtual ICollection<MenuItem> Items { get; set; }
+        public virtual ICollection<Item> Items { get; set; }
+
+        public Menu()
+        {
+            Items = new HashSet<Item>();
+        }
     }
 }

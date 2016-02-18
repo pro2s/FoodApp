@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 using Food.Api.DAL;
 using Food.Api.Models;
 using System.Web.Http.Cors;
+using Microsoft.AspNet.Identity;
 
 namespace Food.Api.Controllers
 {
@@ -24,11 +25,14 @@ namespace Food.Api.Controllers
         /// Gets menu on week begin from monday.
         /// </summary>
         
-        public IQueryable<Menu> GetMenus(string menu = "normal")
+        public List<Menu> GetMenus(string menu = "normal")
         {
             MenuType get_type = MenuType.NormalMenu;
             DateTime monday = DateTime.Today.AddDays(1 - (int)DateTime.Today.DayOfWeek);
-            var query = db.Menus.Include("Items").Where(m => m.Type == get_type && m.OnDate >= monday);
+            string UserId = User.Identity.GetUserId();
+            
+            var query = db.Menus.Where(m => m.Type == get_type && m.OnDate >= monday).Include(m => m.Items.Select(i => i.Ratings));
+            
 
             switch (menu)
             {
@@ -41,7 +45,7 @@ namespace Food.Api.Controllers
                     break;
             }
 
-            return query;
+            return query.ToList();
         }
 
 
@@ -81,10 +85,8 @@ namespace Food.Api.Controllers
                 {
                     if (item.Id == 0)
                     {
-                        item.MenuId = menu.Id;
-                        db.MenuItems.Add(item);
+                        db.Items.Add(item);
                         db.SaveChanges();
-                        
                     }
                 }
                 ModelState.Clear();

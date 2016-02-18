@@ -6,21 +6,25 @@ using System.Web;
 
 namespace Food.Api.Models
 {
-    public class MenuItem : ICloneable
+    public class Item : ICloneable
     {
         public int Id { get; set; }
-
-        [ForeignKey("Menu")]
-        public int MenuId { get; set; }
-        public virtual Menu Menu { get; set; }
 
         public string Name { get; set; }
         public string Parts { get; set; }
         public string Weight { get; set; }
 
+        public ICollection<Menu> Menus { get; set; }
+        public ICollection<ItemRating> Ratings { get; set; }
+
+        public Item()
+        {
+            Menus = new HashSet<Menu>();
+        }
+
         public object Clone()
         {
-            var item = new MenuItem
+            var item = new Item
             {
                 Name = Name,
                 Parts = Parts,

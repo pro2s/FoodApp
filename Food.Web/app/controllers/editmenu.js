@@ -29,7 +29,7 @@
         form.save = save;
         
         function addItem(item) {
-            item.id = null;
+            item.id = 0;
             form.menu.items.push(angular.copy(item));
         };
         
@@ -45,7 +45,7 @@
         
         function saveItem () {
             var item = new MenuItem(form.editeditem);
-            if (item.id != null) {
+            if (item.id != 0) {
                 item.$update({id:item.id});
             }
             form.editeditem = {};
@@ -70,7 +70,7 @@
         function add() {
             form.title = "New menu";
             form.menu = {};
-            form.menu.id = null;
+            form.menu.id = 0;
             form.menu.items = [];
             form.menuitem = {}
             form.isedit = true;
@@ -88,7 +88,7 @@
         
         function save() {
             var menu = new Menu(form.menu);
-            if (form.menu.id == null) {
+            if (form.menu.id == 0) {
                 menu.$save(success,failure);
             } else {
                 menu.$update({id:form.menu.id},success,failure);
@@ -96,7 +96,7 @@
 
             function success(menu){
                 // returned id must by assign to menu
-                if (form.menu.id == null ) {
+                if (form.menu.id == 0 ) {
                     GlobalMenu.addMenu(menu);
                     // Need access to ViewMenu controller
                 }

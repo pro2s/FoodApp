@@ -14,7 +14,7 @@ using Food.Api.Models;
 namespace Food.Api
 {
     /* 
-     public class MenuItem
+     public class Item
      {
          public int Id { get; set; }
          public string Name { get; set; }
@@ -73,7 +73,7 @@ namespace Food.Api
         private void Init()
         {
             _weekmenu.Clear();
-            List<MenuItem> items = new List<MenuItem>();
+            List<Item> items = new List<Item>();
         }
 
         public List<Menu> Get()
@@ -88,7 +88,7 @@ namespace Food.Api
             return s;
         }
 
-        private void FillMenu(List<MenuItem> items, int day)
+        private void FillMenu(List<Item> items, int day)
         {
             Menu daymenu = new Menu()
             {
@@ -101,8 +101,8 @@ namespace Food.Api
             
             _weekmenu.Add(daymenu);
 
-            List<MenuItem> copy_items = new List<MenuItem>();
-            copy_items = items.ConvertAll(item => (MenuItem)item.Clone());
+            List<Item> copy_items = new List<Item>();
+            copy_items = items.ConvertAll(item => (Item)item.Clone());
             
             if (copy_items.Count > 2)
             {
@@ -134,7 +134,7 @@ namespace Food.Api
             Word.Document doc = wordApp.Documents.Open(tempfile);
             
             int day = 0;
-            List<MenuItem> items = new List<MenuItem>();
+            List<Item> items = new List<Item>();
 
             foreach (Word.Table table in doc.Tables)
             {
@@ -142,7 +142,7 @@ namespace Food.Api
                 {
                     if (table.Rows[row].Cells.Count == 2)
                     {
-                        MenuItem item = new MenuItem();
+                        Item item = new Item();
 
                         item.Name = GetText(table.Cell(row, 1));
                         item.Weight = GetText(table.Cell(row, 2));
@@ -190,7 +190,7 @@ namespace Food.Api
             
             foreach (var item in _html_menu)
             {
-                List<MenuItem> items = new List<MenuItem>();
+                List<Item> items = new List<Item>();
                 try
                 {
                     string result = HttpUtility.HtmlDecode(item.Element("div").Element("span").InnerText);
@@ -198,7 +198,7 @@ namespace Food.Api
                     foreach (Match m in matches)
                     {
                         items.Add(
-                            new MenuItem()
+                            new Item()
                             {
                                 Name = m.Groups[1].Value.Trim(),
                                 Weight = m.Groups[2].Value.Trim()

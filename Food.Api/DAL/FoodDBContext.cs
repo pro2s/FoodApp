@@ -13,15 +13,33 @@ namespace Food.Api.DAL
 
         public FoodDBContext() : base("DefaultConnection")
         {
+            Database.SetInitializer(new CreateDatabaseIfNotExists<FoodDBContext>());
             Database.SetInitializer(new FoodDBInitializer());
             base.Configuration.ProxyCreationEnabled = false;
         }
 
-        public DbSet<Models.Menu> Menus { get; set; }
-        public DbSet<Models.MenuItem> MenuItems { get; set; }
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<ItemRating> ItemRatings { get; set; }
         public DbSet<UserChoice> UserChoices { get; set; }
         public DbSet<Payment> Payments { get; set; }
-
+       
+        /*
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            /*
+            modelBuilder.Entity<Menu>()
+                .HasMany(c => c.Items)
+                .WithMany()             
+                .Map(x =>
+                {
+                    x.MapLeftKey("MenuId");
+                    x.MapRightKey("ItemId");
+                    x.ToTable("MenuItems");
+                });
         
+            base.OnModelCreating(modelBuilder);
+        }
+        */
     }
 }
