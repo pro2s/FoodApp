@@ -97,7 +97,7 @@ namespace Food.Api
                 new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             RoleManager<IdentityRole> RoleManager =
                 new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-
+            /*
             if (!RoleManager.RoleExists("Admin"))
             {
                 var role = new IdentityRole();
@@ -118,6 +118,7 @@ namespace Food.Api
                 role.Name = "User";
                 RoleManager.Create(role);
             }
+            */
         }
     }
 }
