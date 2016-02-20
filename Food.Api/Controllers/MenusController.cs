@@ -15,7 +15,9 @@ using Microsoft.AspNet.Identity;
 
 namespace Food.Api.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    /// <summary>
+    /// Api for menu.
+    /// </summary>
     public class MenusController : ApiController
     {
         private FoodDBContext db = new FoodDBContext();
@@ -24,28 +26,52 @@ namespace Food.Api.Controllers
         /// <summary>
         /// Gets menu on week begin from monday.
         /// </summary>
-        
-        public List<Menu> GetMenus(string menu = "normal")
+        public List<Menu> GetMenus(string MenuMode = "normal", DateTime? StartDate = null)
         {
             MenuType get_type = MenuType.NormalMenu;
-            DateTime monday = DateTime.Today.AddDays(1 - (int)DateTime.Today.DayOfWeek);
+            if (StartDate == null)
+            {
+                StartDate = DateTime.Today.AddDays(1 - (int)DateTime.Today.DayOfWeek);
+            }
             string UserId = User.Identity.GetUserId();
-            
-            var query = db.Menus.Where(m => m.Type == get_type && m.OnDate >= monday).Include(m => m.Items.Select(i => i.Ratings));
-            
 
-            switch (menu)
+            var query = db.Menus.Include("Items").Include("Items.Ratings")
+                .Where(m => m.Type == get_type && m.OnDate >= StartDate).ToList();
+
+            //TODO: rewrite to sql 
+            foreach( var menu in query )
+            {
+                foreach(var item in menu.Items)
+                {
+                    var AllRatings = item.Ratings;
+                    item.Ratings = new List<ItemRating>();
+
+                    if (UserId != null)
+                    {
+                        var rate = AllRatings.Where(r => r.UserId == UserId).First();
+                        if (rate != null)
+                        {
+                            item.Ratings.Add(rate);
+                        }
+                    }
+                    var avg = AllRatings.Average( r=> r.Raiting);
+                    item.Ratings.Add(new ItemRating() { Id = -1, ItemId = item.Id, Raiting = (int)avg });
+                }
+            }
+
+
+            switch (MenuMode)
             {
                 case "none":
                     get_type = MenuType.NoneMenu;
-                    query = db.Menus.Include("Items").Where(m => m.Type == get_type);
+                    query = db.Menus.Include("Items").Where(m => m.Type == get_type).ToList();
                     break;
                 case "all":
-                    query = db.Menus.Include("Items").Where(m => m.Type == get_type);
+                    query = db.Menus.Include("Items").Where(m => m.Type == get_type).ToList();
                     break;
             }
 
-            return query.ToList();
+            return query;
         }
 
 

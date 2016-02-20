@@ -487,7 +487,12 @@
             </summary>
             <returns>List users</returns>
         </member>
-        <member name="M:Food.Api.Controllers.MenusController.GetMenus(System.String)">
+        <member name="T:Food.Api.Controllers.MenusController">
+            <summary>
+            Api for menu.
+            </summary>
+        </member>
+        <member name="M:Food.Api.Controllers.MenusController.GetMenus(System.String,System.Nullable{System.DateTime})">
             <summary>
             Gets menu on week begin from monday.
             </summary>

@@ -13,7 +13,8 @@ namespace Food.Api
     {
         public static void Register(HttpConfiguration config)
         {
-            config.EnableCors();
+            var corsConfig = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(corsConfig);
             // Конфигурация и службы Web API
             // Настройка Web API для использования только проверки подлинности посредством маркера-носителя.
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();

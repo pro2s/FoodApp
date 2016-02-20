@@ -49,7 +49,7 @@
             uc.error = true;
             
             
-            uc.sysmenu = Menu.query({menu:'none'});
+            uc.sysmenu = Menu.query({menuMode:'none'});
             uc.weekmenu = Menu.query();
             uc.days = UserDay.query({userid:uc.userid});
             

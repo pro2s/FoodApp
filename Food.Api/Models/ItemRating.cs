@@ -18,6 +18,11 @@ namespace Food.Api.Models
         public int Raiting { get; set; }
         public DateTime? Date { get; set; }
 
-        
+    }
+
+    public class ViewRating
+    {
+        public int Rating { get; set; }
+        public int AvgRating { get; set; }
     }
 }
