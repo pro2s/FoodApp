@@ -15,7 +15,7 @@ namespace Food.Api.Models
         public virtual Item Item { get; set; }
         
         public string UserId { get; set; }
-        public int Raiting { get; set; }
+        public int Rate { get; set; }
         public DateTime? Date { get; set; }
 
     }

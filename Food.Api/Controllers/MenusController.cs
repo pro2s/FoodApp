@@ -22,60 +22,85 @@ namespace Food.Api.Controllers
     {
         private FoodDBContext db = new FoodDBContext();
 
-        // GET: api/Menus
-        /// <summary>
-        /// Gets menu on week begin from monday.
-        /// </summary>
-        public List<Menu> GetMenus(string MenuMode = "normal", DateTime? StartDate = null)
+        private void CalculateRatings(List<Menu> menus)
         {
-            MenuType get_type = MenuType.NormalMenu;
-            if (StartDate == null)
-            {
-                StartDate = DateTime.Today.AddDays(1 - (int)DateTime.Today.DayOfWeek);
-            }
             string UserId = User.Identity.GetUserId();
-
-            var query = db.Menus.Include("Items").Include("Items.Ratings")
-                .Where(m => m.Type == get_type && m.OnDate >= StartDate).ToList();
-
             //TODO: rewrite to sql 
-            foreach( var menu in query )
+            foreach (var menu in menus)
             {
-                foreach(var item in menu.Items)
+                foreach (var item in menu.Items)
                 {
                     var AllRatings = item.Ratings;
                     item.Ratings = new List<ItemRating>();
 
-                    if (UserId != null && AllRatings.Count > 0)
-                    {
-                        var rate = AllRatings.Where(r => r.UserId == UserId).First();
-                        if (rate != null)
-                        {
-                            item.Ratings.Add(rate);
-                        }
-                    }
+                    // [0] - average rating 
                     if (AllRatings.Count > 0)
                     {
-                        var avg = AllRatings.Average(r => r.Raiting);
-                        item.Ratings.Add(new ItemRating() { Id = -1, ItemId = item.Id, Raiting = (int)avg });
+                        var avg = AllRatings.Average(r => r.Rate);
+                        item.Ratings.Add(new ItemRating() { Id = -1, ItemId = item.Id, Rate = (int)avg });
                     }
-                    
+                    else
+                    {
+                        ItemRating rate = new ItemRating() { Id = -1, ItemId = item.Id, Rate = 0 };
+                        item.Ratings.Add(rate);
+                    }
+
+                    // [1] - user rating, undefined if not logined
+                    if (UserId != null)
+                    {
+                        var rate = AllRatings.Where(r => r.UserId == UserId);
+                        if (rate.Any())
+                        {
+                            item.Ratings.Add(rate.First());
+                        }
+                        else
+                        {
+                            item.Ratings.Add(new ItemRating() {
+                                Id = 0,
+                                ItemId = item.Id,
+                                UserId = UserId,
+                                Rate = 0,
+                                Date = DateTime.Today
+                            });
+                        }
+                    }
                 }
             }
+        }
 
+        /// <summary>
+        /// Gets menu on week begin from StartDate. 
+        /// GET: api/Menus
+        /// </summary>
+        /// <param name="MenuMode"></param>
+        /// <param name="StartDate">return menu from this date</param>
+        /// <returns>Menu on week</returns>
+        public List<Menu> GetMenus(string MenuMode = "normal", DateTime? StartDate = null)
+        {
+            MenuType get_type = MenuType.NormalMenu;
+            List<Menu> result = new List<Menu>();
+
+            if (StartDate == null)
+            {
+                StartDate = DateTime.Today.AddDays(1 - (int)DateTime.Today.DayOfWeek);
+            }
 
             switch (MenuMode)
             {
                 case "none":
                     get_type = MenuType.NoneMenu;
-                    query = db.Menus.Include("Items").Where(m => m.Type == get_type).ToList();
+                    result = db.Menus.Include("Items").Where(m => m.Type == get_type).ToList();
                     break;
                 case "all":
-                    query = db.Menus.Include("Items").Where(m => m.Type == get_type).ToList();
+                    result = db.Menus.Include("Items").Where(m => m.Type == get_type).ToList();
+                    break;
+                default:
+                    result = db.Menus.Include("Items").Include("Items.Ratings")
+                            .Where(m => m.Type == get_type && m.OnDate >= StartDate).ToList();
+                    CalculateRatings(result);
                     break;
             }
-
-            return query;
+            return result;
         }
 
 

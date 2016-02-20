@@ -494,8 +494,12 @@
         </member>
         <member name="M:Food.Api.Controllers.MenusController.GetMenus(System.String,System.Nullable{System.DateTime})">
             <summary>
-            Gets menu on week begin from monday.
+            Gets menu on week begin from StartDate. 
+            GET: api/Menus
             </summary>
+            <param name="MenuMode"></param>
+            <param name="StartDate">return menu from this date</param>
+            <returns>Menu on week</returns>
         </member>
         <member name="M:Food.Api.Controllers.MenusController.Options">
             <summary>
@@ -506,6 +510,26 @@
         <member name="T:Food.Api.Models.UsersViewModel">
             <summary>
             Temporaly view model for users list
+            </summary>
+        </member>
+        <member name="T:Food.Api.ChudoPechka">
+            <summary>
+            Service for parsing menu from site chudo-pechka.by
+            </summary>
+        </member>
+        <member name="M:Food.Api.ChudoPechka.#ctor">
+            <summary>
+            Constructor
+            </summary>
+        </member>
+        <member name="M:Food.Api.ChudoPechka.LoadDoc">
+            <summary>
+            Load and parse menu from .doc file
+            </summary>
+        </member>
+        <member name="M:Food.Api.ChudoPechka.Load">
+            <summary>
+            Load and parse menu from html page
             </summary>
         </member>
     </members>

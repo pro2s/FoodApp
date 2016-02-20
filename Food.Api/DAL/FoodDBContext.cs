@@ -24,10 +24,10 @@ namespace Food.Api.DAL
         public DbSet<UserChoice> UserChoices { get; set; }
         public DbSet<Payment> Payments { get; set; }
        
-        /*
+        
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            /*
+           
             modelBuilder.Entity<Menu>()
                 .HasMany(c => c.Items)
                 .WithMany()             
@@ -40,6 +40,6 @@ namespace Food.Api.DAL
         
             base.OnModelCreating(modelBuilder);
         }
-        */
+        
     }
 }

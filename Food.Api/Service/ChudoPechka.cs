@@ -45,9 +45,7 @@ namespace Food.Api
                 .Attributes["href"].Value;
 
         }
-        /// <summary>
-        /// Constructor
-        /// </summary>
+      
         public ChudoPechka()
         {
             _url = "http://chudo-pechka.by/";
@@ -77,6 +75,7 @@ namespace Food.Api
 
         private void FillMenu(List<Item> items, int day)
         {
+            // TODO: get template for menu from DB
             Menu daymenu = new Menu()
             {
                 Name = "Полный обед",
@@ -185,12 +184,17 @@ namespace Food.Api
                 List<Item> items = new List<Item>();
                 try
                 {
-                    var menu_items = item.Element("div").Element("span");
+                    var menu_items = item.Element("div");
                     menu_items.InnerHtml = menu_items.InnerHtml.Replace("<br>", "\n");
 
                     string result = HttpUtility.HtmlDecode(menu_items.InnerText);
-                    
-                    var matches = Regex.Matches(result, @"((?<name>[^\n]+),(?<weight>[\s0-9/]+)([^\n]+))|(?<name>[^\n]+)");
+
+                    // Regex for "<name>, <weight>(0-9,/,space)" or "<name>"
+                    // @"((?<name>[^\n]+),(?<weight>[\s0-9/]+)([^\n]+))|(?<name>[^\n]+)"
+
+                    // TODO: move Regex to config for service
+                    var matches = Regex.Matches(result, @"(?<name>[^\n]+),(?<weight>[\s0-9/]+)([^\n]+)");
+
                     foreach (Match m in matches)
                     {
                         Item menu_item = new Item();
@@ -202,13 +206,13 @@ namespace Food.Api
                 }
                 catch
                 {
-
+                    throw new ArgumentException();
                 }
 
                 FillMenu(items, day);
                 
                 ++day;
-                if (day > 5) break;
+                if (day > 4) break;
             }
         }
     }
