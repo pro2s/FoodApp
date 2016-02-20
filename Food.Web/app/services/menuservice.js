@@ -4,7 +4,8 @@
         .module('app.menuservice', ['ngResource'])
         .factory('Menu', Menu)
         .factory('MenuItem', MenuItem) 
-        .factory('GlobalMenu', GlobalMenu);
+        .factory('GlobalMenu', GlobalMenu)
+        .factory('ItemRating', ItemRating);
 
     Menu.$inject = ['Config', '$resource'];    
     function Menu(Config, $resource) {
@@ -53,4 +54,12 @@
         }
     }
     
+    ItemRating.$inject = ['Config', '$resource'];
+    function ItemRating(Config, $resource) {
+        return $resource(Config.get('api') + 'api/itemratings/:id', {}, {
+            query: { method: 'GET', params: { id: '' }, isArray: true },
+            update: { method: 'PUT', params: { id: '' }},
+        });
+    }
+
 })()

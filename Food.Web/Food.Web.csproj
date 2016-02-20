@@ -166,7 +166,6 @@
   <ItemGroup>
     <Content Include="App\admin.module.js" />
     <Content Include="App\app.js" />
-    <Content Include="App\authcomplete.js" />
     <Content Include="App\controllers\choiceadmin.js" />
     <Content Include="App\controllers\editmenu.js" />
     <Content Include="App\controllers\topmenu.js" />
@@ -175,6 +174,7 @@
     <Content Include="App\controllers\userview.js" />
     <Content Include="App\controllers\viewmenu.js" />
     <Content Include="App\directives\loginform.js" />
+    <Content Include="App\directives\starrating.js" />
     <Content Include="App\menu.module.js" />
     <Content Include="App\services\authservice.js" />
     <Content Include="App\services\config.js" />

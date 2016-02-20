@@ -45,12 +45,12 @@
 					<tr >
 						<td ng-repeat="day in uc.weekdays">
 							<dl>
-								<dt class="text-center">{{day.select.name}}</dd>
+								<dt class="text-center">{{day.select.name}}</dt>
 								<dd ng-repeat="item in day.select.items">
 								{{$index+1}}. {{item.name}}
 								</dd>
 								<dt ng-if="day.select.price>0" class="text-center">{{day.select.price}}</dt>
-							</ul>
+							</dl>
 						</td>
 					</tr>
 					</tbody>
@@ -75,15 +75,24 @@
         <div class="col-md-3" ng-if="vm.isshow(menu)">
             <div class="panel" ng-class="{'panel-primary': vm.isold(menu.onDate),'panel-default': !vm.isold(menu.onDate)}">
 
-                <div class="panel-heading">{{menu.name}} на {{menu.onDate|date:'dd.MM.yyyy'}} 
-                    <div star-rating ng-model="menu.rating" on-rating-select="" readonly="uc.readonly"></div>
-                </div>
+                <div class="panel-heading">{{menu.name}} на {{menu.onDate|date:'dd.MM.yyyy'}}</div>
 
                 <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="item in menu.items"><span class="badge">{{item.weight}}</span>{{item.name}}</li>
+                    <li class="list-group-item" ng-repeat="item in menu.items">
+                        <span class="badge">{{item.weight}}</span>
+                        {{item.name}}
+                        <div star-rating 
+                             ng-model="item.ratings[1].rate" 
+                             avg-rating="item.ratings[0].rate" 
+                             on-rating-select="vm.setRating(item.ratings[1])" 
+                             readonly="uc.readonly"></div>
+                    </li>
                 </ul>
 
-                <div class="panel-footer price">Цена: {{menu.price}} руб.</div>
+                <div class="panel-footer price">
+                    <div>Цена {{menu.price}} руб.</div>
+                    <div star-rating avg-rating="vm.getMenuRating(menu)" readonly="true"></div>
+                </div>
             </div>
         </div>
     </div>

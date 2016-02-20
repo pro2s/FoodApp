@@ -50,13 +50,13 @@
             });
             
             /**
-           * @name getUsers
-           * @desc Get User list in object with key as user.id and value as user 
-           * @param {String} data Raw response from api with json data
-           * @param {Array} header Http headersGetter
-           * @returns {Object}
-           * @memberOf Factories.User
-           */
+            * @name getUsers
+            * @desc Get User list in object with key as user.id and value as user 
+            * @param {String} data Raw response from api with json data
+            * @param {Array} header Http headersGetter
+            * @returns {Object}
+            * @memberOf Factories.User
+            */
             function getUsers(data, header) {
                 var jsonData = angular.fromJson(data);
                 var users = {};

@@ -4,9 +4,9 @@
         .module('app.menu')
         .controller('ViewMenu', ViewMenu)
     
-    ViewMenu.$inject = ['GlobalMenu','Menu','dateservice'];    
+    ViewMenu.$inject = ['GlobalMenu','Menu','ItemRating','dateservice'];    
     
-    function ViewMenu(GlobalMenu, Menu, dateservice) {
+    function ViewMenu(GlobalMenu, Menu, ItemRating, dateservice) {
         var vm = this;
         vm.title = "Loading menu ...";
         vm.weekmenu = [];
@@ -14,7 +14,8 @@
         vm.components = false;
         vm.isshow = isShow;
         vm.isold = dateservice.check;
-        
+        vm.getMenuRating = getMenuRating;
+        vm.setRating = setRating;
         
         activate();
             
@@ -39,7 +40,30 @@
             return !vm.tomorrow || dateservice.check(menu.onDate);
         }
         
-        
+        function getMenuRating(menu) {
+            var rating = 0;
+            var count = 0;
+            angular.forEach(menu.items, function(item) {
+                var rate = item.ratings[0].rate;
+                if (rate) {
+                    rating += rate;
+                    count++;
+                }
+            });
+            if (count > 0) {
+                rating = rating / count;
+            }
+            return rating;
+        }
+
+        function setRating(rating) {
+            var ir = new ItemRating(rating);
+            if (rating.id == 0) {
+                ir.$save();
+            } else {
+                ir.$update({ id: rating.id })
+            }
+        }
     };
 
 })();    
