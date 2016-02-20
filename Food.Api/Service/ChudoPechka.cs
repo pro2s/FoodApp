@@ -13,25 +13,10 @@ using Food.Api.Models;
 
 namespace Food.Api
 {
-    /* 
-     public class Item
-     {
-         public int Id { get; set; }
-         public string Name { get; set; }
-         public string Parts { get; set; }
-         public string Weight { get; set; }
-     }
-
-     public class Menu
-     {
-         public int Id { get; set; }
-         public string Name { get; set; }
-         public virtual List<Item> Items { get; set; }
-         public int Price { get; set; }
-         public DateTime? OnDate { get; set; }
-     }
-     */
-
+   
+    /// <summary>
+    /// Service for parsing menu from site chudo-pechka.by
+    /// </summary>
     public class ChudoPechka
     {
         string _url;
@@ -60,7 +45,9 @@ namespace Food.Api
                 .Attributes["href"].Value;
 
         }
-
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public ChudoPechka()
         {
             _url = "http://chudo-pechka.by/";
@@ -121,6 +108,9 @@ namespace Food.Api
             _weekmenu.Add(daymenu);
         }
 
+        /// <summary>
+        /// Load and parse menu from .doc file
+        /// </summary>
         public void LoadDoc()
         {
             Init();
@@ -182,7 +172,9 @@ namespace Food.Api
             ((Word._Application) wordApp).Quit();
         }
 
-
+        /// <summary>
+        /// Load and parse menu from html page
+        /// </summary>
         public void Load()
         {
             Init();
@@ -193,17 +185,18 @@ namespace Food.Api
                 List<Item> items = new List<Item>();
                 try
                 {
-                    string result = HttpUtility.HtmlDecode(item.Element("div").Element("span").InnerText);
-                    var matches = Regex.Matches(result, "(.*?),(.*?)гр");
+                    var menu_items = item.Element("div").Element("span");
+                    menu_items.InnerHtml = menu_items.InnerHtml.Replace("<br>", "\n");
+
+                    string result = HttpUtility.HtmlDecode(menu_items.InnerText);
+                    
+                    var matches = Regex.Matches(result, @"((?<name>[^\n]+),(?<weight>[\s0-9/]+)([^\n]+))|(?<name>[^\n]+)");
                     foreach (Match m in matches)
                     {
-                        items.Add(
-                            new Item()
-                            {
-                                Name = m.Groups[1].Value.Trim(),
-                                Weight = m.Groups[2].Value.Trim()
-                            }
-                        );
+                        Item menu_item = new Item();
+                        menu_item.Name = m.Groups["name"].Value.Trim();
+                        menu_item.Weight = m.Groups["weight"].Value.Trim();
+                        items.Add(menu_item);
                     }
 
                 }

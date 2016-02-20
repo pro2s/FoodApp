@@ -46,7 +46,7 @@ namespace Food.Api.Controllers
                     var AllRatings = item.Ratings;
                     item.Ratings = new List<ItemRating>();
 
-                    if (UserId != null)
+                    if (UserId != null && AllRatings.Count > 0)
                     {
                         var rate = AllRatings.Where(r => r.UserId == UserId).First();
                         if (rate != null)
@@ -54,8 +54,12 @@ namespace Food.Api.Controllers
                             item.Ratings.Add(rate);
                         }
                     }
-                    var avg = AllRatings.Average( r=> r.Raiting);
-                    item.Ratings.Add(new ItemRating() { Id = -1, ItemId = item.Id, Raiting = (int)avg });
+                    if (AllRatings.Count > 0)
+                    {
+                        var avg = AllRatings.Average(r => r.Raiting);
+                        item.Ratings.Add(new ItemRating() { Id = -1, ItemId = item.Id, Raiting = (int)avg });
+                    }
+                    
                 }
             }
 
