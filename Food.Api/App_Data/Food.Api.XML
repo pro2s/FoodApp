@@ -517,11 +517,6 @@
             Service for parsing menu from site chudo-pechka.by
             </summary>
         </member>
-        <member name="M:Food.Api.ChudoPechka.#ctor">
-            <summary>
-            Constructor
-            </summary>
-        </member>
         <member name="M:Food.Api.ChudoPechka.LoadDoc">
             <summary>
             Load and parse menu from .doc file

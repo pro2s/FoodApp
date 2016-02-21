@@ -16,7 +16,6 @@ namespace Food.Api
             var corsConfig = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(corsConfig);
             // Конфигурация и службы Web API
-            // Настройка Web API для использования только проверки подлинности посредством маркера-носителя.
             config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize;
             config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.Objects;
@@ -25,6 +24,7 @@ namespace Food.Api
             var formatters = GlobalConfiguration.Configuration.Formatters;
             formatters.Remove(formatters.XmlFormatter);
             
+            // Настройка Web API для использования только проверки подлинности посредством маркера-носителя.
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 

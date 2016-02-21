@@ -20,6 +20,7 @@ namespace Food.Api.DAL
 
             menus.ForEach(m => context.Menus.Add(m));
             context.SaveChanges();
+            base.Seed(context);
         }
     }
 }

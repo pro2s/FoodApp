@@ -91,6 +91,7 @@ namespace Food.Api
 
 
             // Настройка ролей
+            // TODO: move to IdentityModels in Initializer
             ApplicationDbContext context = new ApplicationDbContext();
 
             UserManager<ApplicationUser> UserManager =

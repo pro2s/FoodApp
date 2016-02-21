@@ -13,8 +13,7 @@ namespace Food.Api.DAL
 
         public FoodDBContext() : base("DefaultConnection")
         {
-            Database.SetInitializer(new CreateDatabaseIfNotExists<FoodDBContext>());
-            Database.SetInitializer(new FoodDBInitializer());
+            Database.SetInitializer<FoodDBContext>(new FoodDBInitializer());
             base.Configuration.ProxyCreationEnabled = false;
         }
 

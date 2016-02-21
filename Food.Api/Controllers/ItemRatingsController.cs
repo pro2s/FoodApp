@@ -11,12 +11,19 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Food.Api.DAL;
 using Food.Api.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Food.Api.Controllers
 {
     public class ItemRatingsController : ApiController
     {
         private FoodDBContext db = new FoodDBContext();
+        private string UserId = string.Empty;
+
+        public ItemRatingsController()
+        {
+            UserId = User.Identity.GetUserId();
+        }
 
         // GET: api/ItemRatings
         public IQueryable<ItemRating> GetItemRatings()
@@ -76,11 +83,11 @@ namespace Food.Api.Controllers
         [ResponseType(typeof(ItemRating))]
         public async Task<IHttpActionResult> PostItemRating(ItemRating itemRating)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || itemRating.UserId != UserId)
             {
                 return BadRequest(ModelState);
             }
-
+            
             db.ItemRatings.Add(itemRating);
             await db.SaveChangesAsync();
 
