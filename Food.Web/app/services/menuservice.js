@@ -22,12 +22,16 @@
           update: {method:'PUT', params:{id:''}, isArray:true}
         });
     }
-
-    function GlobalMenu() {
-        var _menu = [];
-        var empty = true;
+    
+    GlobalMenu.$inject = ['Menu','authservice'];
+    function GlobalMenu(Menu, authservice) {
+        var _data = { menu: [], empty: true };
+        authservice.registerEvent('UserLogged', updateMenu)
+        authservice.registerEvent('UserLogout', updateMenu)
+        updateMenu();
+        
         var service = {
-            empty: empty,
+            data: _data,
             setMenu: setMenu,
             getMenu: getMenu,
             addMenu: addMenu,
@@ -35,22 +39,32 @@
         };
         return service;
 
+        function updateMenu() {
+            Menu.query(success, clearMenu);
+
+            function success(data) {
+                _data.menu = data;
+                _data.empty = false;
+            };
+
+        }
+
         function setMenu(menu) {
-            _menu = menu;
-            empty = false;
+            _data.menu = menu;
+            _data.empty = false;
         }
         
         function getMenu() {
-            return _menu;
+            return _data.menu;
         }
         
         function addMenu(menu) {
-            _menu.push(menu);
+            _data.menu.push(menu);
         }
         
         function clearMenu() {
-            _menu = [];
-            empty = true;
+            _data.menu = [];
+            _data.empty = true;
         }
     }
     

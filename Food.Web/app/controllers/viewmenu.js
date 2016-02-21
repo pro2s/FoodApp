@@ -4,12 +4,12 @@
         .module('app.menu')
         .controller('ViewMenu', ViewMenu)
     
-    ViewMenu.$inject = ['GlobalMenu','Menu','ItemRating','dateservice'];    
+    ViewMenu.$inject = ['GlobalMenu','ItemRating','dateservice'];    
     
-    function ViewMenu(GlobalMenu, Menu, ItemRating, dateservice) {
+    function ViewMenu(GlobalMenu, ItemRating, dateservice) {
         var vm = this;
-        vm.title = "Loading menu ...";
-        vm.weekmenu = [];
+        vm.title = "Week Menu";
+        vm.data = {};
         vm.tomorrow = false;
         vm.components = false;
         vm.isshow = isShow;
@@ -20,20 +20,7 @@
         activate();
             
         function activate() {
-            
-            Menu.query(success, failure);    
-            
-            function success(data) {
-
-                vm.title = "Week Menu";
-                GlobalMenu.setMenu(data);
-                vm.weekmenu = GlobalMenu.getMenu();
-            };
-            
-            function failure(data) {
-                vm.title = "Oops... something went wrong";
-
-            };
+            vm.data = GlobalMenu.data;
         }
         
         function isShow(menu) {
@@ -44,10 +31,12 @@
             var rating = 0;
             var count = 0;
             angular.forEach(menu.items, function(item) {
-                var rate = item.ratings[0].rate;
-                if (rate) {
-                    rating += rate;
-                    count++;
+                if (item.ratings != undefined) {
+                    var rate = item.ratings[0].rate;
+                    if (rate) {
+                        rating += rate;
+                        count++;
+                    }
                 }
             });
             if (count > 0) {
@@ -63,6 +52,16 @@
             } else {
                 ir.$update({ id: rating.id })
             }
+        }
+
+        function updateRatings(rating) {
+            angular.forEach(vm.data.menu, function (menu) {
+                angular.forEach(menu.items, function (item) {
+                    if (item.id == rating.itemId && item.ratings[1].rate != rating.rate) {
+                        item.ratings[1].rate != rating.rate;
+                    }
+                });
+            });
         }
     };
 

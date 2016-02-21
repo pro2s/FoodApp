@@ -105,7 +105,7 @@
 			</div>
 		</div>
 		<div class="col-sm-2">&nbsp;</div>
-        <div ng-repeat="menu in vm.weekmenu">
+        <div ng-repeat="menu in vm.data.menu">
              <div class="col-sm-4" ng-if="vm.isshow(menu)" ng-class="{clearfix:$index % 3 == 0}">
                 <div class="panel" ng-class="{'panel-primary': vm.isold(menu.onDate),'panel-default': !vm.isold(menu.onDate)}" >
 

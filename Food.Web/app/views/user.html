@@ -69,8 +69,7 @@
             Tomorrow Only 
         </button>
     </div>
-
-    <div ng-repeat="menu in vm.weekmenu" >
+    <div ng-repeat="menu in vm.data.menu" >
         <div class="clearfix" ng-if="$index % 4 == 0"></div>
         <div class="col-md-3" ng-if="vm.isshow(menu)">
             <div class="panel" ng-class="{'panel-primary': vm.isold(menu.onDate),'panel-default': !vm.isold(menu.onDate)}">
