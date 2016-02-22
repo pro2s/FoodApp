@@ -13,12 +13,35 @@ using Food.Api.Models;
 using System.Web.Http.Cors;
 using Microsoft.AspNet.Identity;
 
+using Microsoft.AspNet.Identity.Owin;
+
 namespace Food.Api.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    
     public class PaymentsController : ApiController
     {
-        private FoodDBContext db = new FoodDBContext();
+        private FoodDBContext db; 
+        
+
+        public PaymentsController()
+        {
+            db = new FoodDBContext();
+        }
+
+
+        private ApplicationUserManager _userManager;
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
 
         // GET: api/Payments
         public IQueryable<Payment> GetPayments(string list = "user")
@@ -81,6 +104,56 @@ namespace Food.Api.Controllers
             }
 
             return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // POST: api/Payments/Share
+        [ResponseType(typeof(Payment))]
+        [HttpPost]
+        [Route("api/Payments/Share", Name="ShareBalance")]
+        public IHttpActionResult ShareBalance(ShareToBindingModel Share)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            string UserId = User.Identity.GetUserId();
+            var ToUser = UserManager.FindByEmail(Share.Email);
+            if (ToUser == null)
+            {
+                ModelState.AddModelError("Share.Email", "User not found.");
+                return BadRequest(ModelState);
+            }
+
+            int debit = db.Payments.Where(p => p.UserID == UserId).Sum(p => (int?)p.Sum) ?? 0;
+            int credit = db.UserChoices.Where(uc => uc.UserID == UserId && uc.confirm).Sum(uc => (int?)uc.Menu.Price) ?? 0;
+            if (debit - credit - Share.Amount < 0)
+            {
+                ModelState.AddModelError("Share.Amount", "Insufficient balance.");
+                return BadRequest(ModelState);
+            }
+
+            Payment payment_to = new Payment()
+            {
+                UserID = ToUser.Id,
+                Sum = Share.Amount,
+                Date = DateTime.Today
+            };
+
+            Payment payment_from = new Payment()
+            {
+                UserID = UserId,
+                Sum = -1 * Share.Amount,
+                Date = DateTime.Today
+            };
+
+
+            db.Payments.Add(payment_to);
+            db.Payments.Add(payment_from);
+            db.SaveChanges();
+
+            return CreatedAtRoute("ShareBalance", new { id = payment_from.Id }, payment_from);
         }
 
         // POST: api/Payments

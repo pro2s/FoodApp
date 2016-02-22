@@ -2,6 +2,13 @@
      
 }
 
+/* bug in inline forms */
+.form-control-inline {
+    min-width: 0;
+    width: auto;
+    display: inline;
+}
+
 .glyphicon {
     line-height: 0.9!important;
 }
@@ -13,6 +20,7 @@
 .validation-summary-valid {
      display: none;
 }
+
 table.selectday {
     table-layout: fixed;
     word-wrap: break-word;

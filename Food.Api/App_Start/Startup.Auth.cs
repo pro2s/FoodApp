@@ -91,14 +91,14 @@ namespace Food.Api
 
 
             // Настройка ролей
-            // TODO: move to IdentityModels in Initializer
+            // TODO?: move to IdentityModels in Initializer
             ApplicationDbContext context = new ApplicationDbContext();
 
             UserManager<ApplicationUser> UserManager =
                 new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             RoleManager<IdentityRole> RoleManager =
                 new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            /*
+            
             if (!RoleManager.RoleExists("Admin"))
             {
                 var role = new IdentityRole();
@@ -119,7 +119,7 @@ namespace Food.Api
                 role.Name = "User";
                 RoleManager.Create(role);
             }
-            */
+            
         }
     }
 }

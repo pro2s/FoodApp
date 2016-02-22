@@ -13,9 +13,15 @@
         vm.setAdmin = setAdmin;
         vm.payments = [];
         vm.userchoices = [];
+        vm.share = {
+            amount: 0,
+            email: ''
+        }
+
+        vm.shareBalance = shareBalance;
         vm.getPaymentSum = getPaymentSum;
         vm.getChoicesSum = getChoicesSum;
-        
+
         activate();
 
         function activate() {
@@ -67,6 +73,26 @@
         function setAdmin() {
             var acc = new Account({Role:'Admin'});
             acc.$save({ action: 'SetRole'});
+        }
+
+        function shareBalance(form) {
+            var payment = new Payment(vm.share);
+            payment.$share({},function (payment) {
+                vm.payments.push(payment);
+            }, function (error) {
+                vm.shareError = "Send balance error.";
+                if (error.data.modelState['share.Email']) {
+                    form.email.$setValidity('email', false); 
+                } else {
+                    form.email.$setValidity('email', true);
+                }
+
+                if (error.data.modelState['share.Amount']) {
+                    form.amount.$setValidity('amount', false);
+                } else {
+                    form.amount.$setValidity('amount', true);
+                }
+            });
         }
     }
 })();

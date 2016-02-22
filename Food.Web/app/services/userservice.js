@@ -14,7 +14,8 @@
           function(Config, $resource){
             return $resource(Config.get('api') + 'api/payments/:id', {}, {
               query: {method:'GET', params:{id:''},	 isArray:true},
-              update: {method:'PUT', params:{id:''}},
+              update: { method: 'PUT', params: { id: '' } },
+              share: { method: 'POST', params: { id: 'share' } }
             });
         }])	
         .factory('Account', ['Config', '$resource',

@@ -7,16 +7,54 @@
         <a href="" ng-click="vm.setAdmin()">Стать администратором</a>
     </div>
 </div>
-<div class="col-md-12 alert alert-info text-center" role="alert">Bill: {{vm.getPaymentSum()-vm.getChoicesSum()}}</div>
+<div class="col-md-12 alert alert-info text-center" role="alert"><b>Balance:</b> {{vm.getPaymentSum()-vm.getChoicesSum()}}</div>
+<div class="row">
+    
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Sharing Balance</div>
+            <div class="panel-body">
+                <form class="form-inline" name="shareBalance">
+                    <p class="text-danger" ng-show="shareBalance.$invalid" ng-bind="vm.shareError">...</p>
+                    <div class="form-group" ng-class="{ 'has-error' : shareBalance.amount.$invalid }">
+                        <label class="control-label" for="amount">Ammount</label>
+                        <input type="text" class="form-control form-control-inline" id="amount" name="amount" placeholder="" ng-model="vm.share.amount">
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error' : shareBalance.email.$invalid }">
+                        <label class="control-label" for="email">send to Email</label>
+                        <input type="email" class="form-control form-control-inline" id="email" name="email" placeholder="jane.doe@example.com" ng-model="vm.share.email">
+                    </div>
+                    <button type="submit" class="btn btn-default" ng-click="vm.shareBalance(shareBalance)">Send</button>
+                </form>
+            </div>
+        </div>
+    
+    </div>
+</div>
 <div class="row">
     <div class="col-md-6">
-        <div><b>User payments</b></div>
-        <div ng-repeat="payment in vm.payments">{{payment.date|date:'dd.MM.yyyy'}} - {{payment.sum}}</div>
-        <div><b>Total:</b> {{vm.getPaymentSum()}}</div>
+        <div class="panel panel-default">
+            <div class="panel-heading">User payments</div>
+            <div class="panel-body">
+                <div ng-class="{'text-danger':payment.sum<0}" ng-repeat="payment in vm.payments">
+                    {{payment.date|date:'dd.MM.yyyy'}} : {{payment.sum}} <span ng-show="payment.sum<0">Balance sharing</span>
+                </div>
+            </div>
+            <div class="panel-footer"><b>Total:</b> {{vm.getPaymentSum()}}</div>
+        </div>
     </div>
     <div class="col-md-6">
-        <div><b>User orders</b></div>
-        <div ng-class="{'text-success':choice.confirm}" ng-repeat="choice in vm.userchoices">{{choice.date|date:'dd.MM.yyyy'}} - {{choice.menu.name}} ({{choice.menu.price}})&nbsp;<span ng-if="choice.confirm" class="glyphicon glyphicon-ok"></span></div>
-        <div><b>Total:</b> {{vm.getChoicesSum()}}</div>
+        <div class="panel panel-default">
+            <div class="panel-heading">User orders</div>
+            <div class="panel-body">
+                <div ng-class="{'text-success':choice.confirm}" ng-repeat="choice in vm.userchoices">
+                    {{choice.date|date:'dd.MM.yyyy'}} - {{choice.menu.name}} ({{choice.menu.price}})&nbsp;<span ng-if="choice.confirm" class="glyphicon glyphicon-ok"></span>
+                </div>
+            </div>
+            <div class="panel-footer"><b>Total:</b> {{vm.getChoicesSum()}}</div>
+        </div>
+        
+        
+        
     </div>
 </div>
