@@ -12,6 +12,7 @@
             registred: true,
             error: false,
             errors: {},
+            username: '',
             email: '',
             password: '',
             confirmPassword: '',
@@ -23,12 +24,13 @@
             roles:[],
             email:'',
             username: '',
+            userinfo: {},
         };
         
         var _view = {
             show: function() {},
-            hide: function () { },
-            isError: function () { },
+            hide: function () {},
+            isError: function () {},
         }
 
         var _handlers = {};
@@ -104,7 +106,9 @@
         function successInit(data) {
             _state.isLogged = true;
             _state.username = data.userName;
+            _state.email = data.email;
             _state.roles = data.roles;
+            _state.userinfo = data;
 
             if (_form.active) {
                 _view.hide();
@@ -181,6 +185,7 @@
 
         function doRegister() {
             var data = {
+                userName: _form.username,
                 email: _form.email,
                 password: _form.password,
                 confirmPassword: _form.confirmPassword
@@ -200,6 +205,7 @@
             _form.error = true;
             if (data) {
                 _form.msg = data.message;
+                _form.errors['userName'] = data.modelState['model.UserName'];
                 _form.errors['email'] = data.modelState['model.Email'];
                 _form.errors['password'] = data.modelState['model.Password'];
                 _form.errors['confirmPassword'] = data.modelState['model.ConfirmPassword'];
