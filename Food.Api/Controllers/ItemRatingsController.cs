@@ -18,13 +18,10 @@ namespace Food.Api.Controllers
     public class ItemRatingsController : ApiController
     {
         private FoodDBContext db = new FoodDBContext();
-        private string UserId = string.Empty;
+        
 
-        public ItemRatingsController()
-        {
-            UserId = User.Identity.GetUserId();
-        }
-
+    
+    
         // GET: api/ItemRatings
         public IQueryable<ItemRating> GetItemRatings()
         {
@@ -83,6 +80,8 @@ namespace Food.Api.Controllers
         [ResponseType(typeof(ItemRating))]
         public async Task<IHttpActionResult> PostItemRating(ItemRating itemRating)
         {
+            string UserId = User.Identity.GetUserId();
+
             if (!ModelState.IsValid || itemRating.UserId != UserId)
             {
                 return BadRequest(ModelState);

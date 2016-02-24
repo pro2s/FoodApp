@@ -48,7 +48,12 @@
         function setRating(rating) {
             var ir = new ItemRating(rating);
             if (rating.id == 0) {
-                ir.$save();
+                ir.$save().then(function(data){
+                    rating.id = data.id;
+                })
+                .catch(function (error) {
+                    rating.rate = 0;
+                });
             } else {
                 ir.$update({ id: rating.id })
             }
