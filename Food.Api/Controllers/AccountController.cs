@@ -61,19 +61,30 @@ namespace Food.Api.Controllers
         [Route("UserInfo")]
         public UserInfoViewModel GetUserInfo()
         {
-            List<string> roles = new List<string>();
+            List<string> Roles = new List<string>();
+            string UserName = User.Identity.GetUserName();
+            string Email = UserName;
+            bool IsEmailConfirmed = false;
 
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
+
             if (externalLogin == null)
             {
-                roles = UserManager.GetRoles(User.Identity.GetUserId()).ToList();
+                Roles = UserManager.GetRoles(User.Identity.GetUserId()).ToList();
+                IdentityUser user = UserManager.FindById(User.Identity.GetUserId());
+                UserName = user.UserName;
+                Email = user.Email;
+                IsEmailConfirmed = user.EmailConfirmed;
             }
+
+            
             
             return new UserInfoViewModel
             {
-                Roles = roles,
-                UserName = User.Identity.GetUserName(),
-                Email = User.Identity.GetUserName(),
+                Roles = Roles,
+                UserName = UserName,
+                Email = Email,
+                IsEmailConfirmed = IsEmailConfirmed,
                 HasRegistered = externalLogin == null,
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
             };
@@ -167,6 +178,7 @@ namespace Food.Api.Controllers
         }
 
         // POST api/Account/SetRole
+        // TODO: Must by limited only for role GlobalAdmin
         [Route("SetRole")]
         public async Task<IHttpActionResult> SetRole(SetRoleBindingModel model)
         {
@@ -175,7 +187,6 @@ namespace Food.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            
             IdentityResult result = await UserManager.AddToRoleAsync(User.Identity.GetUserId(), model.Role);
 
             if (!result.Succeeded)
@@ -301,7 +312,7 @@ namespace Food.Api.Controllers
                 }
                 else
                 {
-                    user = new ApplicationUser() { UserName = externalLogin.UserName, Email = info.Email };
+                    user = new ApplicationUser() { UserName = externalLogin.UserName, Email = info.Email, EmailConfirmed = true};
                     IdentityResult result = await UserManager.CreateAsync(user);
                     if (!result.Succeeded)
                     {
@@ -381,15 +392,90 @@ namespace Food.Api.Controllers
         [Route("Register")]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
+            var existUser = await UserManager.FindByEmailAsync(model.Email);
+            if (existUser != null)
+            {
+                ModelState.AddModelError("model.Email", "User email alredy exist.");
+                return BadRequest(ModelState);
+            }
+
+            existUser = await UserManager.FindByNameAsync(model.UserName);
+            if (existUser != null)
+            {
+                ModelState.AddModelError("model.UserName", "User name alredy exist.");
+                return BadRequest(ModelState);
+            }
+
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+            else
+            {
+                await SendConfirmEmail(user);
+            }
+
+            return Ok();
+        }
+
+        // POST api/Account/ReConfirmEmail
+        [Route("ReConfirmEmail")]
+        public async Task<IHttpActionResult> ReConfirmEmail()
+        {
+            IdentityUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            await SendConfirmEmail(user);
+            return Ok();
+        }
+
+        private async Task SendConfirmEmail(IdentityUser user)
+        {
+            if (user == null)
+            {
+                throw new NullReferenceException("User not exist.");
+            }
+
+            var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+
+            // TODO: Change url to Request.Headers.Referrer + "#/confirm" - need use LocalStorage instead Session Storage
+
+            var url = Url.Link("Default", new
+            {
+                Controller = "Home",
+                Action = "ConfirmEmail",
+                userId = user.Id,
+                code = code,
+            });
+
+            EmailConfirmViewModel confirm = new EmailConfirmViewModel()
+            {
+                UserName = user.UserName,
+                Url = url
+            };
+
+
+            string body = Razor.RenderViewToString("Email", "ConfirmEmail", confirm);
+
+            await UserManager.SendEmailAsync(user.Id, "Confirm your account", body);
+        }
+
+
+        // Get api/Account/ConfirmEmail
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("ConfirmEmail", Name = "ConfirmEmail")]
+        public async Task<IHttpActionResult> ConfirmEmail(string userId, string code)
+        {
+            var result = await UserManager.ConfirmEmailAsync(userId, code);
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);

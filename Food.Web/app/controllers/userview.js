@@ -18,6 +18,7 @@
             email: ''
         }
 
+        vm.confirmEmail = confirmEmail;
         vm.shareBalance = shareBalance;
         vm.getPaymentSum = getPaymentSum;
         vm.getChoicesSum = getChoicesSum;
@@ -73,6 +74,11 @@
         function setAdmin() {
             var acc = new Account({Role:'Admin'});
             acc.$save({ action: 'SetRole'});
+        }
+
+        function confirmEmail() {
+            var acc = new Account();
+            acc.$save({ action: 'ReConfirmEmail' });
         }
 
         function shareBalance(form) {

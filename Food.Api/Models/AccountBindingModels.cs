@@ -34,6 +34,11 @@ namespace Food.Api.Models
 
     public class RegisterBindingModel
     {
+
+        [Required]
+        [Display(Name = "Имя пользователя")]
+        public string UserName { get; set; }
+
         [Required]
         [Display(Name = "Адрес электронной почты")]
         public string Email { get; set; }

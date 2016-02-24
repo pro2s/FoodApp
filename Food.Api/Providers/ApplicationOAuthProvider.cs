@@ -34,13 +34,17 @@ namespace Food.Api.Providers
 
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
+            ApplicationUser user = await userManager.FindByEmailAsync(context.UserName);
+            
+            bool chkPassword = await userManager.CheckPasswordAsync(user, context.Password);
 
-            if (user == null)
+            if (!chkPassword)
             {
                 context.SetError("invalid_grant", "Имя пользователя или пароль указаны неправильно.");
                 return;
             }
+             
+
 
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
                OAuthDefaults.AuthenticationType);

@@ -1,0 +1,6 @@
+<appSettings>
+  <add key="MAIL_SERVER" value="smtp.gmail.com"/>
+  <add key="MAIL_PORT" value="587"/>
+  <add key="MAIL_FROM" value="some.gmail.name@gmail.com"/>
+  <add key="MAIL_PASSWORD" value="some.password"/>
+</appSettings>
