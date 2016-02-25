@@ -62,17 +62,17 @@ namespace Food.Api.Controllers
         [ResponseType(typeof(void))]
         public IHttpActionResult PutUserChoice(int id, UserChoice userChoice)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || id != userChoice.Id)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != userChoice.Id)
-            {
-                return BadRequest();
-            }
-
             db.Entry(userChoice).State = EntityState.Modified;
+
+            if (!CheckUserChoise(userChoice))
+            {
+                return BadRequest(ModelState);
+            }
 
             try
             {
@@ -93,6 +93,42 @@ namespace Food.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        private bool CheckUserChoise(UserChoice userChoice)
+        {
+            bool result = true;
+            UserChoice oldChoice = db.UserChoices.Where(uc => uc.Id == userChoice.Id).First();
+            Menu menu = db.Menus.First(m => m.Id == userChoice.MenuId);
+            int balance = db.GetUserBalance(userChoice.UserID);
+
+            if (User.IsInRole("Admin") || User.IsInRole("GlobalAdmin"))
+            {
+                if (userChoice.confirm && !oldChoice.confirm)
+                {
+                    balance = balance - menu.Price;
+                    if (balance < 0)
+                    {
+                        result = false;
+                    }
+                }
+            }
+            else
+            {
+                if (userChoice.UserID == User.Identity.GetUserId())
+                {
+                    if (balance > menu.Price)
+                    {
+                        result = false;
+                    }
+                }
+                else
+                {
+                    result = false;
+                }
+            }
+
+            return result;
+        }
+
         // POST: api/UserChoices
         [ResponseType(typeof(UserChoice))]
         public IHttpActionResult PostUserChoice(UserChoice userChoice)
@@ -108,8 +144,18 @@ namespace Food.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            db.UserChoices.Add(userChoice);
-            db.SaveChanges();
+            Menu menu = db.Menus.First(m => m.Id == userChoice.MenuId);
+            int balance = db.GetUserBalance(userChoice.UserID);
+            if (balance > menu.Price)
+            {
+                db.UserChoices.Add(userChoice);
+                db.SaveChanges();
+
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
 
             return CreatedAtRoute("DefaultApi", new { id = userChoice.Id }, userChoice);
         }

@@ -497,14 +497,14 @@ namespace Food.Api.Controllers
             List<UsersViewModel> result = new List<UsersViewModel>();
             foreach (var user in UserManager.Users)
             {
-                int bill = db.Payments.Where(p => p.UserID == user.Id).Sum(p => (int?)p.Sum ) ?? 0;
-                
+                int debit = db.Payments.Where(p => p.UserID == user.Id).Sum(p => (int?)p.Sum ) ?? 0;
+                int credit = db.UserChoices.Where(uc => uc.UserID == user.Id && uc.confirm).Sum(uc => (int?)uc.Menu.Price) ?? 0;
                 result.Add(new UsersViewModel()
                 {
                     Id = user.Id,
                     Name = user.UserName,
                     // TODO: Add join userchoice 
-                    Bill = bill
+                    Bill = debit - credit
                 });
             }
                 
