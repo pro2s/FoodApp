@@ -7,17 +7,17 @@
         .factory('GlobalMenu', GlobalMenu)
         .factory('ItemRating', ItemRating);
 
-    Menu.$inject = ['Config', '$resource'];    
-    function Menu(Config, $resource) {
-        return $resource(Config.get('api') + 'api/menus/:id', {}, {
+    Menu.$inject = ['$resource'];    
+    function Menu($resource) {
+        return $resource('/api/menus/:id', {}, {
           query: {method:'GET', params:{id:''}, isArray:true},
           update: {method:'PUT', params:{id:''}, isArray:true},
         });
     }
 
-    MenuItem.$inject = ['Config', '$resource'];    
-    function MenuItem(Config, $resource) {
-        return $resource(Config.get('api') + 'api/menuitems/:id', {}, {
+    MenuItem.$inject = ['$resource'];    
+    function MenuItem($resource) {
+        return $resource('/api/menuitems/:id', {}, {
           query: {method:'GET', params:{id:''}, isArray:true},
           update: {method:'PUT', params:{id:''}, isArray:true}
         });

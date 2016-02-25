@@ -3,36 +3,35 @@
     angular
         .module('app.userservice')
         .factory('User', User)	 
-        .factory('UserDay', ['Config','$resource',
-          function(Config, $resource){
-            return $resource(Config.get('api') + 'api/userchoices/:id', {}, {
+        .factory('UserDay', ['$resource',
+          function($resource){
+            return $resource('/api/userchoices/:id', {}, {
               query: {method:'GET', params:{id:''}, isArray:true},
               update: {method:'PUT', params:{id:''}},
             });
         }])
-        .factory('Payment', ['Config','$resource',
-          function(Config, $resource){
-            return $resource(Config.get('api') + 'api/payments/:id', {}, {
+        .factory('Payment', ['$resource',
+          function($resource){
+            return $resource('/api/payments/:id', {}, {
               query: {method:'GET', params:{id:''},	 isArray:true},
               update: { method: 'PUT', params: { id: '' } },
               share: { method: 'POST', params: { id: 'share' } }
             });
         }])	
-        .factory('Account', ['Config', '$resource',
-          function (Config, $resource) {
-              return $resource(Config.get('api') + 'api/Account/:action', {}, {
+        .factory('Account', ['$resource',
+          function ($resource) {
+              return $resource('/api/Account/:action', {}, {
               });
         }])
 
-        User.$inject = ['Config', '$resource'];    
-        
+        User.$inject = [ '$resource'];    
         /**
         * @namespace User
         * @desc Get User data from api 
         * @memberOf Factories
         */
-        function User(Config, $resource) {
-            return $resource(Config.get('api') + 'api/users/:id', {}, {
+        function User($resource) {
+            return $resource('/api/users/:id', {}, {
                 query: {
                     method:'GET', 
                     params:{id:''}, 

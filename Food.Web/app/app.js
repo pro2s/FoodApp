@@ -17,7 +17,7 @@ angular
         'app.menuservice',
         'app.userservice',
     ])
-    .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+    .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider.otherwise({ redirectTo: '/' });
         $routeProvider
         .when('/', {
@@ -33,7 +33,7 @@ angular
             controllerAs: 'vm',
             access: 'isAuthenticated',
         })
-        .when('/admin', {
+        .when('/users', {
             templateUrl: 'app/views/useradmin.html',
             controller: 'UserAdmin',
             controllerAs: 'vm',
@@ -58,6 +58,7 @@ angular
             menuname:'Menu admin',
         });
 
+        $httpProvider.interceptors.push('APIInterceptor');
         // $locationProvider.html5Mode(true);
     }])
     .run(['$route', '$rootScope', '$location', 'authservice', function ($route, $rootScope, $location, authservice) {

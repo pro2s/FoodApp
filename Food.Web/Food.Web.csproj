@@ -176,6 +176,7 @@
     <Content Include="App\directives\loginform.js" />
     <Content Include="App\directives\starrating.js" />
     <Content Include="App\menu.module.js" />
+    <Content Include="App\services\apiinterceptor.js" />
     <Content Include="App\services\authservice.js" />
     <Content Include="App\services\config.js" />
     <Content Include="App\services\dateservice.js" />

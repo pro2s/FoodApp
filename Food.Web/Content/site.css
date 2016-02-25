@@ -2,6 +2,11 @@
      
 }
 
+.table tbody>tr>td.v-align
+{
+    vertical-align: middle;
+}
+
 /* bug in inline forms */
 .form-control-inline {
     min-width: 0;
@@ -48,10 +53,6 @@ table.selectday {
 
 .input-group > .input-group-btn:empty {
     width: 0px;
-}
-
-.users {
-      padding-top: 5px;
 }
 
 div.correct p {
