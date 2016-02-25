@@ -507,11 +507,6 @@
             </summary>
             <returns>Always OK</returns>
         </member>
-        <member name="T:Food.Api.Models.UsersViewModel">
-            <summary>
-            Temporaly view model for users list
-            </summary>
-        </member>
         <member name="T:Food.Api.ChudoPechka">
             <summary>
             Service for parsing menu from site chudo-pechka.by

@@ -94,5 +94,7 @@ namespace Food.Api.Models
         [Required]
         [Display(Name = "Роль пользователя")]
         public string Role { get; set; }
+
+        public string UserId { get; set; }
     }
 }

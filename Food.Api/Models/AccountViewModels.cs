@@ -27,6 +27,8 @@ namespace Food.Api.Models
 
     public class UserInfoViewModel
     {
+        public string Id { get; set; }
+
         public List<string> Roles { get; set; }
 
         public string UserName { get; set; }
@@ -39,6 +41,7 @@ namespace Food.Api.Models
 
         public string LoginProvider { get; set; }
 
+        public int Balance { get; internal set; }
     }
 
     public class UserLoginInfoViewModel
@@ -47,17 +50,6 @@ namespace Food.Api.Models
 
         public string ProviderKey { get; set; }
     }
-    
-    /// <summary>
-    /// Temporaly view model for users list
-    /// </summary>
-    public class UsersViewModel
-    {
 
-        public string Id { get; set; }
 
-        public string Name { get; set; }
-
-        public int Bill { get; set; }
-    }
 }

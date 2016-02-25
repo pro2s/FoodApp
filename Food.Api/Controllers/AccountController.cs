@@ -23,7 +23,7 @@ using System.Linq;
 
 namespace Food.Api.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+   
     [Authorize]
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
@@ -65,26 +65,31 @@ namespace Food.Api.Controllers
             string UserName = User.Identity.GetUserName();
             string Email = UserName;
             bool IsEmailConfirmed = false;
-
+            int Balance = 0;
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
             if (externalLogin == null)
             {
-                Roles = UserManager.GetRoles(User.Identity.GetUserId()).ToList();
+                string UserId = User.Identity.GetUserId();
+                Roles = UserManager.GetRoles(UserId).ToList();
                 IdentityUser user = UserManager.FindById(User.Identity.GetUserId());
                 UserName = user.UserName;
                 Email = user.Email;
                 IsEmailConfirmed = user.EmailConfirmed;
+                FoodDBContext db = new FoodDBContext();
+                Balance = db.GetUserBalance(UserId);
+
             }
 
-            
-            
+
+
             return new UserInfoViewModel
             {
                 Roles = Roles,
                 UserName = UserName,
                 Email = Email,
                 IsEmailConfirmed = IsEmailConfirmed,
+                Balance = Balance,
                 HasRegistered = externalLogin == null,
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
             };
@@ -179,16 +184,33 @@ namespace Food.Api.Controllers
 
         // POST api/Account/SetRole
         // TODO: Must by limited only for role GlobalAdmin
-        [Route("SetRole")]
+        [Route("SwitchRole")]
+        [Authorize(Roles = "Admin, GlobalAdmin")]
         public async Task<IHttpActionResult> SetRole(SetRoleBindingModel model)
         {
+            if (model.UserId == null)
+            {
+                model.UserId = User.Identity.GetUserId();
+                Validate(model);
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            IdentityResult result = await UserManager.AddToRoleAsync(User.Identity.GetUserId(), model.Role);
 
+            IdentityResult result;
+
+            if (await UserManager.IsInRoleAsync(model.UserId, model.Role))
+            {
+                result = await UserManager.RemoveFromRoleAsync(model.UserId, model.Role);
+            }
+            else
+            {
+                result = await UserManager.AddToRoleAsync(model.UserId, model.Role);
+            }
+            
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -491,20 +513,23 @@ namespace Food.Api.Controllers
         // POST api/Users
         [AllowAnonymous]
         [Route("~/api/Users")]
-        public List<UsersViewModel> GetUsers()
+        public List<UserInfoViewModel> GetUsers()
         {
             FoodDBContext db = new FoodDBContext();
-            List<UsersViewModel> result = new List<UsersViewModel>();
-            foreach (var user in UserManager.Users)
+            List<UserInfoViewModel> result = new List<UserInfoViewModel>();
+            List<ApplicationUser> users = UserManager.Users.ToList();
+            foreach (var user in users)
             {
-                int debit = db.Payments.Where(p => p.UserID == user.Id).Sum(p => (int?)p.Sum ) ?? 0;
-                int credit = db.UserChoices.Where(uc => uc.UserID == user.Id && uc.confirm).Sum(uc => (int?)uc.Menu.Price) ?? 0;
-                result.Add(new UsersViewModel()
+                
+                result.Add(new UserInfoViewModel()
                 {
                     Id = user.Id,
-                    Name = user.UserName,
-                    // TODO: Add join userchoice 
-                    Bill = debit - credit
+                    UserName = user.UserName,
+                    Roles = UserManager.GetRoles(user.Id).ToList(),
+                    Email = user.Email,
+                    IsEmailConfirmed = user.EmailConfirmed,
+                    Balance = db.GetUserBalance(user.Id),
+                    HasRegistered = true,
                 });
             }
                 
