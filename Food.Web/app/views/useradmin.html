@@ -1,45 +1,53 @@
 ﻿<div class="row">
-    <div class="users col-md-8">
-        <div class="lead" ng-bind="vm.title"></div>
-		
-        <div ng-repeat="user in vm.users" id="{{user.id}}" class="row">
- 
-			
-			<div class="col-sm-12" ng-if="!vm.isadd(user.id)">
-			<div class="input-group users">
-			<span class="input-group-btn">
-				<button class="btn btn-default" type="button" ng-bind="user.name"></button>
-			</span>
-			<input type="text" class="form-control" ng-model="user.bill" readonly>
-			<span class="input-group-btn">
-				<button class="btn btn-default" type="button" ng-click="vm.onadd(user.id)" >
-					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-				</button>
-			</span>
-			</div>
-			</div>
-			
-			<div class="col-sm-12" ng-if="vm.isadd(user.id)">
-			<div class="input-group users" ng-class="{'has-error':vm.payment.error}">
-			<span class="input-group-btn">
-				<button class="btn btn-default" type="button" ng-bind="user.name"></button>
-			</span>
-			<input type="text" class="form-control" ng-model="vm.payment.value" >
-			<span class="input-group-btn">
-				<button class="btn btn-default" type="button" ng-click="vm.sendpayment(user)" ng-class="{'btn-danger':vm.payment.error}">
-					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-				</button>
-				<button class="btn btn-default" type="button" ng-click="vm.cancel()">
-					<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-				</button>
-			</span>
-			</div>
-			</div>
-			
-			
-			
+    <div class="col-md-8"><h4 ng-bind="vm.title"></h4></div>
+    <div class="col-md-8">
+        <table class="table table-striped">
+            <thead>
+                <tr><th>User Name</th><th>E-mail</th><th>Balance</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in vm.users" id="{{user.id}}" >
+                        <td class="v-align" ng-bind="user.userName"></td>
+                        <td class="v-align" ng-class="{'text-danger':!user.isEmailConfirmed, 'text-success':user.isEmailConfirmed}"ng-bind="user.email"></td>
+                        <td>
+                            <div ng-if="!vm.isadd(user.id)">
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input type="text" class="form-control" ng-model="user.balance" readonly>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="vm.onadd(user.id)">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
 
-        </div>
+                            <div ng-if="vm.isadd(user.id)">
+                                <div class="input-group" ng-class="{'has-error':vm.payment.error}">
+                                    <span class="input-group-addon">$</span>
+                                    <input type="text" class="form-control" ng-model="vm.payment.value">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" ng-click="vm.sendpayment(user)" ng-class="{'btn-danger':vm.payment.error}">
+                                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                        </button>
+                                        <button class="btn btn-default" type="button" ng-click="vm.cancel()">
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group pull-right">
+                                <button class="btn btn-default" type="button" ng-click="vm.banUser(user)"><span class="fa fa-user-times" aria-hidden="true"></span></button>
+                                <button class="btn btn-default" ng-class="{'btn-success':vm.isAdmin(user)}" type="button" ng-click="vm.switchRole(user)"><span class="fa fa-wrench" aria-hidden="true"></span></button>
+                            </div>
+                        </td>
+                </tr>     
+            </tbody> 
+            
+        </table>
+        
     </div>
 	
         

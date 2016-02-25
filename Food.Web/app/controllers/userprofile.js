@@ -71,11 +71,6 @@
         }
 
 
-        function setAdmin() {
-            var acc = new Account({Role:'Admin'});
-            acc.$save({ action: 'SetRole'});
-        }
-
         function confirmEmail() {
             var acc = new Account();
             acc.$save({ action: 'ReConfirmEmail' });
@@ -85,6 +80,7 @@
             var payment = new Payment(vm.share);
             payment.$share({},function (payment) {
                 vm.payments.push(payment);
+                authservice.ReloadUserInfo();
             }, function (error) {
                 vm.shareError = "Send balance error.";
                 if (error.data.modelState['share.Email']) {

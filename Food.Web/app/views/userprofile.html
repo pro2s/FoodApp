@@ -9,10 +9,10 @@
         </p>
     </div>
     <div class="users col-md-6">
-        <a href="" ng-click="vm.setAdmin()">Стать администратором</a>
+    
     </div>
 </div>
-<div class="col-md-12 alert alert-info text-center" role="alert"><b>Balance:</b> {{vm.getPaymentSum()-vm.getChoicesSum()}}</div>
+<div class="col-md-12 alert alert-info text-center" role="alert"><b>Balance:</b> {{vm.auth.userinfo.balance}}</div>
 <div class="row">
     
     <div class="col-md-12">

@@ -51,10 +51,21 @@
             doLogin: doLogin,
             doRegister: doRegister,
             doLogout: doLogout,
+            ReloadUserInfo: ReloadUserInfo,
             authCompleted: authCompleted
         };
 
         return service;
+
+        function ReloadUserInfo() {
+            Account.get({ action: "UserInfo" },
+                function (data) {
+                    _state.userinfo = data;
+                },
+                function () { 
+                    // doLogout(); 
+                });
+        }
 
         function authEvent(eventName, objData) {
             if (_handlers[eventName]) {

@@ -5,9 +5,9 @@
         .controller('UserAdmin', UserAdmin)
         
     
-    UserAdmin.$inject = ['User', 'Payment'];        
+    UserAdmin.$inject = ['User', 'Payment','Account'];        
     
-    function UserAdmin(User, Payment) {
+    function UserAdmin(User, Payment, Account) {
         var vm = this;
         
         vm.title = "loading users ...";
@@ -18,6 +18,8 @@
         vm.onadd = onAdd;
         vm.cancel = cancel;
         vm.sendpayment = sendPayment;
+        vm.isAdmin = isAdmin;
+        vm.switchRole = switchRole;
 
         activate();
         
@@ -57,7 +59,7 @@
             else
             {
                 vm.payment.error = false;
-                user.bill = parseInt(user.bill) + add;
+                user.balance = parseInt(user.balance) + add;
                 
                 var pay = new Payment({userid:user.id, sum:add})
                 pay.$save();
@@ -67,6 +69,26 @@
             }
         };
         
+        function isAdmin(user){
+            var result = false;
+            if (user.roles.indexOf("Admin") != -1) {
+                result = true;
+            }
+            return result;
+        }
+
+        function switchRole(user) {
+            var acc = new Account({ userId: user.id, role: 'Admin' });
+            acc.$save({ action: 'SwitchRole' })
+                .then(function () {
+                    var index = user.roles.indexOf("Admin");
+                    if (index > -1) {
+                        user.roles.splice(index, 1);
+                    } else {
+                        user.roles.push("Admin");
+                    }
+                })
+        }
     };
     
 })(); 
