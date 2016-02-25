@@ -27,19 +27,27 @@ angular
             access: 'isAnonymous',
             menuname:'Home',
         })
-        .when('/user', {
-            templateUrl: 'app/views/userview.html',
-            controller: 'UserView',
+        .when('/profile', {
+            templateUrl: 'app/views/userprofile.html',
+            controller: 'UserProfile',
             controllerAs: 'vm',
             access: 'isAuthenticated',
         })
         .when('/admin', {
-            templateUrl: 'app/views/admin.html',
+            templateUrl: 'app/views/useradmin.html',
             controller: 'UserAdmin',
             controllerAs: 'vm',
             access: 'isAuthenticated',
             roles: ['Admin'],
-            menuname:'User admin',
+            menuname:'Users',
+        })
+        .when('/orders', {
+            templateUrl: 'app/views/orders.html',
+            controller: 'OrdersAdmin',
+            controllerAs: 'vm',
+            access: 'isAuthenticated',
+            roles: ['Admin'],
+            menuname: 'Orders',
         })
         .when('/menu', {
             templateUrl: 'app/views/editmenu.html',

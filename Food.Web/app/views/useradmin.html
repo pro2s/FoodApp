@@ -1,5 +1,5 @@
 ﻿<div class="row">
-    <div class="users col-md-6">
+    <div class="users col-md-8">
         <div class="lead" ng-bind="vm.title"></div>
 		
         <div ng-repeat="user in vm.users" id="{{user.id}}" class="row">
@@ -43,25 +43,5 @@
     </div>
 	
         
-    <div class="col-md-6" ng-controller="ChoiceAdmin as ca">
-        <div class="lead" ng-bind="ca.title"></div>
-        <div class="panel panel-default" ng-repeat="day in ca.weekdays" ng-class="{'panel-success':ca.activeday==$index}"  ng-if="day.total>0">
-        <div class="panel-heading">
-            <a href="" ng-click="ca.activeday=$index">{{day.date|date:'dd.MM.yyyy'}} {{day.date|date:'(EEEE)'}}</a>
-        </div>
-        <ul class="list-group" ng-show="ca.activeday==$index">
-            <li ng-repeat="select in day.userselect track by $index" class="list-group-item">
-                {{ca.getUser(select).name}} - {{ca.getMenu(select).name}} ({{ca.getMenu(select).price}}) 
-				<button class="btn btn-sm" 
-					ng-class="{'btn-success':select.confirm, 'btn-default':!select.confirm}" 
-					ng-click="ca.confirmSelect(select)" 
-					ng-disabled="select.confirm">{{select.confirm?"получено":"выдать"}}</button>
-            </li>
-            <li class="list-group-item"><b>Итого по меню</b></li>
-            <li ng-repeat="menu in day.menu" class="list-group-item" ng-if="menu.count>0">
-                {{menu.name}} - {{menu.count}} на сумму {{menu.price * menu.count}}
-            </li>
-        </ul>
-        </div>
-    </div>
+    
 </div>

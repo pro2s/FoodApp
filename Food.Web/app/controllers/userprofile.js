@@ -2,12 +2,12 @@
     'use strict';
     angular
         .module('app.user')
-        .controller('UserView', UserView)
+        .controller('UserProfile', UserProfile)
         
     
-    UserView.$inject = ['User', 'Account', 'Payment', 'UserDay', 'authservice'];
+    UserProfile.$inject = ['User', 'Account', 'Payment', 'UserDay', 'authservice'];
     
-    function UserView(User, Account, Payment, UserDay, authservice) {
+    function UserProfile(User, Account, Payment, UserDay, authservice) {
         var vm = this;
         vm.auth = authservice.state
         vm.setAdmin = setAdmin;

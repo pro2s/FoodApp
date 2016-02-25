@@ -166,12 +166,12 @@
   <ItemGroup>
     <Content Include="App\admin.module.js" />
     <Content Include="App\app.js" />
-    <Content Include="App\controllers\choiceadmin.js" />
+    <Content Include="App\controllers\ordersadmin.js" />
     <Content Include="App\controllers\editmenu.js" />
     <Content Include="App\controllers\topmenu.js" />
     <Content Include="App\controllers\useradmin.js" />
     <Content Include="App\controllers\userchoice.js" />
-    <Content Include="App\controllers\userview.js" />
+    <Content Include="App\controllers\userprofile.js" />
     <Content Include="App\controllers\viewmenu.js" />
     <Content Include="App\directives\loginform.js" />
     <Content Include="App\directives\starrating.js" />
@@ -183,12 +183,13 @@
     <Content Include="App\services\userservice.js" />
     <Content Include="App\user.module.js" />
     <Content Include="App\userservice.module.js" />
-    <Content Include="App\views\admin.html" />
+    <Content Include="App\views\useradmin.html" />
     <Content Include="App\views\editmenu.html" />
     <Content Include="App\views\login.html" />
     <Content Include="App\views\menu.html" />
+    <Content Include="App\views\orders.html" />
     <Content Include="App\views\user.html" />
-    <Content Include="App\views\userview.html" />
+    <Content Include="App\views\userprofile.html" />
     <Content Include="authcomplete.html" />
     <Content Include="Content\bootstrap-social.css" />
     <Content Include="Content\bootstrap.css" />
