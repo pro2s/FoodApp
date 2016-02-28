@@ -168,6 +168,7 @@
     <Content Include="App\app.js" />
     <Content Include="App\controllers\ordersadmin.js" />
     <Content Include="App\controllers\editmenu.js" />
+    <Content Include="App\controllers\statistic.js" />
     <Content Include="App\controllers\topmenu.js" />
     <Content Include="App\controllers\useradmin.js" />
     <Content Include="App\controllers\userchoice.js" />
@@ -181,9 +182,12 @@
     <Content Include="App\services\config.js" />
     <Content Include="App\services\dateservice.js" />
     <Content Include="App\services\menuservice.js" />
+    <Content Include="App\services\statisticservice.js" />
     <Content Include="App\services\userservice.js" />
+    <Content Include="App\statistic.module.js" />
     <Content Include="App\user.module.js" />
     <Content Include="App\userservice.module.js" />
+    <Content Include="App\views\statistic.html" />
     <Content Include="App\views\useradmin.html" />
     <Content Include="App\views\editmenu.html" />
     <Content Include="App\views\login.html" />
