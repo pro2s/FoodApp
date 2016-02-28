@@ -14,10 +14,12 @@ angular
         'app.user',
         'app.admin',
         'app.menu',
-        'app.menuservice',
+        'app.statistic',
         'app.userservice',
+        
     ])
     .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
+
         $routeProvider.otherwise({ redirectTo: '/' });
         $routeProvider
         .when('/', {
@@ -26,6 +28,12 @@ angular
             controllerAs: 'uc',
             access: 'isAnonymous',
             menuname:'Home',
+        })
+        .when('/statistic', {
+            templateUrl: 'app/views/statistic.html',
+            controller: 'ViewStatistic',
+            controllerAs: 'vm',
+            menuname: 'Statistic',
         })
         .when('/profile', {
             templateUrl: 'app/views/userprofile.html',
@@ -55,7 +63,7 @@ angular
             controllerAs: 'form',
             access: 'isAuthenticated',
             roles: ['Admin','GlobalAdmin'],
-            menuname:'Menu admin',
+            menuname:'Menu',
         });
 
         $httpProvider.interceptors.push('APIInterceptor');
@@ -66,13 +74,17 @@ angular
         authservice.init();
         
         $rootScope.$on('$routeChangeStart', function (event, next, current) {
-            var allow= authservice.checkAccess(next.access, next.roles);
-            
-            if (allow) {
-                console.log('ALLOW');
+            if (authservice.isInit()) {
+                var allow = authservice.checkAccess(next.access, next.roles);
+
+                if (allow) {
+                    console.log('ALLOW');
+                } else {
+                    console.log('DENY');
+                    $location.path('/');
+                }
             } else {
-                console.log('DENY');
-                $location.path('/');
+                return
             }
         });
        

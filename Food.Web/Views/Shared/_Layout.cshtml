@@ -17,13 +17,13 @@
                     <a href="#{{item.url}}" ng-bind="item.name"></a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right" ng-if="topmenu.auth.isLogged">
+            <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="topmenu.isAuth()">
                 <li ng-class="{ active: topmenu.isActive('/user')}" >
                     <a href="#/profile" ng-bind="topmenu.auth.username">User</a>
                 </li>
                 <li><a href="" ng-click="topmenu.logout()">Logout</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right" ng-if="!topmenu.auth.isLogged">
+            <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="!topmenu.isAuth()">
                 <li><a href="" ng-click="topmenu.showLogin()">Login</a></li>
                 <li><a href="" ng-click="topmenu.showRegister()">Registration</a></li>
             </ul>

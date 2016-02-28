@@ -6,6 +6,7 @@
 
     authService.$inject = ['$http', 'Config', 'Account'];
     function authService($http, Config, Account) {
+        
         var _form = {
             title: "Login",
             btnText: "Login",
@@ -20,6 +21,7 @@
         }
 
         var _state = {
+            init: false,
             isLogged: false,
             roles:[],
             email:'',
@@ -36,12 +38,13 @@
         var _handlers = {};
         
         var service = {
-            registerEvent: registerEvent,
-            authEvent: authEvent,
-            init: init,
             view: _view,
             form: _form,
             state: _state,
+            init: init,
+            isInit: isInit,
+            registerEvent: registerEvent,
+            authEvent: authEvent,
             authExternalProvider: authExternalProvider,
             checkAccess: checkAccess,
             checkRoles: checkRoles,
@@ -56,6 +59,44 @@
         };
 
         return service;
+
+        function init() {
+            var key = sessionStorage.getItem('tokenKey');
+            if (key) {
+                $http.defaults.headers.common.Authorization = key;
+                Account.get({ action: "UserInfo" }, successInit, failedInit);
+            } else {
+                _state.init = true;
+            }
+        }
+
+        function isInit() {
+            return _state.init;
+        }
+
+        function successInit(data) {
+            _state.init = true;
+            _state.isLogged = true;
+            _state.username = data.userName;
+            _state.email = data.email;
+            _state.roles = data.roles;
+            _state.userinfo = data;
+
+            if (_form.active) {
+                _view.hide();
+            }
+
+            authEvent('UserLogged', _state);
+        }
+
+        function failedInit(type) {
+            _state.init = true;
+            doLogout();
+            if (_form.active) {
+                _form.msg = 'Failed get user info, try again';
+                _form.error = true;
+            }
+        }
 
         function ReloadUserInfo() {
             Account.get({ action: "UserInfo" },
@@ -106,37 +147,6 @@
             return result;
         }
         
-        function init() {
-            var key = sessionStorage.getItem('tokenKey');
-            if (key) {
-                $http.defaults.headers.common.Authorization = key;
-                Account.get({ action: "UserInfo" }, successInit, failedInit);
-            }
-        }
-                
-        function successInit(data) {
-            _state.isLogged = true;
-            _state.username = data.userName;
-            _state.email = data.email;
-            _state.roles = data.roles;
-            _state.userinfo = data;
-
-            if (_form.active) {
-                _view.hide();
-            }
-
-            authEvent('UserLogged', _state);
-        }
-        
-        function failedInit(type) {
-            doLogout();
-            if( _form.active) {
-                _form.msg = 'Failed get user info, try again';
-                _form.error = true;
-            }
-        }
-
-                
         function setView(view) {
             _view = view
         }

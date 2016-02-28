@@ -11,6 +11,7 @@
         topmenu.menu = [];
         topmenu.users = {};
         topmenu.auth = {};
+        topmenu.isAuth = isAuth;
         topmenu.isActive = isActive;
         topmenu.showLogin = showLogin;
         topmenu.showRegister = showRegister;
@@ -56,9 +57,13 @@
         }
 
         function isActive(viewLocation) {
-            var test = $location.path();
             return viewLocation === $location.path();
         };
+
+        function isAuth()
+        {
+            return topmenu.auth.isLogged;
+        }
     }
 
 })();    

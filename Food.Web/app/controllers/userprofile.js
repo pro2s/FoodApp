@@ -9,8 +9,7 @@
     
     function UserProfile(User, Account, Payment, UserDay, authservice) {
         var vm = this;
-        vm.auth = authservice.state
-        vm.setAdmin = setAdmin;
+        vm.auth = {}
         vm.payments = [];
         vm.userchoices = [];
         vm.share = {
@@ -26,6 +25,7 @@
         activate();
 
         function activate() {
+            vm.auth = authservice.state
             getPayments();
             getUserChoices();
         }
