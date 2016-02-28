@@ -1,7 +1,7 @@
 ﻿(function() {
     'use strict';
     angular
-        .module('app.menuservice', ['ngResource'])
+        .module('app.menu')
         .factory('Menu', Menu)
         .factory('MenuItem', MenuItem) 
         .factory('GlobalMenu', GlobalMenu)

@@ -7,7 +7,7 @@
             </div>
             <ul class="list-group" ng-show="vm.activeday==$index">
                 <li ng-repeat="select in day.userselect track by $index" class="list-group-item">
-                    {{vm.getUser(select).name}} - {{vm.getMenu(select).name}} ({{vm.getMenu(select).price}})
+                    {{vm.getUser(select).userName}} - {{vm.getMenu(select).name}} ({{vm.getMenu(select).price}})
                     <button class="btn btn-sm"
                             ng-class="{'btn-success':select.confirm, 'btn-default':!select.confirm}"
                             ng-click="vm.confirmSelect(select)"
