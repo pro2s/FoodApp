@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace Food.Api.Models
 
         [ForeignKey("Item")]
         public int ItemId { get; set; }
+
+        [JsonIgnore]
         public virtual Item Item { get; set; }
         
         public string UserId { get; set; }

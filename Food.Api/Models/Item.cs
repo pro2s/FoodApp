@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace Food.Api.Models
         public string Parts { get; set; }
         public string Weight { get; set; }
 
+        [JsonIgnore]
         public ICollection<Menu> Menus { get; set; }
         public ICollection<ItemRating> Ratings { get; set; }
 
@@ -26,6 +28,7 @@ namespace Food.Api.Models
         {
             var item = new Item
             {
+                Id = Id,
                 Name = Name,
                 Parts = Parts,
                 Weight = Weight,
