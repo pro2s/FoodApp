@@ -54,7 +54,7 @@
             doLogin: doLogin,
             doRegister: doRegister,
             doLogout: doLogout,
-            ReloadUserInfo: ReloadUserInfo,
+            reloadUserInfo: reloadUserInfo,
             authCompleted: authCompleted
         };
 
@@ -98,7 +98,7 @@
             }
         }
 
-        function ReloadUserInfo() {
+        function reloadUserInfo() {
             Account.get({ action: "UserInfo" },
                 function (data) {
                     _state.userinfo = data;

@@ -80,7 +80,7 @@
             var payment = new Payment(vm.share);
             payment.$share({},function (payment) {
                 vm.payments.push(payment);
-                authservice.ReloadUserInfo();
+                authservice.reloadUserInfo();
             }, function (error) {
                 vm.shareError = "Send balance error.";
                 if (error.data.modelState['share.Email']) {
