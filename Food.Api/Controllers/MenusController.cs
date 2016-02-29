@@ -112,8 +112,25 @@ namespace Food.Api.Controllers
             ChudoPechka parser = new ChudoPechka();
             parser.Load();
             List<Menu> menus = parser.Get();
-            db.Menus.AddRange(menus);
-            db.SaveChanges();
+
+            foreach (var menu in menus)
+            {
+               
+
+                foreach (var item in menu.Items.ToList())
+                {
+                    var dbitem = db.Items.Where(i => i.Name == item.Name && i.Weight == item.Weight).FirstOrDefault();
+                    if (dbitem != null)
+                    {
+                        //db.Entry(item).State = EntityState.Detached;
+                        menu.Items.Remove(item);
+                        menu.Items.Add(dbitem);
+                    }
+                }
+                db.Menus.Add(menu); 
+                db.SaveChanges();
+            }
+
             return result;
         }
 
