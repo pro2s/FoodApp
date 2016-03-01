@@ -77,7 +77,7 @@
                 <div class="panel-heading">{{menu.name}} на {{menu.onDate|date:'dd.MM.yyyy'}}</div>
 
                 <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="item in menu.items">
+                    <li class="list-group-item usermenu"  ng-repeat="item in menu.items">
                         <span class="badge">{{item.weight}}</span>
                         {{item.name}}
                         <div>
@@ -115,8 +115,18 @@
           <div class="modal-body">
             <p>{{vm.comments.item.name}}, {{vm.comments.item.weight}} г.</p>
             <p>{{vm.comments.item.parts}}</p>
-            <ul class="list-group">
-              <li class="list-group-item" ng-repeat="comment in vm.comments.data">{{comment.date|date:'dd.MM.yy'}}&nbsp;{{comment.text}}</li>
+            <ul class="list-group comments">
+              <li class="list-group-item" ng-repeat="comment in vm.comments.data">
+                    <div class="clearfix">
+                                <div>
+                                    <strong class="primary-font">Username</strong> <small class="pull-right text-muted">
+                                        <span class="glyphicon glyphicon-time"></span>{{comment.date|date:'dd.MM.yy'}}</small>
+                                </div>
+                                <p>
+                                    {{comment.text}}
+                                </p>
+                    </div>
+              </li>
             </ul>
             <form>
               <div class="form-group">
