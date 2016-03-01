@@ -10,12 +10,15 @@
         var vm = this;
         vm.title = "Week Menu";
         vm.data = {};
+        vm.comments = {item:{}, data:[], text:''};
         vm.tomorrow = false;
         vm.components = false;
         vm.isshow = isShow;
         vm.isold = dateservice.check;
         vm.getMenuRating = getMenuRating;
         vm.setRating = setRating;
+        vm.viewComments = viewComments;
+        vm.sendComment = sendComment;
         
         activate();
             
@@ -44,16 +47,19 @@
             }
             return rating;
         }
-
+        
+        //  TODO: get old value to return on save/update error 
         function setRating(rating) {
             var ir = new ItemRating(rating);
             if (rating.id == 0) {
-                ir.$save().then(function(data){
-                    rating.id = data.id;
-                })
-                .catch(function (error) {
-                    rating.rate = 0;
-                });
+                ir.$save()
+                    .then(function(data){
+                        rating.id = data.id;
+                        updateRatings(rating);
+                    })
+                    .catch(function (error) {
+                        rating.rate = 0;
+                    });
             } else {
                 ir.$update({ id: rating.id })
             }
@@ -63,10 +69,19 @@
             angular.forEach(vm.data.menu, function (menu) {
                 angular.forEach(menu.items, function (item) {
                     if (item.id == rating.itemId && item.ratings[1].rate != rating.rate) {
-                        item.ratings[1].rate != rating.rate;
+                        item.ratings[1].rate = rating.rate;
                     }
                 });
             });
+        }
+        
+        function viewComments(item) {
+            vm.comments.item = item;
+            $('#commentsModal' ).modal('show');
+        }
+        
+        function sendComment() {
+            vm.comments.data.push({date: new Date(),text:vm.comments.text});
         }
     };
 
