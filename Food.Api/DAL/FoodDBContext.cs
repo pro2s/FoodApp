@@ -13,13 +13,14 @@ namespace Food.Api.DAL
 
         public FoodDBContext() : base("DefaultConnection")
         {
-            Database.SetInitializer<FoodDBContext>(new FoodDBInitializer());
+            
             base.Configuration.ProxyCreationEnabled = false;
         }
 
         public DbSet<Menu> Menus { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemRating> ItemRatings { get; set; }
+        public DbSet<ItemComment> ItemComments { get; set; }
         public DbSet<UserChoice> UserChoices { get; set; }
         public DbSet<Payment> Payments { get; set; }
        
@@ -47,5 +48,6 @@ namespace Food.Api.DAL
             int credit = UserChoices.Where(uc => uc.UserID == userId && uc.confirm).Sum(uc => (int?)uc.Menu.Price) ?? 0;
             return debit - credit;
         }
+        
     }
 }

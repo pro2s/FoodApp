@@ -20,14 +20,7 @@ namespace Food.Api.Controllers
     
     public class PaymentsController : ApiController
     {
-        private FoodDBContext db; 
-        
-
-        public PaymentsController()
-        {
-            db = new FoodDBContext();
-        }
-
+        private FoodDBContext db;
 
         private ApplicationUserManager _userManager;
 
@@ -41,6 +34,11 @@ namespace Food.Api.Controllers
             {
                 _userManager = value;
             }
+        }
+
+        public PaymentsController()
+        {
+            db = new FoodDBContext();
         }
 
         // GET: api/Payments

@@ -11,11 +11,11 @@ namespace Food.Api.DAL
     {
         protected override void Seed(FoodDBContext context)
         {
-            var menus = new List<Models.Menu>
+            var menus = new List<Menu>
             {
-            new Models.Menu {Name="Без обеда", Type = MenuType.NoneMenu},
-            new Models.Menu {Name="Полный обед", Price=35000, Type = MenuType.NextMonday },
-            new Models.Menu {Name="Без превого", Price=30000, Type = MenuType.NextMonday },
+            new Menu {Name="Без обеда", Type = MenuType.NoneMenu},
+            new Menu {Name="Полный обед", Price=35000, Type = MenuType.NextMonday },
+            new Menu {Name="Без превого", Price=30000, Type = MenuType.NextMonday },
             };
 
             menus.ForEach(m => context.Menus.Add(m));
