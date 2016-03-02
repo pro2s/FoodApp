@@ -28,6 +28,8 @@ namespace Food.Api.Controllers
             //TODO: rewrite to sql 
             foreach (var menu in menus)
             {
+                menu.Items.OrderBy(i => i.Order);
+
                 foreach (var item in menu.Items)
                 {
                     var AllRatings = item.Ratings;
@@ -97,6 +99,7 @@ namespace Food.Api.Controllers
                 default:
                     result = db.Menus.Include("Items").Include("Items.Ratings")
                             .Where(m => m.Type == get_type && m.OnDate >= StartDate).ToList();
+                    
                     CalculateRatings(result);
                     break;
             }
@@ -242,15 +245,7 @@ namespace Food.Api.Controllers
             return db.Menus.Count(e => e.Id == id) > 0;
         }
 
-        /// <summary>
-        /// Return response on OPTION request
-        /// </summary>
-        /// <returns>Always OK</returns>
-        // TODO: Move into BaseApiController
-        public HttpResponseMessage Options()
-        {
-            return new HttpResponseMessage { StatusCode = HttpStatusCode.OK };
-        }
+        
 
     }
 }

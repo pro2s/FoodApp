@@ -123,16 +123,18 @@ namespace Food.Api
             Word.Document doc = wordApp.Documents.Open(tempfile);
             
             int day = 0;
+            int order = 0;
             List<Item> items = new List<Item>();
-
+            
             foreach (Word.Table table in doc.Tables)
             {
                 for (int row = 1; row <= table.Rows.Count; row++)
                 {
+                    order = 0;
                     if (table.Rows[row].Cells.Count == 2)
                     {
                         Item item = new Item();
-
+                        item.Order = order;
                         item.Name = GetText(table.Cell(row, 1));
                         item.Weight = GetText(table.Cell(row, 2));
                         var matches = Regex.Matches(item.Name, "(.*?)/(.*?)/");
@@ -142,6 +144,7 @@ namespace Food.Api
                             item.Parts =  matches[0].Groups[2].Value;
                         }
                         items.Add(item);
+                        order++;
                     }
                     else
                     {
@@ -194,13 +197,15 @@ namespace Food.Api
 
                     // TODO: move Regex to config for service
                     var matches = Regex.Matches(result, @"(?<name>[^\n]+),(?<weight>[\s0-9/]+)([^\n]+)");
-
+                    int order =  0;
                     foreach (Match m in matches)
                     {
                         Item menu_item = new Item();
+                        menu_item.Order = order;
                         menu_item.Name = m.Groups["name"].Value.Trim();
                         menu_item.Weight = m.Groups["weight"].Value.Trim();
                         items.Add(menu_item);
+                        order++;
                     }
 
                 }

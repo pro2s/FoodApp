@@ -10,14 +10,15 @@ namespace Food.Api.Models
     public class Item : ICloneable
     {
         public int Id { get; set; }
-
+        public int? Order { get; set; }
         public string Name { get; set; }
         public string Parts { get; set; }
         public string Weight { get; set; }
 
         [JsonIgnore]
-        public ICollection<Menu> Menus { get; set; }
-        public ICollection<ItemRating> Ratings { get; set; }
+        virtual public ICollection<Menu> Menus { get; set; }
+        virtual public ICollection<ItemRating> Ratings { get; set; }
+        virtual public ICollection<ItemComment> Comments { get; set; }
 
         public Item()
         {
