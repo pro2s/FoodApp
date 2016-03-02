@@ -15,7 +15,8 @@
         form.backupitem = {};
         form.menuitem = {};
         form.isedit = false;
-        
+        form.parse = {};
+
         form.additem = addItem;
         form.edititem = editItem;
         form.cancelitem = cancelItem;
@@ -28,6 +29,10 @@
         form.cancel = cancel;
         form.save = save;
         
+        
+        
+        
+
         function addItem(item) {
             item.id = 0;
             form.menu.items.push(angular.copy(item));
@@ -106,11 +111,8 @@
             function failure(data){
                 form.title = "Oops... something went wrong";
             };
-            
-            
-        
         }
-        
+
     };
 
 })();   
