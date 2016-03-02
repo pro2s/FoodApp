@@ -511,7 +511,7 @@ namespace Food.Api.Controllers
         /// </summary>
         /// <returns>List users</returns>
         // POST api/Users
-        [AllowAnonymous]
+        [Authorize(Roles ="Admin, GlobalAdmin")]
         [Route("~/api/Users")]
         public List<UserInfoViewModel> GetUsers()
         {

@@ -75,27 +75,34 @@
         }
 
         function successInit(data) {
-            _state.init = true;
-            _state.isLogged = true;
-            _state.username = data.userName;
-            _state.email = data.email;
-            _state.roles = data.roles;
-            _state.userinfo = data;
-
-            if (_form.active) {
-                _view.hide();
+            if (typeof data != 'undefined') {
+                _state.init = true;
+                _state.isLogged = true;
+                _state.username = data.userName;
+                _state.email = data.email;
+                _state.roles = data.roles;
+                _state.userinfo = data;
+                if (_form.active) {
+                    _view.hide();
+                }
+                authEvent('UserLogged', _state);
+            } else {
+                _state.init = true;
+                _state.isLogged = false;
+                authEvent('UserNotLogged', _state);
             }
 
-            authEvent('UserLogged', _state);
+            
         }
 
-        function failedInit(type) {
+        function failedInit() {
             _state.init = true;
             doLogout();
             if (_form.active) {
                 _form.msg = 'Failed get user info, try again';
                 _form.error = true;
             }
+            authEvent('UserNotLogged', _state);
         }
 
         function reloadUserInfo() {

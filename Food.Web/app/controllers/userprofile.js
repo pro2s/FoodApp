@@ -25,6 +25,7 @@
         activate();
 
         function activate() {
+            authservice.reloadUserInfo();
             vm.auth = authservice.state
             getPayments();
             getUserChoices();

@@ -28,9 +28,15 @@
         };
 
         service.responseError = function (response) {
-            if (response.status === 401) {
-                $rootScope.$broadcast('unauthorized');
+            switch (rejection.status) {
+                case 401:
+                    $rootScope.$broadcast('unauthorized');
+                    break;
+                case 408:
+                    console.log('connection timed out');
+                    break;
             }
+
             return response;
         };
     };
