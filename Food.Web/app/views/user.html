@@ -79,7 +79,7 @@
                 <ul class="list-group">
                     <li class="list-group-item usermenu"  ng-repeat="item in menu.items">
                         <div class="btn-group pull-right">
-                            <button class="btn btn-default" type="button" ng-click="vm.viewComments(item)"><span class="fa fa-comments-o" aria-hidden="true"></span></button>
+                            <button class="btn btn-default" type="button" ng-click="vm.comments.show(item)"><span class="fa fa-comments-o" aria-hidden="true"></span></button>
                         </div>
                         {{item.name}}&nbsp;<sup>{{item.weight}}</sup>
                         <div>
@@ -100,46 +100,5 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" tabindex="-1" role="dialog" id="commentsModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <div star-rating class="pull-right"
-                 ng-model="vm.comments.item.ratings[1].rate" 
-                 avg-rating="vm.comments.item.ratings[0].rate" 
-                 on-rating-select="vm.setRating(vm.comments.item.ratings[1])" 
-                 readonly="uc.readonly">
-            </div>
-            <h4 class="modal-title" ng-bind="vm.comments.item.name">Comments</h4>
-          </div>
-          <div class="modal-body">
-            <p>{{vm.comments.item.name}}, {{vm.comments.item.weight}} г.</p>
-            <p>{{vm.comments.item.parts}}</p>
-            <ul class="list-group comments">
-              <li class="list-group-item" ng-repeat="comment in vm.comments.data">
-                    <div class="clearfix">
-                                <div>
-                                    <strong class="primary-font">Username</strong> <small class="pull-right text-muted">
-                                        <span class="glyphicon glyphicon-calendar"></span>{{comment.date|date:'dd.MM.yy'}}</small>
-                                </div>
-                                <p>
-                                    {{comment.text}}
-                                </p>
-                    </div>
-              </li>
-            </ul>
-            <form>
-              <div class="form-group">
-                <label for="comment">You comment</label>
-                <input type="text" class="form-control" id="comment" placeholder="comment" ng-model="vm.comments.text">
-              </div>
-              <button type="submit" class="btn btn-default" ng-click="vm.sendComment()">Send</button>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+    <comments-form control="vm.comments" readonly="uc.readonly" set-rating="vm.setRating"></form-comments>
 </div>
