@@ -21,6 +21,12 @@ namespace Food.Api.Controllers
     public class MenusController : ApiController
     {
         private FoodDBContext db = new FoodDBContext();
+        readonly IMenuParser[] allParsers;
+
+        public MenusController(IMenuParser[] parsers)
+        {
+            allParsers = parsers;
+        }
 
         private void CalculateRatings(List<Menu> menus)
         {
@@ -107,14 +113,28 @@ namespace Food.Api.Controllers
         }
 
 
-        [Route("api/menus/parse")]
+        [Route("api/Menus/Parsers")]
+        //[Authorize(Roles = "Admin, GlobalAdmin")]
         [HttpGet]
-        public string ParseMenu()
+        public IHttpActionResult Parsers()
+        {
+            var result = allParsers.Select(p => p.GetInfo()).ToList();
+            return Ok(result);
+        }
+
+        [Route("api/Menus/Parse/{id}")]
+        [Authorize(Roles = "Admin, GlobalAdmin")]
+        [HttpGet]
+        public string ParseMenu(int id)
         {
             string result = "OK";
-            ChudoPechka parser = new ChudoPechka();
-            parser.Load();
-            List<Menu> menus = parser.Get();
+
+            if (!allParsers.Any() || id > allParsers.Length)
+            {
+                return "Error";
+            }
+
+            List<Menu> menus = allParsers[id].ParseMenu();
 
             foreach (var menu in menus)
             {

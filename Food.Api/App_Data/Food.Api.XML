@@ -4,6 +4,28 @@
         <name>Food.Api</name>
     </assembly>
     <members>
+        <member name="M:Food.Api.App_Start.NinjectWebCommon.Start">
+            <summary>
+            Starts the application
+            </summary>
+        </member>
+        <member name="M:Food.Api.App_Start.NinjectWebCommon.Stop">
+            <summary>
+            Stops the application.
+            </summary>
+        </member>
+        <member name="M:Food.Api.App_Start.NinjectWebCommon.CreateKernel">
+            <summary>
+            Creates the kernel that will manage your application.
+            </summary>
+            <returns>The created kernel.</returns>
+        </member>
+        <member name="M:Food.Api.App_Start.NinjectWebCommon.RegisterServices(Ninject.IKernel)">
+            <summary>
+            Load your modules or register your services here!
+            </summary>
+            <param name="kernel">The kernel.</param>
+        </member>
         <member name="M:Food.Api.Areas.HelpPage.ApiDescriptionExtensions.GetFriendlyId(System.Web.Http.Description.ApiDescription)">
             <summary>
             Generates an URI-friendly ID for the <see cref="T:System.Web.Http.Description.ApiDescription"/>. E.g. "Get-Values-id_name" instead of "GetValues/{id}?name={name}"
@@ -501,19 +523,19 @@
             <param name="StartDate">return menu from this date</param>
             <returns>Menu on week</returns>
         </member>
-        <member name="T:Food.Api.ChudoPechka">
+        <member name="M:Food.Api.ChudoPechkaHtml.ParseHtml">
             <summary>
-            Service for parsing menu from site chudo-pechka.by
+            Load and parse menu from html page
             </summary>
         </member>
-        <member name="M:Food.Api.ChudoPechka.LoadDoc">
+        <member name="M:Food.Api.ChudoPechkaWord.ParseDoc">
             <summary>
             Load and parse menu from .doc file
             </summary>
         </member>
-        <member name="M:Food.Api.ChudoPechka.Load">
+        <member name="T:Food.Api.ChudoPechka">
             <summary>
-            Load and parse menu from html page
+            Service for parsing menu from site chudo-pechka.by
             </summary>
         </member>
     </members>
