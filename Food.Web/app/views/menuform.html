@@ -1,0 +1,93 @@
+﻿<div class="panel panel-default">
+    <div class="panel-heading" ng-bind="title"></div>
+    <div class="panel-body">
+
+
+        <form name="menuForm">
+            <div class="form-group">
+                <label for="menuName">Name</label>
+                <input type="text" class="form-control" id="menuName" placeholder="Menu name" ng-model="menu.name">
+            </div>
+            <div class="form-group">
+                <label for="menuPrice">Price</label>
+                <input type="text" class="form-control" id="menuPrice" placeholder="00 000" ng-model="menu.price">
+            </div>
+            <div class="form-group">
+                <label for="ondatePrice">On Date</label>
+                <input type="text" class="form-control" id="menuPrice" placeholder="2016-01-01" ng-model="menu.onDate">
+            </div>
+            <div class="form-group">
+                <label>Components</label>
+                <div class="input-group many-input-group" for="menuItems">
+                    <input type="text" class="form-control" placeholder="Name" id="itemName" aria-describedby="itemName" ng-model="menuitem.name">
+                    <span class="input-group-btn"></span>
+                    <input type="text" class="form-control" placeholder="Parts" id="itemParts" aria-describedby="itemParts" ng-model="menuitem.parts">
+                    <span class="input-group-btn"></span>
+                    <input type="text" class="form-control" placeholder="Weight" aria-describedby="itemDesc" ng-model="menuitem.weight">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" ng-click="addItem(menuitem)">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <table class="table grid" id="grid">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Parts</th>
+                            <th>Weight</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in menu.items">
+                            <td ng-if="!edited(item)">
+                                {{item.name}}
+                            </td>
+                            <td ng-if="!edited(item)">
+                                {{item.parts}}
+                            </td>
+                            <td ng-if="!edited(item)">
+                                {{item.weight}}
+                            </td>
+                            <td ng-if="edited(item)" colspan="4">
+                                <div class="input-group many-input-group" for="menuItems">
+                                    <input type="text" class="form-control" id="edititemName" aria-describedby="itemName" ng-model="editeditem.name">
+                                    <span class="input-group-btn"></span>
+                                    <input type="text" class="form-control" id="edititemParts" aria-describedby="itemParts" ng-model="editeditem.parts">
+                                    <span class="input-group-btn"></span>
+                                    <input type="text" class="form-control" id="edititemWeight" ng-model="editeditem.weight">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="saveItem()" ng-if="edited(item)">
+                                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                        </button>
+                                        <button type="button" class="btn btn-default" ng-click="cancelItem()" ng-if="edited(item)">
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="text-right" ng-if="!edited(item)">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default" ng-click="editItem(item)">
+                                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default" ng-click="deleteItem(item)">
+                                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+            <button type="submit" class="btn btn-default" ng-click="save()">Submit</button>
+            <button type="submit" class="btn btn-default" ng-click="cancel()">Cancel</button>
+        </form>
+
+    </div>
+</div>
