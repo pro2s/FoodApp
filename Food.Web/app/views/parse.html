@@ -6,18 +6,22 @@
                 <h4 class="modal-title">Parse Menu</h4>
             </div>
             <div class="modal-body">
-                <p class="text-info">Info</p>
+                <p ng-class="{'text-warning':error, 'text-success':!error}" ng-bind="message"></p>
                 <div class="form-group">
                     <label for="source">Source</label>
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <img src="http://chudo-pechka.by/assets/templates/Chudopechka/images/logo.png" width="24" height="24">
-                            Cudo Pechka
+                            <img ng-src="{{source.icon}}" width="24" height="24">
+                            {{source.name}}
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="selectFrom">
-                            <li><a href="">FastFood</a></li>
-                            <li><a href="">Piza</a></li>
+                            <li ng-repeat="src in sources">
+                                <a href="" ng-click="setSource(src)">
+                                    <img ng-src="{{src.icon}}" width="24" height="24">
+                                    &nbsp;{{src.name}}
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
