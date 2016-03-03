@@ -28,7 +28,7 @@
         };
 
         service.responseError = function (response) {
-            switch (rejection.status) {
+            switch (response.status) {
                 case 401:
                     $rootScope.$broadcast('unauthorized');
                     break;

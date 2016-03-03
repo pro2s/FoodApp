@@ -19,13 +19,13 @@
             <ul class="nav navbar-nav">
                 <li ng-repeat="item in topmenu.menu" ng-class="{ active: topmenu.isActive(item.url)}"><a href="#{{item.url}}" ng-bind="item.name"></a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right" ng-if="topmenu.auth.isLogged">
+            <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="topmenu.auth.isLogged">
                 <li ng-class="{ active: topmenu.isActive('/user')}" >
                     <a href="#/profile" ng-bind="topmenu.auth.username">User</a>
                 </li>
                 <li><a href="" ng-click="topmenu.logout()">Logout</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right" ng-if="!topmenu.auth.isLogged">
+            <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="!topmenu.auth.isLogged">
                 <li><a href="" ng-click="topmenu.showLogin()">Login</a></li>
                 <li><a href="" ng-click="topmenu.showRegister()">Registration</a></li>
             </ul>
@@ -55,6 +55,9 @@
 
     <script src="./app/directives/loginform.js"></script>
     <script src="./app/directives/starrating.js"></script>
+    <script src="./app/directives/parseform.js"></script>
+    <script src="./app/directives/commentsform.js"></script>
+    <script src="./app/directives/menuform.js"></script>
 
     <script src="./app/statistic.module.js"></script>
     <script src="./app/controllers/statistic.js"></script>

@@ -13,12 +13,13 @@
         vm.comments = {item:{}, data:[], text:''};
         vm.tomorrow = false;
         vm.components = false;
+
+        vm.comments = {};
+        
         vm.isshow = isShow;
         vm.isold = dateservice.check;
         vm.getMenuRating = getMenuRating;
         vm.setRating = setRating;
-        vm.viewComments = viewComments;
-        vm.sendComment = sendComment;
         
         activate();
             
@@ -75,14 +76,7 @@
             });
         }
         
-        function viewComments(item) {
-            vm.comments.item = item;
-            $('#commentsModal' ).modal('show');
-        }
         
-        function sendComment() {
-            vm.comments.data.push({date: new Date(),text:vm.comments.text});
-        }
     };
 
 })();    
