@@ -17,7 +17,7 @@
               <li class="list-group-item" ng-repeat="comment in comments">
                     <div class="clearfix">
                                 <div>
-                                    <strong class="primary-font">Username</strong> <small class="pull-right text-muted">
+                                    <strong class="primary-font" ng-bind="comment.userName">Username</strong> <small class="pull-right text-muted">
                                         <span class="glyphicon glyphicon-calendar"></span>{{comment.date|date:'dd.MM.yy'}}</small>
                                 </div>
                                 <p>
@@ -29,12 +29,13 @@
             <form ng-if="!readonly">
               <div class="form-group">
                 <label for="comment">You comment</label>
-                <input type="text" class="form-control" id="comment" placeholder="comment" ng-model="text">
+                <input type="text" class="form-control" id="comment" placeholder="comment" ng-model="form.text">
               </div>
               <button type="submit" class="btn btn-default" ng-click="sendComment()">Send</button>
             </form>
           </div>
           <div class="modal-footer">
+            <button type="button" class="btn btn-default" ng-click="refreshComments()">Refresh</button>
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
           </div>
         </div><!-- /.modal-content -->

@@ -53,13 +53,17 @@ namespace Food.Api.Controllers
                         Date = ic.Date,
                         Text = ic.Text,
                         ItemId = ic.ItemId,
-                        UserName = users[ic.UserId].UserName //ic.UserId
-                    });
+                        UserName = ic.UserId
+                    }).ToList();
 
-                foreach (var data in result)
+                if(result != null)
                 {
-                    data.UserName = users[data.UserName].UserName;
+                    foreach (var data in result)
+                    {
+                        data.UserName = users[data.UserName].UserName;
+                    }
                 }
+                
 
                 return Ok(result);
             }
@@ -76,7 +80,7 @@ namespace Food.Api.Controllers
             {
                 return NotFound();
             }
-
+            
             return Ok(itemComment);
         }
 
@@ -137,7 +141,16 @@ namespace Food.Api.Controllers
             db.ItemComments.Add(comment);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = comment.Id }, comment);
+            var commentView = new ItemCommentViewModel()
+            {
+                Id = comment.Id,
+                ItemId = comment.ItemId,
+                Date = comment.Date,
+                Text = comment.Text,
+                UserName = UserManager.FindById(comment.UserId).UserName,
+            };
+
+            return CreatedAtRoute("DefaultApi", new { id = comment.Id }, commentView);
         }
 
         // DELETE: api/ItemComments/5
