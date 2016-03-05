@@ -19,13 +19,16 @@
         uc.title = "Loading ...";
         uc.status = "Loading food ...";
         uc.readonly = true;
-       
+        uc.weekdays = [];
+        uc.numweekdays = 0;
+
         uc.init = activate;
         uc.answer = answer;
         uc.isDisable = isDisable;
         uc.setDaySelect = setDaySelect;
         uc.sendUserChoice = sendUserChoice;
-        
+        uc.weekOffset = weekOffset;
+
         activate();
         
         function activate() {
@@ -33,6 +36,15 @@
             authservice.registerEvent('UserLogged', CheckUser);
             authservice.registerEvent('UserLogout', CheckUser);
         };
+
+        
+        function weekOffset() {
+            var offset = 0;
+            if (uc.numweekdays < 7) {
+                offset = 6 - uc.numweekdays;
+            }
+            return new Array(offset);
+        }
         
         function CheckUser() {
             uc.readonly = true;
@@ -74,11 +86,14 @@
                     }
                 }) ;
                 
-                // Delete days without choice 
+                uc.numweekdays = 0;
+                // Delete days without choice and count other
                 for (var key in uc.weekdays) {
                     var day = uc.weekdays[key];
                     if (day.menu.length == 1) {
                         delete uc.weekdays[key]
+                    } else {
+                        uc.numweekdays++;
                     }
                 }
                 
@@ -141,9 +156,29 @@
         function setDaySelect(day, menu) {
             if (dateservice.check(day.date) && !day.userday.confirm) {
                 day.select = menu;
+                saveDay(day);
             }
         };
         
+        function saveDay(day) {
+            if (isEmpty(day.userday)) {
+                console.log('save');
+                var userday = new UserDay({ menuId: day.select.id, date: day.date });
+                //TODO: show error or success 
+                userday.$save(function (data) {
+                    day.userday = data;
+                }, function () {
+                });
+
+            } else if (day.select.id != day.userday.menuId) {
+                console.log('update');
+                //TODO: show error or success
+                day.userday.menu = day.select;
+                day.userday.menuId = day.select.id;
+                day.userday.$update({ id: day.userday.id });
+            }
+        }
+
         function sendUserChoice(days) {
             uc.working = true;
             uc.sendData = true;

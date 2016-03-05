@@ -66,7 +66,7 @@ namespace Food.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            userChoice.Menu = null;
             db.Entry(userChoice).State = EntityState.Modified;
 
             if (!CheckUserChoise(userChoice))

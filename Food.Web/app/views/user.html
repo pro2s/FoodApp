@@ -1,64 +1,28 @@
 ﻿<div class="row" ng-if="!uc.readonly">
-    <div class="flip-container text-center col-md-12" >
-	
-        <div class="back" ng-class="{flip: uc.sendData, correct: uc.correctData, incorrect:!uc.correctData}">
-            <p class="lead" ng-bind="uc.answer()"></p>
-            <p>
-                <button class="btn btn-info option" ng-click="uc.init()" ng-disabled="uc.working">Edit Week Menu</button>
-            </p>
+   
+    <div class="col-sm-1" ng-repeat="i in uc.weekOffset() track by $index">&nbsp;</div>
+    
+    <div ng-repeat="day in uc.weekdays" class="col-sm-2" ng-class="{'col-sm-offset-5':uc.numweekdays == 7 && $index == 6 }">
+        <p class="text-center"><strong>{{day.date|date:'dd.MM.yyyy'}}<br />{{day.date|date:'(EEEE)'}}</strong></p>
+        <div class="text-center">
+            <fieldset ng-disabled="uc.isDisable(day)">
+                <div class="btn-group-vertical" data-toggle="buttons">
+                    <label class="btn btn-default"
+                           ng-repeat="menu in day.menu"
+                           ng-click="uc.setDaySelect(day, menu)"
+                           ng-class="{active: day.select.id == menu.id, 'btn-info': day.select.id == menu.id}">
+                        <input type="radio" name="choice" id="{{menu.id}}" autocomplete="off" />{{menu.name}}
+                    </label>
+                </div>
+            </fieldset>
         </div>
-		
-        <div class="front row" ng-class="{flip: uc.sendData}">
-			
-			<div class="col-md-12 text-center" ng-if="uc.error">
-				<div role="alert" class="alert" ng-class="{'alert-info':uc.error && uc.working, 'alert-danger':uc.error && !uc.working}" ng-bind="uc.status"></div>
-            </div>
-			
-            <div class="col-md-12 text-center" ng-if="!uc.error">
-                <p class="lead" >Select Menu on Day</p>
-            </div>
-			
-			<div class="col-md-12 text-center" ng-if="!uc.error">
-				<table class="table grid selectday" id="grid">
-					<thead>
-					<tr>
-					<th ng-repeat="day in uc.weekdays"  class="text-center">                 
-						<label>{{day.date|date:'dd.MM.yyyy'}}<br />{{day.date|date:'(EEEE)'}}</label>
-					</th>
-					</tr>
-					</thead>
-					<tbody>
-					<tr>
-						<td ng-repeat="day in uc.weekdays">
-							<fieldset ng-disabled="uc.isDisable(day)">
-								<div class="btn-group-vertical" data-toggle="buttons">
-									<label class="btn btn-default" 
-										ng-repeat="menu in day.menu"
-										ng-click="uc.setDaySelect(day, menu)"
-										ng-class="{active: day.select.id == menu.id, 'btn-info': day.select.id == menu.id}">
-										<input type="radio" name="choice" id="{{menu.id}}" autocomplete="off" />{{menu.name}}
-									</label>
-								</div>
-							</fieldset>
-						</td>
-					</tr>
-					<tr >
-						<td ng-repeat="day in uc.weekdays">
-							<dl>
-								<dt class="text-center">{{day.select.name}}</dt>
-								<dd ng-repeat="item in day.select.items">
-								{{$index+1}}. {{item.name}}
-								</dd>
-								<dt ng-if="day.select.price>0" class="text-center">{{day.select.price}}</dt>
-							</dl>
-						</td>
-					</tr>
-					</tbody>
-				</table>	
-				<button class="btn btn-info" ng-click="uc.sendUserChoice(days)" ng-disabled="uc.working" ng-if="!uc.error">Confirm</button>
-			</div>		
-			
-        </div>
+        <dl>
+            <dt class="text-center">{{day.select.name}}</dt>
+            <dd ng-repeat="item in day.select.items">
+                {{$index+1}}. {{item.name}}
+            </dd>
+            <dt ng-if="day.select.price>0" class="text-center">{{day.select.price}}</dt>
+        </dl>
     </div>
 </div>
 
@@ -100,5 +64,5 @@
             </div>
         </div>
     </div>
-    <comments-form control="vm.comments" readonly="uc.readonly" set-rating="vm.setRating"></form-comments>
+    <comments-form control="vm.comments" readonly="uc.readonly" set-rating="vm.setRating(vm.comments.rating)"></form-comments>
 </div>
