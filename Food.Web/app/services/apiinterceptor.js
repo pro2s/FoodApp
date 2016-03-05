@@ -4,8 +4,8 @@
         .module('app')
         .service('APIInterceptor', APIInterceptor);
 
-    APIInterceptor.$inject = ['$rootScope', 'Config'];
-    function APIInterceptor($rootScope, Config) {
+    APIInterceptor.$inject = ['$q','$rootScope', 'Config'];
+    function APIInterceptor($q, $rootScope, Config) {
         var service = this;
 
         service.request = function (config) {
@@ -17,6 +17,11 @@
                 config.headers.authorization = access_token;
             }
             */
+            for (var key in config.params) {
+                if (config.params[key] === '') {
+                    delete config.params[key];
+                }
+            }
 
             if (config.url.indexOf('/api/') == 0) {
                 config.url = Config.get('api') + config.url.substring(1);
@@ -26,9 +31,9 @@
             return config;
 
         };
-
-        service.responseError = function (response) {
-            switch (response.status) {
+        
+        service.responseError = function (rejection) {
+            switch (rejection.status) {
                 case 401:
                     $rootScope.$broadcast('unauthorized');
                     break;
@@ -37,8 +42,9 @@
                     break;
             }
 
-            return response;
+            return $q.reject(rejection); 
         };
+        
     };
 
 })()

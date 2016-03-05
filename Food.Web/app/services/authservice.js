@@ -6,7 +6,7 @@
 
     authService.$inject = ['$http', 'Config', 'Account'];
     function authService($http, Config, Account) {
-        
+        var storage = localStorage; //sessionStorage;
         var _form = {
             title: "Login",
             btnText: "Login",
@@ -60,8 +60,20 @@
 
         return service;
 
+        function getKey() {
+            return storage.getItem('tokenKey');
+        }
+
+        function setKey(key) {
+            storage.setItem('tokenKey', key);
+        }
+
+        function removeKey() {
+            storage.removeItem('tokenKey');
+        }
+
         function init() {
-            var key = sessionStorage.getItem('tokenKey');
+            var key = getKey();
             if (key) {
                 $http.defaults.headers.common.Authorization = key;
                 Account.get({ action: "UserInfo" }, successInit, failedInit);
@@ -190,7 +202,7 @@
                 if (data.userName) {
                     _state.username = data.userName;
                 }
-                sessionStorage.setItem('tokenKey', data.token_type + '  ' + data.access_token);
+                setKey(data.token_type + '  ' + data.access_token)
                 init();
             } else {
                 _form.error = true;
@@ -251,7 +263,7 @@
             var acc = new Account({});
             acc.$save({ action: "Logout" });
 
-            sessionStorage.removeItem('tokenKey');
+            removeKey();
             delete $http.defaults.headers.common['Authorization'];
             authEvent('UserLogout');
         }
