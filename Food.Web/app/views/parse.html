@@ -6,46 +6,47 @@
                 <h4 class="modal-title">Parse Menu</h4>
             </div>
             <div class="modal-body">
-                <p ng-class="{'text-warning':error, 'text-success':!error}" ng-bind="message"></p>
+                <p ng-class="{'text-warning':error, 'text-success':!error}" ng-bind="message" ng-if="message!=''"></p>
                 <div class="form-group">
+                    <div class="pull-right">{{source.info}}</div>
                     <label for="source">Source</label>
                     <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            <img ng-src="{{source.icon}}" width="24" height="24">
-                            {{source.name}}
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="selectFrom">
-                            <li ng-repeat="src in sources">
-                                <a href="" ng-click="setSource(src)">
-                                    <img ng-src="{{src.icon}}" width="24" height="24">
-                                    &nbsp;{{src.name}}
-                                </a>
-                            </li>
-                        </ul>
+                            <button class="btn btn-default dropdown-toggle" type="button" id="sourceSelect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <img ng-src="{{source.icon}}" width="24" height="24">
+                                {{source.name}}
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="selectFrom">
+                                <li ng-repeat="src in sources">
+                                    <a href="" ng-click="setSource(src)">
+                                        <img ng-src="{{src.icon}}" width="24" height="24">
+                                        &nbsp;{{src.name}}
+                                    </a>
+                                </li>
+                            </ul>
+                            <button class="btn btn-default" type="button" id="sourcesUpdate" ng-click="getParsers()"><i class="glyphicon glyphicon-refresh" /></button>
                     </div>
+
                 </div>
                 <div class="form-group">
                     <label for="fromDate">From date</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" aria-label="...">
+                        <input type="date" class="form-control" ng-model="input.start">
                         <div class="input-group-btn">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Day <span class="caret"></span></button>
                             <ul class="dropdown-menu dropdown-menu-right">
-                                <li><a href="">Monday</a></li>
-                                <li><a href="">Next Monday</a></li>
-                                <li><a href="">Something else here</a></li>
+                                <li ng-repeat="day in startDays"><a href="" ng-click="setStart(day)">{{day.name}}</a></li>
                             </ul>
                         </div><!-- /btn-group -->
                     </div><!-- /input-group -->
                 </div>
                 <div class="form-group">
                     <label for="fromDate">Count Days</label>
-                    <input type="text" class="form-control" id="fromDate" placeholder="">
+                    <input type="text" class="form-control" id="fromDate" placeholder="" ng-model="input.count">
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox"> Update menu
+                        <input type="checkbox" ng-model="input.update"> Update menu
                     </label>
                 </div>
             </div>

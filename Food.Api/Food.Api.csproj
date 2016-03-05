@@ -289,6 +289,7 @@
     <Compile Include="Controllers\ItemCommentsController.cs" />
     <Compile Include="Controllers\ItemRatingsController.cs" />
     <Compile Include="Controllers\MenusController.cs" />
+    <Compile Include="Controllers\ParserController.cs" />
     <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\StatisticController.cs" />
     <Compile Include="Controllers\UserChoicesController.cs" />
@@ -305,6 +306,7 @@
     <Compile Include="Models\ItemRating.cs" />
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\Item.cs" />
+    <Compile Include="DAL\MenuRepository.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaymentBindingModel.cs" />
     <Compile Include="Models\StatisticViewModels.cs" />
@@ -312,7 +314,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
-    <Compile Include="Service\ChudoPechka.cs" />
+    <Compile Include="Service\ChudoPechkaParsers.cs" />
+    <Compile Include="Service\McDonaldsParser.cs" />
+    <Compile Include="Service\MenuParserInterface.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils.cs" />
   </ItemGroup>

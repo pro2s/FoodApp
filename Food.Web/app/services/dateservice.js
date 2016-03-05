@@ -8,7 +8,8 @@
         var monday = getMonday();
         var service = {
             monday: monday,
-            getMonday:getMonday,
+            getMonday: getMonday,
+            getNextMonday:getNextMonday,
             check: check,
         };
         return service;
@@ -20,6 +21,12 @@
             return new Date(d.setDate(diff));
         }
         
+        function getNextMonday() {
+            var nextmonday = getMonday();
+            nextmonday.setDate(nextmonday.getDate() + 7);
+            return new Date(nextmonday);
+        }
+
         function check(date) {
             var result = false;
             var today = new Date();

@@ -13,21 +13,30 @@ using Food.Api.Models;
 
 namespace Food.Api
 {
-    public interface IMenuParser
-    {
-        List<Menu> ParseMenu();
-        Dictionary<string,string> GetInfo();
-    }
-
+    
+    /// <summary>
+    /// Get menu from html chudo-pechka.by
+    /// </summary>
     public class ChudoPechkaHtml : ChudoPechka, IMenuParser
     {
+        private Dictionary<string, string> _info;
+
+        public ChudoPechkaHtml() : base()
+        {
+            _info = new Dictionary<string, string>();
+            _info["id"] = "chudopechkahtml";
+            _info["name"] = "Chudo-Pechka HTML";
+            _info["icon"] = "http://chudo-pechka.by/assets/templates/Chudopechka/images/logo.png";
+        }
+
+        public string Id()
+        {
+            return _info["id"];
+        }
+
         public Dictionary<string, string> GetInfo()
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
-            result["id"] = "chudopechkahtml";
-            result["name"] = "Chudo-Pechka HTML";
-            result["icon"] = "http://chudo-pechka.by/assets/templates/Chudopechka/images/logo.png";
-            return result;
+            return _info;
         }
         
         public List<Menu> ParseMenu()
@@ -60,15 +69,13 @@ namespace Food.Api
 
                     // TODO: move Regex to config for service
                     var matches = Regex.Matches(result, @"(?<name>[^\n]+),(?<weight>[\s0-9/]+)([^\n]+)");
-                    int order = 0;
+                   
                     foreach (Match m in matches)
                     {
                         Item menu_item = new Item();
-                        menu_item.Order = order;
                         menu_item.Name = m.Groups["name"].Value.Trim();
                         menu_item.Weight = m.Groups["weight"].Value.Trim();
                         items.Add(menu_item);
-                        order++;
                     }
 
                 }
@@ -77,25 +84,42 @@ namespace Food.Api
                     throw new ArgumentException();
                 }
 
-                FillMenu(items, day);
+                if (items.Count > 0)
+                {
+                    FillMenu(items, day);
+                }
 
                 ++day;
                 if (day > 4) break;
             }
         }
+        
     }
 
+    /// <summary>
+    /// Get menu from doc file placed on chudo-pechka.by
+    /// </summary>
     public class ChudoPechkaWord : ChudoPechka, IMenuParser
     {
+        private Dictionary<string, string> _info;
+
+        public ChudoPechkaWord() : base()
+        {
+            _info = new Dictionary<string, string>();
+            _info["id"] = "chudopechkaword";
+            _info["name"] = "Chudo-Pechka Word";
+            _info["icon"] = "http://chudo-pechka.by/assets/templates/Chudopechka/images/logo.png";
+            _info["info"] = Uri.UnescapeDataString(_url_menu.Substring(_url_menu.LastIndexOf('/')+1));
+        }
+
+        public string Id()
+        {
+            return _info["id"];
+        }
+
         public Dictionary<string, string> GetInfo()
         {
-            Dictionary<string, string> result = new Dictionary<string, string>();
-            result["id"] = "chudopechkaword";
-            result["name"] = "Chudo-Pechka Word";
-            result["icon"] = "http://chudo-pechka.by/assets/templates/Chudopechka/images/logo.png";
-            result["file"] = _url_menu;
-
-            return result;
+            return _info;
         }
 
         public List<Menu> ParseMenu()
@@ -127,18 +151,15 @@ namespace Food.Api
             Word.Document doc = wordApp.Documents.Open(tempfile);
 
             int day = 0;
-            int order = 0;
             List<Item> items = new List<Item>();
 
             foreach (Word.Table table in doc.Tables)
             {
                 for (int row = 1; row <= table.Rows.Count; row++)
                 {
-                    order = 0;
                     if (table.Rows[row].Cells.Count == 2)
                     {
                         Item item = new Item();
-                        item.Order = order;
                         item.Name = GetText(table.Cell(row, 1));
                         item.Weight = GetText(table.Cell(row, 2));
                         var matches = Regex.Matches(item.Name, "(.*?)/(.*?)/");
@@ -148,24 +169,23 @@ namespace Food.Api
                             item.Parts = matches[0].Groups[2].Value;
                         }
                         items.Add(item);
-                        order++;
                     }
                     else
                     {
                         var text = GetText(table.Cell(row, 1));
 
-                        if (day > 0)
+                        if (items.Count > 0)
                         {
-                            if (day == 1 && items.Count > 1)
+                            if (day == 0 && items.Count > 1)
                             {
                                 items.RemoveAt(0);
                             }
 
                             FillMenu(items, day);
+                            items.Clear();
+                            ++day;
                         }
-
-                        items.Clear();
-                        ++day;
+                        
                     }
 
                 }
@@ -177,11 +197,13 @@ namespace Food.Api
 
             ((Word._Application)wordApp).Quit();
         }
+
     }
 
 
     /// <summary>
-    /// Service for parsing menu from site chudo-pechka.by
+    /// Base class for parsing menu from site chudo-pechka.by
+    /// Reading page and get raw info - html for menu and link to doc file with menu
     /// </summary>
     public class ChudoPechka
     {
@@ -228,19 +250,30 @@ namespace Food.Api
      
         protected void FillMenu(List<Item> items, int day)
         {
+            int order = 0;
+            foreach (var item in items)
+            {
+                item.Order = order;
+                order++;
+            };
+
             // TODO: get template for menu from DB
+
+            List<Item> copy_items = new List<Item>();
+            copy_items = items.ConvertAll(item => (Item)item.Clone());
+
             Menu daymenu = new Menu()
             {
                 Name = "Полный обед",
                 Price = 35000,
-                Items = items,
+                Items = copy_items,
                 OnDate = _monday.AddDays(day),
                 Type = MenuType.NormalMenu,
             };
             
             _weekmenu.Add(daymenu);
 
-            List<Item> copy_items = new List<Item>();
+            copy_items = new List<Item>();
             copy_items = items.ConvertAll(item => (Item)item.Clone());
             
             if (copy_items.Count > 2)

@@ -2,10 +2,18 @@
     'use strict';
     angular
         .module('app')
+        .factory('Parser',Parser)
         .directive('parseForm', parseForm);
 
-    
-    function parseForm() {
+    Parser.$inject = ['$resource'];
+    function Parser($resource) {
+        return $resource('/api/parser/:id', {}, {
+            query: { method: 'GET', params: { id: '' }, isArray: true },
+        });
+    }
+
+    parseForm.$inject = ['Parser', 'GlobalMenu','dateservice', '$timeout'];
+    function parseForm(Parser, GlobalMenu, dateservice, $timeout) {
         
         var directive = {
             restrict: 'E',
@@ -16,39 +24,50 @@
             templateUrl: 'app/views/parse.html',
             link: function (scope, element, attrs) {
                 scope.id = 'ParseMenu';
-                scope.parseForm = {}
-                scope.sources = {},
-                scope.source = {},
+                scope.parseForm = {};
+                scope.error = false;
+                scope.message = '';
+                scope.sources = [];
+                scope.source = {};
+                scope.input = {start:'', count:'', update:false}
+                scope.startDays = [];
+
                 scope.internalControl = scope.control || {};
                 scope.internalControl.show = show;
                 scope.internalControl.hide = hide;
-                scope.setSource = setSource;
-                scope.doParse = doParse;
 
+                scope.setSource = setSource;
+                scope.setStart = setStart;
+                scope.getParsers = getParsers;
+                scope.doParse = doParse;
+                
 
                 activate();
 
                 function activate() {
-                    scope.sources = [
-                    {
-                        id:0,
-                        icon:'http://chudo-pechka.by/assets/templates/Chudopechka/images/logo.png',
-                        name:'Cudo Pechka HTML'
-                    },
-                    {
-                        id:1,
-                        icon:'http://chudo-pechka.by/assets/templates/Chudopechka/images/logo.png',
-                        name:'Cudo Pechka DOC'
-                    },
-                    {
-                        id:2,
-                        icon:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/McDonald's_Golden_Arches.svg/200px-McDonald's_Golden_Arches.svg.png",
-                        name:'McDonalds'
-                    },
-                    ]
-                    scope.source = scope.sources[0];
+                    getParsers();
+                    $(document).on('hide.bs.modal', '#' + scope.id, onHide);
+                    scope.startDays.push({ name: "Monday", date: dateservice.getMonday() })
+                    scope.startDays.push({ name: "Next Monday", date: dateservice.getNextMonday()})
+                    scope.startDays.push({ name: "Today", date: new Date() });
                 }
 
+                function setStart(start) {
+                    scope.input.start = start.date;
+                }
+                
+                function getParsers() {
+                    scope.message = 'Loading Parsers ...';
+                    scope.sources = []
+                    Parser.query(function (data) {
+                        scope.sources = data;
+                        scope.source = scope.sources[0];
+                        scope.message = '';
+                    }, function () {
+                        scope.error = true;
+                        scope.message = 'Get Parsers Error, try again leter.';
+                    });
+                }
 
                 function show() {
                     $('#' + scope.id).modal('show');
@@ -57,11 +76,39 @@
                 function hide() {
                     $('#' + scope.id).modal('hide');
                 }
+
+                function onHide() {
+                    scope.input = { start: '', count: '', update: false }
+                    scope.source = scope.sources[0];
+                    scope.message = '';
+                    scope.error = false;
+                }
+
                 function setSource(source) {
                     scope.source = source;
                 }
-                function doParse() {
 
+                function doParse() {
+                    scope.message = 'Parse menu ...';
+                    var id = scope.source.id;
+                    if (id) {
+                        var config = {
+                            id: id,
+                            start: scope.input.start,
+                            count: scope.input.count,
+                            update: scope.input.update
+                        }
+                        Parser.get(config, function (data) {
+                            scope.message = data.message;
+                            scope.error = false;
+                            GlobalMenu.updateMenu();
+                            $timeout(hide, 2000);
+                        }, function () {
+                            scope.error = true;
+                            scope.message = 'Error parse Menu from' + scope.source.name;
+                        });
+                    }
+                    
                 }
             }
         };
