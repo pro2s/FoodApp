@@ -21,21 +21,16 @@ namespace Food.Api.Controllers
     public class MenusController : ApiController
     {
         private FoodDBContext db = new FoodDBContext();
-        readonly IMenuParser[] allParsers;
+        
 
-        public MenusController(IMenuParser[] parsers)
-        {
-            allParsers = parsers;
-        }
-
+        
         private void CalculateRatings(List<Menu> menus)
         {
             string UserId = User.Identity.GetUserId();
             //TODO: rewrite to sql 
             foreach (var menu in menus)
             {
-                menu.Items.OrderBy(i => i.Order);
-
+                menu.Items = menu.Items.OrderBy(i => i.Order).ToList();
                 foreach (var item in menu.Items)
                 {
                     var AllRatings = item.Ratings;
@@ -104,7 +99,9 @@ namespace Food.Api.Controllers
                     break;
                 default:
                     result = db.Menus.Include("Items").Include("Items.Ratings")
-                            .Where(m => m.Type == get_type && m.OnDate >= StartDate).ToList();
+                            .Where(m => m.Type == get_type && m.OnDate >= StartDate)
+                            .ToList();
+                            
                     
                     CalculateRatings(result);
                     break;
@@ -113,49 +110,7 @@ namespace Food.Api.Controllers
         }
 
 
-        [Route("api/Menus/Parsers")]
-        //[Authorize(Roles = "Admin, GlobalAdmin")]
-        [HttpGet]
-        public IHttpActionResult Parsers()
-        {
-            var result = allParsers.Select(p => p.GetInfo()).ToList();
-            return Ok(result);
-        }
-
-        [Route("api/Menus/Parse/{id}")]
-        [Authorize(Roles = "Admin, GlobalAdmin")]
-        [HttpGet]
-        public string ParseMenu(int id)
-        {
-            string result = "OK";
-
-            if (!allParsers.Any() || id > allParsers.Length)
-            {
-                return "Error";
-            }
-
-            List<Menu> menus = allParsers[id].ParseMenu();
-
-            foreach (var menu in menus)
-            {
-               
-
-                foreach (var item in menu.Items.ToList())
-                {
-                    var dbitem = db.Items.Where(i => i.Name == item.Name && i.Weight == item.Weight).FirstOrDefault();
-                    if (dbitem != null)
-                    {
-                        //db.Entry(item).State = EntityState.Detached;
-                        menu.Items.Remove(item);
-                        menu.Items.Add(dbitem);
-                    }
-                }
-                db.Menus.Add(menu); 
-                db.SaveChanges();
-            }
-
-            return result;
-        }
+        
 
         // GET: api/Menus/5
         [ResponseType(typeof(Menu))]
@@ -171,6 +126,7 @@ namespace Food.Api.Controllers
         }
 
         // PUT: api/Menus/5
+        [Authorize(Roles = "Admin, GlobalAdmin")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutMenu(int id, Menu menu)
         {
@@ -199,8 +155,13 @@ namespace Food.Api.Controllers
                 return BadRequest();
             }
 
-            db.Entry(menu).State = EntityState.Modified;
+            foreach(var item in menu.Items)
+            {
+                item.Ratings = null;
+            }
 
+            db.Entry(menu).State = EntityState.Modified;
+            
             try
             {
                 db.SaveChanges();
@@ -221,6 +182,7 @@ namespace Food.Api.Controllers
         }
 
         // POST: api/Menus
+        [Authorize(Roles = "Admin, GlobalAdmin")]
         [ResponseType(typeof(Menu))]
         public IHttpActionResult PostMenu(Menu menu)
         {
@@ -236,6 +198,7 @@ namespace Food.Api.Controllers
         }
 
         // DELETE: api/Menus/5
+        [Authorize(Roles = "Admin, GlobalAdmin")]
         [ResponseType(typeof(Menu))]
         public IHttpActionResult DeleteMenu(int id)
         {

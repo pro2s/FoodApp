@@ -18,6 +18,10 @@ body {
     display: inline;
 }
 
+.btn-group {
+  display: flex;
+}
+
 .glyphicon {
     line-height: 0.9!important;
 }

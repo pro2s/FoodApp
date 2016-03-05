@@ -10,7 +10,7 @@ namespace Food.Api.Models
     public class Item : ICloneable
     {
         public int Id { get; set; }
-        public int? Order { get; set; }
+        public int Order { get; set; }
         public string Name { get; set; }
         public string Parts { get; set; }
         public string Weight { get; set; }
@@ -33,6 +33,7 @@ namespace Food.Api.Models
                 Name = Name,
                 Parts = Parts,
                 Weight = Weight,
+                Order = Order,
             };
             return item;
         }

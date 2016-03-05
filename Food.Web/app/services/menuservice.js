@@ -3,7 +3,8 @@
     angular
         .module('app.menu')
         .factory('Menu', Menu)
-        .factory('MenuItem', MenuItem) 
+        .factory('MenuItem', MenuItem)
+        .factory('ItemComments', ItemComments)
         .factory('GlobalMenu', GlobalMenu)
         .factory('ItemRating', ItemRating);
 
@@ -15,6 +16,7 @@
         });
     }
 
+    
     MenuItem.$inject = ['$resource'];    
     function MenuItem($resource) {
         return $resource('/api/menuitems/:id', {}, {
@@ -23,6 +25,15 @@
         });
     }
     
+    
+    ItemComments.$inject = ['$resource'];
+    function ItemComments($resource) {
+        return $resource('/api/itemcomments/:id', {}, {
+            query: { method: 'GET', params: { id: '' }, isArray: true },
+            update: { method: 'PUT', params: { id: '' }, isArray: true }
+        });
+    }
+
     GlobalMenu.$inject = ['Menu','authservice'];
     function GlobalMenu(Menu, authservice) {
         var _data = { menu: [], empty: true };
@@ -32,12 +43,22 @@
         
         var service = {
             data: _data,
+            updateMenu: updateMenu,
             setMenu: setMenu,
             getMenu: getMenu,
             addMenu: addMenu,
+            deleteMenu:deleteMenu,
             clearMenu: clearMenu,
         };
         return service;
+
+        function deleteMenu(menu) {
+            var i = _data.menu.indexOf(menu);
+            if (i > 0) {
+                _data.menu.splice(i, 1);
+            }
+            
+        }
 
         function updateMenu() {
             Menu.query(success, clearMenu);

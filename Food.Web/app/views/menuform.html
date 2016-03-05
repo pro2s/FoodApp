@@ -14,7 +14,7 @@
             </div>
             <div class="form-group">
                 <label for="ondatePrice">On Date</label>
-                <input type="text" class="form-control" id="menuPrice" placeholder="2016-01-01" ng-model="menu.onDate">
+                <input type="date" class="form-control" id="menuPrice" placeholder="2016-01-31" ng-model="menu.onDate">
             </div>
             <div class="form-group">
                 <label>Components</label>
@@ -69,8 +69,8 @@
                                     </span>
                                 </div>
                             </td>
-                            <td class="text-right" ng-if="!edited(item)">
-                                <div class="btn-group" role="group">
+                            <td width="1%" ng-if="!edited(item)">
+                                <div class="btn-group text-right" role="group">
                                     <button type="button" class="btn btn-default" ng-click="editItem(item)">
                                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                     </button>

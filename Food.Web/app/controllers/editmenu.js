@@ -4,9 +4,9 @@
         .module('app.menu')
         .controller('EditMenu', EditMenu);
     
-    EditMenu.$inject = ['GlobalMenu','Menu','MenuItem','dateservice'];    
+    EditMenu.$inject = ['GlobalMenu','Menu','MenuItem','dateservice','$window'];    
     
-    function EditMenu(GlobalMenu, Menu, MenuItem, dateservice) {
+    function EditMenu(GlobalMenu, Menu, MenuItem, dateservice, $window) {
         var form = this;
         form.title = "New Menu";
         form.menu = {};
@@ -17,7 +17,18 @@
         form.edit = edit;
         form.cancel = cancel;
         form.save = save;
-        
+        form.delete = deleteMenu;
+
+        function deleteMenu(menu) {
+            var result = $window.confirm('Delete Menu "' + menu.name + '"');
+            if (result) {
+                Menu.delete({ id: menu.id }, function () {
+                    GlobalMenu.deleteMenu(menu);
+                })
+                
+            } 
+        }
+
         function add() {
             form.title = "New menu";
             form.menu = {};
@@ -32,6 +43,7 @@
             form.title = "Edit menu";
             form.backupmenu = angular.copy(menu);
             form.menu = menu;
+            form.menu.onDate = new Date(menu.onDate);
         };
         
         function cancel() {
