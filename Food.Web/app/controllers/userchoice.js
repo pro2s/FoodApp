@@ -14,8 +14,6 @@
         uc.days = []
         uc.error = true;
         uc.working = false;
-        uc.correctData = false;
-        uc.sendData = false;
         uc.title = "Loading ...";
         uc.status = "Loading food ...";
         uc.readonly = true;
@@ -23,10 +21,8 @@
         uc.numweekdays = 0;
 
         uc.init = activate;
-        uc.answer = answer;
         uc.isDisable = isDisable;
         uc.setDaySelect = setDaySelect;
-        uc.sendUserChoice = sendUserChoice;
         uc.weekOffset = weekOffset;
 
         activate();
@@ -56,7 +52,6 @@
 
         function FillUserChoice() {
             uc.status = "Loading food ...";
-            uc.sendData = false;
             uc.working = true;
             uc.error = true;
             
@@ -144,10 +139,7 @@
             uc.working = false;
         };
         
-        function answer() {
-            return uc.correctData ? 'Changes accepted' : 'Сhanges rejected';
-        };
-
+        
         function isDisable(day) {
             return !dateservice.check(day.date) || day.userday.confirm
         };
@@ -179,32 +171,7 @@
             }
         }
 
-        function sendUserChoice(days) {
-            uc.working = true;
-            uc.sendData = true;
-            
-            for (var key in uc.weekdays) {
-                var day = uc.weekdays[key];
-                
-                if (isEmpty(day.userday)) {
-                    if (!isEmpty(day.select)) {
-                        console.log('save');
-                        var userday = new UserDay({ userid: uc.userid, menuId: day.select.id, date: day.date });
-                        userday.$save();
-                    }
-                }
-                else if (day.select.id != day.userday.menuId) {
-                    console.log('update');
-                    day.userday.menuId = day.select.id;
-                    day.userday.$update({id:day.userday.id});
-                }
-            }
-            
-            uc.working = false;
-            
-            // false if error in response
-            uc.correctData = true; 
-        };
+
     };
     
 })(); 
