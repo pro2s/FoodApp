@@ -37,13 +37,20 @@ namespace Food.Api.Providers
             ApplicationUser user = await userManager.FindByEmailAsync(context.UserName);
             
             bool chkPassword = await userManager.CheckPasswordAsync(user, context.Password);
-
+            
             if (!chkPassword)
             {
                 context.SetError("invalid_grant", "Имя пользователя или пароль указаны неправильно.");
                 return;
             }
-             
+
+            if (user.LockoutEndDateUtc!=null && user.LockoutEndDateUtc > DateTime.UtcNow)
+            {
+                DateTime date = (DateTime)user.LockoutEndDateUtc;
+                string error = string.Format("Пользователь заблокирован до {0:dd.MM.yy HH:mm}.", date.ToLocalTime());
+                context.SetError("invalid_grant", error);
+                return;
+            }
 
 
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,

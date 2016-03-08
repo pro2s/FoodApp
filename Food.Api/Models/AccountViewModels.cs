@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Food.Api.Models
 {
@@ -42,6 +43,9 @@ namespace Food.Api.Models
         public string LoginProvider { get; set; }
 
         public int Balance { get; internal set; }
+
+        public ICollection<IdentityUserClaim> Claims { get; internal set; }
+        public DateTime? LockoutEndDate { get; internal set; }
     }
 
     public class UserLoginInfoViewModel

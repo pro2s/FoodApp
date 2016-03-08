@@ -87,14 +87,34 @@ namespace Food.Api.Models
         public string ConfirmPassword { get; set; }
     }
 
-
-
     public class SetRoleBindingModel
     {
         [Required]
+        public string UserId { get; set; }
+
+        [Required]
         [Display(Name = "Роль пользователя")]
         public string Role { get; set; }
+    }
 
+    public class UserClaimBindingModel
+    {
+        [Required]
         public string UserId { get; set; }
+
+        [Required]
+        public string Type { get; set; }
+
+        public string Value { get; set; }
+    }
+
+    public class UserLockoutBindingModel
+    {
+        [Required]
+        public string UserId { get; set; }
+
+        [Required]
+        public int Minutes { get; set; }
+
     }
 }

@@ -39,7 +39,8 @@
                         </td>
                         <td>
                             <div class="btn-group pull-right">
-                                <button class="btn btn-default" type="button" ng-click="vm.banUser(user)"><span class="fa fa-user-times" aria-hidden="true"></span></button>
+                                <button class="btn btn-default" ng-class="{'btn-success':vm.checkClaim(user,'comments','readonly')}" type="button" ng-click="vm.setClaim(user,'comments','readonly')"><span class="fa fa-microphone-slash" aria-hidden="true"></span></button>
+                                <button class="btn btn-default" ng-class="{'btn-success':vm.isLockout(user)}" type="button" ng-click="vm.lockout(user)"><span class="fa fa-user-times" aria-hidden="true"></span></button>
                                 <button class="btn btn-default" ng-class="{'btn-success':vm.isAdmin(user)}" type="button" ng-click="vm.switchRole(user)"><span class="fa fa-wrench" aria-hidden="true"></span></button>
                             </div>
                         </td>

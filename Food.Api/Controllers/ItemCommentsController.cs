@@ -130,11 +130,20 @@ namespace Food.Api.Controllers
                 return BadRequest(ModelState);
             }
 
+            string UserId = User.Identity.GetUserId();
+            var claims = await UserManager.GetClaimsAsync(UserId);
+            
+            bool ReadonlyComments = claims.Where(c => c.Type == "comments" && c.Value == "readonly").Any();
+            if (ReadonlyComments)
+            {
+                return BadRequest("You may only read.");
+            }
+
             ItemComment comment = new ItemComment()
             {
                 ItemId = itemComment.ItemId,
                 Text = itemComment.Text,
-                UserId = User.Identity.GetUserId(),
+                UserId = UserId,
                 Date = DateTime.Now,
             };
 

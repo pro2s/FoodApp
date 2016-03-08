@@ -219,6 +219,70 @@ namespace Food.Api.Controllers
             return Ok();
         }
 
+        // POST api/Account/UserClaim
+        [Route("UserClaim")]
+        [Authorize(Roles = "Admin, GlobalAdmin")]
+        public async Task<IHttpActionResult> UserAction(UserClaimBindingModel model)
+        {
+            if (model.UserId == null)
+            {
+                model.UserId = User.Identity.GetUserId();
+                Validate(model);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            
+            IdentityResult result;
+            var UserClaims = await UserManager.GetClaimsAsync(model.UserId);
+            Claim claim = UserClaims.Where(c => c.Type == model.Type).FirstOrDefault();
+            if (claim != null)
+            {
+                result = await UserManager.RemoveClaimAsync(model.UserId, claim);
+                if (!result.Succeeded)
+                {
+                    return GetErrorResult(result);
+                }
+            }
+
+            if (model.Value != "")
+            {
+                result = await UserManager.AddClaimAsync(model.UserId, new Claim(model.Type, model.Value));
+                if (!result.Succeeded)
+                {
+                    return GetErrorResult(result);
+                }
+            }
+
+
+            return Ok();
+        }
+
+
+        // POST api/Account/UserClaim
+        [Route("UserLockout")]
+        [Authorize(Roles = "Admin, GlobalAdmin")]
+        public async Task<IHttpActionResult> UserLockout(UserLockoutBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var user = await UserManager.FindByIdAsync(model.UserId);
+            
+            if (user != null)
+            {
+                user.LockoutEnabled = true;
+                user.LockoutEndDateUtc = DateTime.UtcNow.AddMinutes(model.Minutes);
+                await UserManager.UpdateAsync(user);
+            }
+            
+            return Ok();
+        }
+
         // POST api/Account/AddExternalLogin
         [Route("AddExternalLogin")]
         public async Task<IHttpActionResult> AddExternalLogin(AddExternalLoginBindingModel model)
@@ -515,26 +579,55 @@ namespace Food.Api.Controllers
         [Route("~/api/Users")]
         public List<UserInfoViewModel> GetUsers()
         {
-            FoodDBContext db = new FoodDBContext();
             List<UserInfoViewModel> result = new List<UserInfoViewModel>();
             List<ApplicationUser> users = UserManager.Users.ToList();
             foreach (var user in users)
             {
-                
-                result.Add(new UserInfoViewModel()
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Roles = UserManager.GetRoles(user.Id).ToList(),
-                    Email = user.Email,
-                    IsEmailConfirmed = user.EmailConfirmed,
-                    Balance = db.GetUserBalance(user.Id),
-                    HasRegistered = true,
-                });
+                result.Add(FillUserInfo(user));
             }
                 
             return result; 
         }
+
+        // <summary>
+        /// Get user info
+        /// </summary>
+        /// <returns>List users</returns>
+        // POST api/Users
+        [Authorize(Roles = "Admin, GlobalAdmin")]
+        [Route("~/api/Users/{id}")]
+        public IHttpActionResult GetUser(string id)
+        {
+            var user = UserManager.FindById(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            UserInfoViewModel result = FillUserInfo(user);
+
+            return Ok(result);
+        }
+
+        private UserInfoViewModel FillUserInfo(ApplicationUser user)
+        {
+            FoodDBContext db = new FoodDBContext();
+
+            return new UserInfoViewModel()
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Roles = UserManager.GetRoles(user.Id).ToList(),
+                Email = user.Email,
+                IsEmailConfirmed = user.EmailConfirmed,
+                Balance = db.GetUserBalance(user.Id),
+                HasRegistered = true,
+                Claims = user.Claims,
+                LockoutEndDate = user.LockoutEndDateUtc,
+            };
+        }
+
 
         private async Task<ExternalLoginInfo> AuthenticationManager_GetExternalLoginInfoAsync_WithExternalBearer()
         {
@@ -710,4 +803,5 @@ namespace Food.Api.Controllers
 
         #endregion
     }
+
 }
