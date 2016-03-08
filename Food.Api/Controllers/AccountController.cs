@@ -19,7 +19,7 @@ using Food.Api.Results;
 using System.Web.Http.Cors;
 using Food.Api.DAL;
 using System.Linq;
-
+using System.Web.Http.Description;
 
 namespace Food.Api.Controllers
 {
@@ -577,6 +577,7 @@ namespace Food.Api.Controllers
         // POST api/Users
         [Authorize(Roles ="Admin, GlobalAdmin")]
         [Route("~/api/Users")]
+        [ResponseType(typeof(List<UserInfoViewModel>))]
         public List<UserInfoViewModel> GetUsers()
         {
             List<UserInfoViewModel> result = new List<UserInfoViewModel>();
@@ -589,13 +590,14 @@ namespace Food.Api.Controllers
             return result; 
         }
 
-        // <summary>
+        /// <summary>
         /// Get user info
         /// </summary>
-        /// <returns>List users</returns>
+        /// <returns>user info</returns>
         // POST api/Users
         [Authorize(Roles = "Admin, GlobalAdmin")]
         [Route("~/api/Users/{id}")]
+        [ResponseType(typeof(UserInfoViewModel))]
         public IHttpActionResult GetUser(string id)
         {
             var user = UserManager.FindById(id);

@@ -509,6 +509,12 @@
             </summary>
             <returns>List users</returns>
         </member>
+        <member name="M:Food.Api.Controllers.AccountController.GetUser(System.String)">
+            <summary>
+            Get user info
+            </summary>
+            <returns>user info</returns>
+        </member>
         <member name="T:Food.Api.Controllers.MenusController">
             <summary>
             Api for menu.
