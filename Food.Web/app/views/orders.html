@@ -1,25 +1,75 @@
 ﻿<div class="row">
-    <div class="col-md-8">
-        <div class="lead" ng-bind="vm.title"></div>
-        <div class="panel panel-default" ng-repeat="day in vm.weekdays" ng-class="{'panel-success':vm.activeday==$index}" ng-if="day.total>0">
-            <div class="panel-heading">
-                <a href="" ng-click="vm.activeday=$index">{{day.date|date:'dd.MM.yyyy'}} {{day.date|date:'(EEEE)'}}</a>
-            </div>
-            <ul class="list-group" ng-show="vm.activeday==$index">
-                <li ng-repeat="select in day.userselect track by $index" class="list-group-item">
-                    {{vm.getUser(select).userName}} - {{vm.getMenu(select).name}} ({{vm.getMenu(select).price}})
-                    <button class="btn btn-sm"
-                            ng-class="{'btn-success':select.confirm, 'btn-default':!select.confirm}"
-                            ng-click="vm.confirmSelect(select)"
-                            ng-disabled="select.confirm">
-                        {{select.confirm?"получено":"выдать"}}
-                    </button>
-                </li>
-                <li class="list-group-item"><b>Итого по меню</b></li>
-                <li ng-repeat="menu in day.menu" class="list-group-item" ng-if="menu.count>0">
-                    {{menu.name}} - {{menu.count}} на сумму {{menu.price * menu.count}}
-                </li>
+    <div class="col-sm-12"><div class="lead" ng-bind="vm.title"></div></div>
+    <div class="col-sm-9">
+        <div class="col-sm-12">
+            <ul class="nav nav-tabs ">
+                <li ng-class="{active:vm.isTab('week')}"><a href="" ng-click="vm.setTab('week')">Week orders</a></li>
+                <li ng-class="{active:vm.isTab('all')}"><a href="" ng-click="vm.setTab('all')">All orders</a></li>
             </ul>
+        </div>
+        <div ng-if="vm.isTab('week')" class="col-sm-12 spacer">
+            <div class="panel panel-default" ng-repeat="day in vm.weekdays" ng-class="{'panel-success':vm.activeday==$index}" ng-if="day.total>0">
+                <div class="panel-heading">
+                    <a href="" ng-click="vm.activeday=$index">{{day.date|date:'dd.MM.yyyy'}} {{day.date|date:'(EEEE)'}}</a>
+                </div>
+                <ul class="list-group" ng-show="vm.activeday==$index">
+                    <li ng-repeat="select in day.userselect track by $index" class="list-group-item">
+                        {{vm.getUser(select).userName}} - {{select.menu.name}} ({{select.menu.price}})
+                        <button class="btn btn-sm"
+                                ng-class="{'btn-success':select.confirm, 'btn-default':!select.confirm}"
+                                ng-click="vm.confirmSelect(select)"
+                                ng-disabled="select.confirm">
+                            {{select.confirm?"получено":"выдать"}}
+                        </button>
+                    </li>
+                    <li class="list-group-item"><b>Итого по меню</b></li>
+                    <li ng-repeat="menu in day.menu" class="list-group-item" ng-if="menu.count>0">
+                        {{menu.name}} - {{menu.count}} на сумму {{menu.price * menu.count}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div ng-if="vm.isTab('all')" class="col-sm-12 spacer">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Date</th>
+                        <th>UserName</th>
+                        <th>Menu</th>
+                        <th>Price</th>
+                        <th>Recived</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="order in vm.orders.pageData">
+                        <th>{{order.id}}</th>
+                        <td>{{order.date|date:'dd.MM.yyyy'}}</td>
+                        <td>{{vm.getUser(order).userName}}</td>
+                        <td>{{order.menu.name}}</td>
+                        <td>{{order.menu.price}}</td>
+                        <td><i class="glyphicon glyphicon-ok" ng-if="order.confirm"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination">
+                    <li>
+                        <a href="" aria-label="Previous" ng-click="vm.prevPage()">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li ng-repeat="page in vm.orders.pages track by $index" ng-class="{active:vm.orders.current == page}">
+                        <a href="" ng-click="vm.gotoPage(page)">{{page}}</a>
+                    </li>
+                    <li>
+                        <a href="" aria-label="Next" ng-click="vm.nextPage()">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>

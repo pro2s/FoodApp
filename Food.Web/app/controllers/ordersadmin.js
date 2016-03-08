@@ -14,11 +14,21 @@
         vm.menu = {};
         vm.users = {};
         vm.weekdays = {};
+        vm.tab = 'week';
+        vm.orders = {pages: [1,2,3], current:2,  pageData:[]};
         
         vm.getUser = getUser;
         vm.getMenu = getMenu;
         vm.confirmSelect = confirmSelect;
+        vm.setTab = setTab;
+        vm.isTab = isTab;
+        vm.prevPage = prevPage;
+        vm.nextPage = nextPage;
+        vm.gotoPage = gotoPage;
         
+
+
+
         activate();
         
         // TODO: Decompose on methods 
@@ -33,7 +43,7 @@
             
             var sysmenu = Menu.query({menuMode:'none'});
             var weekmenu = Menu.query();
-            var days = UserDay.query({list:'all'});
+            var days = UserDay.query({list:'week'});
             
             $q.all([
                 sysmenu.$promise,
@@ -41,7 +51,7 @@
                 days.$promise
             ])
             .then(function(result) {
-                
+                vm.orders.pageData = days;
                 var nonemenu = sysmenu.pop();	
                 var menucount = {};   
                 
@@ -116,6 +126,26 @@
                     userday.confirm = false;
                 });
             
+        }
+
+        function setTab(name) {
+            vm.tab = name;
+        }
+
+        function isTab(name) {
+            return vm.tab == name;
+        }
+
+        function prevPage() {
+            vm.orders.current--;
+        }
+
+        function nextPage() {
+            vm.orders.current++;
+        }
+
+        function gotoPage(num) {
+            vm.orders.current = num;
         }
     };
 })(); 

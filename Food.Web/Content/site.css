@@ -6,6 +6,9 @@ body {
      
 }
 
+.spacer {
+    margin-top: 5px; 
+}
 .table tbody>tr>td.v-align
 {
     vertical-align: middle;

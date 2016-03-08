@@ -16,7 +16,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Food.Api.Controllers
 {
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
+    [Authorize]
     public class UserChoicesController : ApiController
     {
         private FoodDBContext db = new FoodDBContext();
@@ -34,6 +34,13 @@ namespace Food.Api.Controllers
                     {
                         // TODO: return userchoices for admin organisation
                         query = db.UserChoices.Where(uc => uc.date >= monday);
+                    }
+                    break;
+                case "week":
+                    if (User.IsInRole("Admin") || User.IsInRole("GlobalAdmin"))
+                    {
+                        // TODO: return userchoices for admin organisation
+                        query = db.UserChoices.Include("Menu").Where(uc => uc.date >= monday);
                     }
                     break;
                 case "personal":
