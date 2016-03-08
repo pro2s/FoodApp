@@ -38,8 +38,12 @@
                     $rootScope.$broadcast('unauthorized');
                     break;
                 case 408:
-                    console.log('connection timed out');
+                case -1:
+                    console.log('Connection timeout.');
+                    $('#offlineMessage').modal({backdrop: 'static', keyboard: false})  
                     break;
+
+
             }
 
             return $q.reject(rejection); 
