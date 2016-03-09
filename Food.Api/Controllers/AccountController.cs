@@ -20,6 +20,7 @@ using System.Web.Http.Cors;
 using Food.Api.DAL;
 using System.Linq;
 using System.Web.Http.Description;
+using Ninject;
 
 namespace Food.Api.Controllers
 {
@@ -31,12 +32,16 @@ namespace Food.Api.Controllers
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
 
+        [Inject]
+        public IPaymentRepository _payments { private get; set; }
+
         public AccountController()
         {
         }
 
         public AccountController(ApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat
+            )
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
@@ -76,9 +81,7 @@ namespace Food.Api.Controllers
                 UserName = user.UserName;
                 Email = user.Email;
                 IsEmailConfirmed = user.EmailConfirmed;
-                FoodDBContext db = new FoodDBContext();
-                Balance = db.GetUserBalance(UserId);
-
+                Balance = _payments.GetUserBalance(UserId);
             }
 
 
@@ -570,67 +573,7 @@ namespace Food.Api.Controllers
             return Ok();
         }
 
-        /// <summary>
-        /// Get users info
-        /// </summary>
-        /// <returns>List users</returns>
-        // POST api/Users
-        [Authorize(Roles ="Admin, GlobalAdmin")]
-        [Route("~/api/Users")]
-        [ResponseType(typeof(List<UserInfoViewModel>))]
-        public List<UserInfoViewModel> GetUsers()
-        {
-            List<UserInfoViewModel> result = new List<UserInfoViewModel>();
-            List<ApplicationUser> users = UserManager.Users.ToList();
-            foreach (var user in users)
-            {
-                result.Add(FillUserInfo(user));
-            }
-                
-            return result; 
-        }
-
-        /// <summary>
-        /// Get user info
-        /// </summary>
-        /// <returns>user info</returns>
-        // POST api/Users
-        [Authorize(Roles = "Admin, GlobalAdmin")]
-        [Route("~/api/Users/{id}")]
-        [ResponseType(typeof(UserInfoViewModel))]
-        public IHttpActionResult GetUser(string id)
-        {
-            var user = UserManager.FindById(id);
-
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            UserInfoViewModel result = FillUserInfo(user);
-
-            return Ok(result);
-        }
-
-        private UserInfoViewModel FillUserInfo(ApplicationUser user)
-        {
-            FoodDBContext db = new FoodDBContext();
-
-            return new UserInfoViewModel()
-            {
-                Id = user.Id,
-                UserName = user.UserName,
-                Roles = UserManager.GetRoles(user.Id).ToList(),
-                Email = user.Email,
-                IsEmailConfirmed = user.EmailConfirmed,
-                Balance = db.GetUserBalance(user.Id),
-                HasRegistered = true,
-                Claims = user.Claims,
-                LockoutEndDate = user.LockoutEndDateUtc,
-            };
-        }
-
-
+     
         private async Task<ExternalLoginInfo> AuthenticationManager_GetExternalLoginInfoAsync_WithExternalBearer()
         {
             ExternalLoginInfo loginInfo = null;

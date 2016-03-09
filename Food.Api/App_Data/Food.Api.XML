@@ -503,18 +503,6 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="M:Food.Api.Controllers.AccountController.GetUsers">
-            <summary>
-            Get users info
-            </summary>
-            <returns>List users</returns>
-        </member>
-        <member name="M:Food.Api.Controllers.AccountController.GetUser(System.String)">
-            <summary>
-            Get user info
-            </summary>
-            <returns>user info</returns>
-        </member>
         <member name="T:Food.Api.Controllers.MenusController">
             <summary>
             Api for menu.
@@ -528,6 +516,18 @@
             <param name="MenuMode"></param>
             <param name="StartDate">return menu from this date</param>
             <returns>Menu on week</returns>
+        </member>
+        <member name="M:Food.Api.Controllers.UsersController.GetUsers">
+            <summary>
+            Get users info
+            </summary>
+            <returns>List users</returns>
+        </member>
+        <member name="M:Food.Api.Controllers.UsersController.GetUser(System.String)">
+            <summary>
+            Get user info
+            </summary>
+            <returns>user info</returns>
         </member>
         <member name="T:Food.Api.ChudoPechkaHtml">
             <summary>
