@@ -4,9 +4,10 @@
         .module('app.menu')
         .factory('Menu', Menu)
         .factory('MenuItem', MenuItem)
+        .factory('ItemRating', ItemRating)
         .factory('ItemComments', ItemComments)
-        .factory('GlobalMenu', GlobalMenu)
-        .factory('ItemRating', ItemRating);
+        .factory('GlobalMenu', GlobalMenu);
+    
 
     Menu.$inject = ['$resource'];    
     function Menu($resource) {
@@ -25,13 +26,27 @@
         });
     }
     
-    
+    ItemRating.$inject = ['$resource'];
+    function ItemRating($resource) {
+        return $resource('/api/itemratings/:id', {}, {
+            query: { method: 'GET', params: { id: '' }, isArray: true },
+            update: { method: 'PUT', params: { id: '' } },
+        });
+    }
+
     ItemComments.$inject = ['$resource'];
     function ItemComments($resource) {
-        return $resource('/api/itemcomments/:id', {}, {
-            query: { method: 'GET', params: { id: '' }, isArray: true },
-            update: { method: 'PUT', params: { id: '' }, isArray: true }
-        });
+        return function (config) {
+            return $resource('/api/itemcomments/:id', {}, {
+                query: { 
+                    method: 'GET', 
+                    params: { id: '', range: '@range' }, 
+                    isArray: true, 
+                    headers: config.headers,
+                },
+                update: { method: 'PUT', params: { id: '' }}
+            });
+        }
     }
 
     GlobalMenu.$inject = ['Menu','authservice'];
@@ -89,12 +104,6 @@
         }
     }
     
-    ItemRating.$inject = ['Config', '$resource'];
-    function ItemRating(Config, $resource) {
-        return $resource(Config.get('api') + 'api/itemratings/:id', {}, {
-            query: { method: 'GET', params: { id: '' }, isArray: true },
-            update: { method: 'PUT', params: { id: '' }},
-        });
-    }
+    
 
 })()

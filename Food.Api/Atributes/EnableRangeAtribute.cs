@@ -23,21 +23,27 @@ namespace Food.Api.Atributes
 
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            if (!actionContext.ActionDescriptor.ReturnType.IsGenericType ||
-                actionContext.ActionDescriptor.ReturnType.GetGenericTypeDefinition() != typeof(IEnumerable<>))
-            {
-                throw new InvalidOperationException("Return type must be IEnumerable<T>.");
-            }
-            else
-            {
-                _elementType = actionContext.ActionDescriptor.ReturnType.GetGenericArguments()[0];
-            }
-
             _requestRangeHeader = actionContext.Request.Headers.Range;
 
-            if (_requestRangeHeader != null && _requestRangeHeader.Unit != EnityRangeUnit)
-                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.RequestedRangeNotSatisfiable));
+            if (_requestRangeHeader != null)
+            {
+                if (_requestRangeHeader.Unit != EnityRangeUnit)
+                {
+                    throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.RequestedRangeNotSatisfiable));
+                }
+                else
+                {
+                    // only support one range 
+                    var rangeItemHeaderValue = _requestRangeHeader.Ranges.First();
+                    // calculate and add header 
+                    var from = (int)rangeItemHeaderValue.From;
+                    var to = (int?)rangeItemHeaderValue.To;
+                    actionContext.ActionArguments["range"] = true;
+                    actionContext.ActionArguments["from"] = from;
+                    actionContext.ActionArguments["to"] = to;
+                }
 
+            }
             base.OnActionExecuting(actionContext);
         }
 
@@ -58,39 +64,39 @@ namespace Food.Api.Atributes
                     if (objectContent != null)
                     {
 
-                        var value = objectContent.Value;
-                        var t = typeof(Enumerable);
+                        var value = objectContent.Value as IList;
+                        
                         var rangeItemHeaderValue = _requestRangeHeader.Ranges.First(); // only support one range 
-                        var skipMethod = t.GetMethods().Where(m => m.Name == "Skip" && m.GetParameters().Count() == 2)
-                            .First().MakeGenericMethod(_elementType);
-                        var takeMethod = t.GetMethods().Where(m => m.Name == "Take" && m.GetParameters().Count() == 2)
-                            .First().MakeGenericMethod(_elementType);
-
+                        
 
                         // calculate and add header 
                         var from = (int)rangeItemHeaderValue.From;
                         var to = (int?)rangeItemHeaderValue.To;
                         string toString = to.HasValue ? to.Value.ToString() : "*";
                         string countString = "*";
+                        
                         var collection = value as ICollection; // if underlying a collection we can find out count without iterating 
-                        if (collection != null)
+
+                        if (collection != null && collection.Count > 0)
                         {
-                            to = to.HasValue ? Math.Min(to.Value, collection.Count - 1) : collection.Count - 1;
+                            int real_to = from + collection.Count - 1;
+                            to = to.HasValue ? Math.Min(to.Value, real_to) : real_to;
                             toString = to.ToString();
-                            countString = collection.Count.ToString();
+
+                            var total = actionExecutedContext.Request.Headers.GetValues("X-Range-Total").FirstOrDefault();
+                            if (total != "")
+                            {
+                                countString = total;
+                            }
+                            
+                            actionExecutedContext.Response.Content.Headers.Add("Access-Control-Expose-Headers",
+                                "content-range");
+                            actionExecutedContext.Response.Content.Headers.Add("content-range",
+                                string.Format("{0} {1}-{2}/{3}", EnityRangeUnit, from, toString, countString));
+                            
+                            // set status to 206
+                            actionExecutedContext.Response.StatusCode = HttpStatusCode.PartialContent;
                         }
-                        actionExecutedContext.Response.Content.Headers.Add("content-range",
-                            string.Format("{0} {1}-{2}/{3}", EnityRangeUnit, from, toString, countString));
-
-                        // invoke 
-                        value = skipMethod.Invoke(null, new object[] { value, from });
-                        if (to.HasValue)
-                            value = takeMethod.Invoke(null, new object[] { value, to - from + 1 });
-
-                        objectContent.Value = value;
-
-                        // set status to 206
-                        actionExecutedContext.Response.StatusCode = HttpStatusCode.PartialContent;
                     }
 
                 }

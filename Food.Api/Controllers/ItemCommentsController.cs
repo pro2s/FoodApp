@@ -13,6 +13,7 @@ using Food.Api.DAL;
 using Food.Api.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
+using Food.Api.Atributes;
 
 namespace Food.Api.Controllers
 {
@@ -35,7 +36,8 @@ namespace Food.Api.Controllers
         }
 
         // GET: api/ItemComments
-        public IHttpActionResult GetItemComments(int? itemId)
+        [EnableRange]
+        public IHttpActionResult GetItemComments(int? itemId, bool range = false, int from = 0, int to = 0)
         {
             if (itemId == null)
             {
@@ -44,8 +46,7 @@ namespace Food.Api.Controllers
             else
             {
                 Dictionary<string, ApplicationUser> users = UserManager.Users.ToDictionary(user => user.Id);
-
-                var result = db.ItemComments
+                var query = db.ItemComments
                     .Where(ic => ic.ItemId == itemId)
                     .Select(ic => new ItemCommentViewModel()
                     {
@@ -54,7 +55,25 @@ namespace Food.Api.Controllers
                         Text = ic.Text,
                         ItemId = ic.ItemId,
                         UserName = ic.UserId
-                    }).ToList();
+                    })
+                    .OrderByDescending(ic => ic.Date);
+
+                int total = query.Count();
+                
+                Request.Headers.Add("X-Range-Total", total.ToString());
+                
+                List<ItemCommentViewModel> result;
+                if (range) {
+                    int count = to - from + 1;
+                    var range_query = query.Skip(from).Take(count);
+                    result = range_query.ToList();
+                }
+                else
+                {
+                    result = query.ToList();
+                }
+
+                
 
                 if(result != null)
                 {

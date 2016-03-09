@@ -22,7 +22,15 @@
                 scope.comments = [];
                 scope.form = { text: '' };
                 scope.internalControl = {}
-                
+                scope.perPage = 5;
+                scope.pages = [];
+                scope.currentPage = 0;
+                scope.totalPages = 1;
+
+
+                scope.prevPage = prevPage;
+                scope.nextPage = nextPage;
+                scope.gotoPage = gotoPage;
                 scope.sendComment = sendComment;
                 scope.refreshComments = refreshComments;
 
@@ -35,9 +43,67 @@
                     scope.internalControl.hide = hide;
                 }
 
+                function initPaginator() {
+                    scope.pages = [];
+                    scope.currentPage = 0;
+                    scope.totalPages = 0;
+                }
+
+                function parseRange(hdr) {
+                    var m = hdr && hdr.match(/^(?:\S+ )?(\d+)-(\d+)\/(\d+|\*)$/);
+                    if (m) {
+                        return {
+                            from: +m[1],
+                            to: +m[2],
+                            total: m[3] === '*' ? Infinity : +m[3]
+                        };
+                    } else if (hdr === '*/0') {
+                        return { total: 0 };
+                    }
+                    return null;
+                }
+
+                function prevPage() {
+                    if ((scope.currentPage - 1) >= 0) {
+                        scope.currentPage -= 1;
+                        refreshComments();
+                    }
+                }
+
+                function gotoPage(page) {
+                    scope.currentPage = page;
+                    refreshComments();
+                }
+
+                function nextPage() {
+                    if ((scope.currentPage + 1) < scope.totalPages) {
+                        scope.currentPage += 1;
+                        refreshComments();
+                    } 
+                }
+
+                function parseHeaders(headers) {
+                    var range = parseRange(headers['content-range']);
+                    if (range) {
+                        scope.totalPages = Math.ceil(range.total / scope.perPage)
+                        scope.currentPage = Math.ceil(range.from / scope.perPage);
+                    } else {
+                        scope.totalPages = 1;
+                        scope.currentPage = 0;
+                    }
+
+                    scope.pages = new Array(scope.totalPages);
+                }
+
                 function refreshComments() {
-                    ItemComments.query({ itemId: scope.item.id }, function (data) {
+                    var config = { headers: {} };
+                    var from = scope.currentPage * scope.perPage;
+                    var to = from + scope.perPage - 1;
+                    config.headers['Range'] = 'x-entity=' + from + '-' + to;
+
+                    ItemComments(config).query({ itemId: scope.item.id }, function (data, getHeaders) {
                         scope.comments = data;
+                        parseHeaders(getHeaders());
                     }, function () {
                         scope.comments = [{ userName: 'System', text: 'Get comments error.' }];
                     });
@@ -45,7 +111,8 @@
 
 
                 function show(item) {
-                    scope.comments = []; // Get Item comments
+                    scope.comments = [];
+                    initPaginator();
                     scope.form = { text: '' };
                     scope.item = item;
                     scope.internalControl.rating = item.ratings[1];
@@ -58,9 +125,11 @@
                 }
 
                 function sendComment() {
-                    var ic = new ItemComments({ itemId: scope.item.id, text: scope.form.text });
-                    ic.$save(function (data) {
-                        scope.comments.push(data);
+                    var config = {};
+                    var comment = { itemId: scope.item.id, text: scope.form.text };
+                    ItemComments(config).save({}, comment, function (data) {
+                        refreshComments();
+                        scope.form.text = '';
                     }, function () {
                         scope.comments = [{ userName: 'System', text: 'Send comments error.' }];
                     });
