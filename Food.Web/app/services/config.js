@@ -10,25 +10,30 @@
     	local: {
     		host: '',
     		config: {
-    			api: 'http://mezfiles.appspot.com/'
+    			api: 'http://mezfiles.appspot.com/',
+    		    allOrdersRange: 'x-entity=0-9'
     		}
     	},
     	dev: {
     		host: 'localhost:52124',
     		config: {
-    			api: 'http://localhost:53058/'
+    		    api: 'http://localhost:53058/',
+    		    allOrdersRange: 'x-entity=0-9'
+
     		}
     	},
     	test: {
     		host: 'pro2s.github.io',
     		config: {
-    			api: 'http://mezfiles.appspot.com/'
+    			api: 'http://mezfiles.appspot.com/',
+    		    allOrdersRange: 'x-entity=0-9'
     		}
     	},
         prod: {
     		host: 'production.com',
     		config: {
-    			api: 'http://production.com/'
+    			api: 'http://production.com/',
+    		    allOrdersRange: 'x-entity=0-9'
     		}
     	}
     },
@@ -53,6 +58,9 @@
     	},
     	get: function(property){
     		return _environments[this.getEnvironment()].config[property];
+    	},
+        set: function(property, value){
+    		_environments[this.getEnvironment()].config[property] = value;
     	}
     }
 

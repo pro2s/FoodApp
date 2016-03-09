@@ -83,12 +83,16 @@ namespace Food.Api.Atributes
                             to = to.HasValue ? Math.Min(to.Value, real_to) : real_to;
                             toString = to.ToString();
 
-                            var total = actionExecutedContext.Request.Headers.GetValues("X-Range-Total").FirstOrDefault();
-                            if (total != "")
-                            {
-                                countString = total;
-                            }
                             
+                            if (actionExecutedContext.Request.Headers.Contains("X-Range-Total"))
+                            {
+                                var total = actionExecutedContext.Request.Headers.GetValues("X-Range-Total").FirstOrDefault();
+                                if (total != "")
+                                {
+                                    countString = total;
+                                }
+                            }
+
                             actionExecutedContext.Response.Content.Headers.Add("Access-Control-Expose-Headers",
                                 "content-range");
                             actionExecutedContext.Response.Content.Headers.Add("content-range",

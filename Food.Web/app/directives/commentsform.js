@@ -63,7 +63,7 @@
                         scope.totalItems = range.total;
                         scope.currentPage = Math.ceil(range.from / scope.perPage) + 1;
                     } else {
-                        scope.totalItems = scope.comments.length();
+                        scope.totalItems = scope.comments.length;
                         scope.currentPage = 1;
                     }
                 }

@@ -12,7 +12,7 @@ using Food.Api.DAL;
 using Food.Api.Models;
 using System.Web.Http.Cors;
 using Microsoft.AspNet.Identity;
-
+using Food.Api.Atributes;
 
 namespace Food.Api.Controllers
 {
@@ -22,7 +22,8 @@ namespace Food.Api.Controllers
         private FoodDBContext db = new FoodDBContext();
 
         // GET: api/UserChoices
-        public IQueryable<UserChoice> GetUserChoices(string list = "user", DateTime? startdate = null)
+        [EnableRange]
+        public List<UserChoice> GetUserChoices(string list = "user", DateTime? startdate = null, bool range = false, int from = 0, int to = 0)
         {
             DateTime monday = DateTime.Today.AddDays(1 - (int)DateTime.Today.DayOfWeek);
             string id = User.Identity.GetUserId();
@@ -33,7 +34,11 @@ namespace Food.Api.Controllers
                     if (User.IsInRole("Admin") || User.IsInRole("GlobalAdmin"))
                     {
                         // TODO: return userchoices for admin organisation
-                        query = db.UserChoices.Where(uc => uc.date >= monday);
+                        int count = to - from + 1;
+                        query = db.UserChoices.Include("Menu").OrderByDescending(uc => uc.date);
+                        int total = query.Count();
+                        Request.Headers.Add("X-Range-Total", total.ToString());
+                        query = query.Skip(from).Take(count);
                     }
                     break;
                 case "week":
@@ -48,7 +53,8 @@ namespace Food.Api.Controllers
                     break;
             }
 
-            return query;
+
+            return query.ToList();
             
         }
 

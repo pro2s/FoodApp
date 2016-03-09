@@ -4,9 +4,9 @@
         .module('app.admin')
         .controller('OrdersAdmin', OrdersAdmin);
         
-    OrdersAdmin.$inject = ['$q', 'User', 'UserDay' , 'Menu'];    
+    OrdersAdmin.$inject = ['$q', 'User', 'UserDay' , 'Menu', 'Config'];    
     
-    function OrdersAdmin($q, User, UserDay, Menu) {
+    function OrdersAdmin($q, User, UserDay, Menu, Config) {
         var vm = this;
         vm.title = "loading users choice ...";
         vm.working = false;
@@ -15,16 +15,15 @@
         vm.users = {};
         vm.weekdays = {};
         vm.tab = 'week';
-        vm.orders = {pages: [1,2,3], current:2,  pageData:[]};
+        vm.orders = {total: 0, current:1, perPage:10, pageData:[]};
         
+        vm.getAllOrders = getAllOrders;
         vm.getUser = getUser;
         vm.getMenu = getMenu;
         vm.confirmSelect = confirmSelect;
         vm.setTab = setTab;
         vm.isTab = isTab;
-        vm.prevPage = prevPage;
-        vm.nextPage = nextPage;
-        vm.gotoPage = gotoPage;
+        vm.pageChanged = pageChanged;
         
 
 
@@ -41,6 +40,8 @@
                 
             vm.users = User.getUsers();
             
+            getAllOrders();
+
             var sysmenu = Menu.query({menuMode:'none'});
             var weekmenu = Menu.query();
             var days = UserDay.query({list:'week'});
@@ -136,16 +137,47 @@
             return vm.tab == name;
         }
 
-        function prevPage() {
-            vm.orders.current--;
+        function pageChanged() {
+            getAllOrders();
         }
 
-        function nextPage() {
-            vm.orders.current++;
+        function parseRange(hdr) {
+            var m = hdr && hdr.match(/^(?:\S+ )?(\d+)-(\d+)\/(\d+|\*)$/);
+            if (m) {
+                return {
+                    from: +m[1],
+                    to: +m[2],
+                    total: m[3] === '*' ? Infinity : +m[3]
+                };
+            } else if (hdr === '*/0') {
+                return { total: 0 };
+            }
+            return null;
         }
 
-        function gotoPage(num) {
-            vm.orders.current = num;
+        function parseHeaders(headers) {
+            var range = parseRange(headers['content-range']);
+            if (range) {
+                vm.orders.total = range.total;
+                vm.orders.current = Math.ceil(range.from / vm.orders.perPage) + 1;
+            } else {
+                vm.orders.total = vm.orders.pageData.length;
+                vm.orders.currentPage = 1;
+            }
         }
+
+        function getAllOrders() {
+            var from = (vm.orders.current - 1) * vm.orders.perPage;
+            var to = from + vm.orders.perPage - 1;
+            Config.set('allOrdersRange', 'x-entity=' + from + '-' + to);
+
+            UserDay.all({}, function (data, getHeaders) {
+                vm.orders.pageData = data;
+                parseHeaders(getHeaders());
+            }, function () {
+
+            })
+        }
+        
     };
 })(); 

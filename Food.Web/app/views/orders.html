@@ -53,23 +53,9 @@
                     </tr>
                 </tbody>
             </table>
-            <nav>
-                <ul class="pagination">
-                    <li>
-                        <a href="" aria-label="Previous" ng-click="vm.prevPage()">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li ng-repeat="page in vm.orders.pages track by $index" ng-class="{active:vm.orders.current == page}">
-                        <a href="" ng-click="vm.gotoPage(page)">{{page}}</a>
-                    </li>
-                    <li>
-                        <a href="" aria-label="Next" ng-click="vm.nextPage()">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            
+            <uib-pagination total-items="vm.orders.total" ng-model="vm.orders.current" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.pageChanged()" items-per-page="vm.orders.perPage"></uib-pagination>
+
         </div>
     </div>
 </div>
