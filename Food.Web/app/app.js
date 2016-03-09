@@ -11,12 +11,12 @@ function isEmpty(obj) {
 angular
     .module('app', [
         'ngRoute',
+        'ui.bootstrap',
         'app.user',
         'app.admin',
         'app.menu',
         'app.statistic',
         'app.userservice',
-        
     ])
     .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
 

@@ -6,8 +6,8 @@ body {
      
 }
 
-.pagination.comments {
-    margin: 0px 0px;
+.no-margin{
+    margin: 5px 0;
 }
 
 .spacer {

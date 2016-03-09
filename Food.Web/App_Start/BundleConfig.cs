@@ -19,7 +19,8 @@ namespace Food.Web
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                         "~/Scripts/angular.js",
-                        "~/Scripts/angular-*"));
+                        "~/Scripts/angular-*",
+                        "~/Scripts/angular-ui/*tpls.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                         "~/Scripts/bootstrap.js"));

@@ -23,14 +23,10 @@
                 scope.form = { text: '' };
                 scope.internalControl = {}
                 scope.perPage = 5;
-                scope.pages = [];
-                scope.currentPage = 0;
-                scope.totalPages = 1;
-
-
-                scope.prevPage = prevPage;
-                scope.nextPage = nextPage;
-                scope.gotoPage = gotoPage;
+                scope.currentPage = 1;
+                scope.totalItems = 0;
+                
+                scope.pageChanged = pageChanged;
                 scope.sendComment = sendComment;
                 scope.refreshComments = refreshComments;
 
@@ -41,12 +37,6 @@
                     scope.internalControl.rating = {};
                     scope.internalControl.show = show;
                     scope.internalControl.hide = hide;
-                }
-
-                function initPaginator() {
-                    scope.pages = [];
-                    scope.currentPage = 0;
-                    scope.totalPages = 0;
                 }
 
                 function parseRange(hdr) {
@@ -63,41 +53,24 @@
                     return null;
                 }
 
-                function prevPage() {
-                    if ((scope.currentPage - 1) >= 0) {
-                        scope.currentPage -= 1;
-                        refreshComments();
-                    }
-                }
-
-                function gotoPage(page) {
-                    scope.currentPage = page;
+                function pageChanged(){
                     refreshComments();
-                }
-
-                function nextPage() {
-                    if ((scope.currentPage + 1) < scope.totalPages) {
-                        scope.currentPage += 1;
-                        refreshComments();
-                    } 
                 }
 
                 function parseHeaders(headers) {
                     var range = parseRange(headers['content-range']);
                     if (range) {
-                        scope.totalPages = Math.ceil(range.total / scope.perPage)
-                        scope.currentPage = Math.ceil(range.from / scope.perPage);
+                        scope.totalItems = range.total;
+                        scope.currentPage = Math.ceil(range.from / scope.perPage) + 1;
                     } else {
-                        scope.totalPages = 1;
-                        scope.currentPage = 0;
+                        scope.totalItems = scope.comments.length();
+                        scope.currentPage = 1;
                     }
-
-                    scope.pages = new Array(scope.totalPages);
                 }
 
                 function refreshComments() {
                     var config = { headers: {} };
-                    var from = scope.currentPage * scope.perPage;
+                    var from = (scope.currentPage - 1) * scope.perPage;
                     var to = from + scope.perPage - 1;
                     config.headers['Range'] = 'x-entity=' + from + '-' + to;
 
@@ -112,7 +85,8 @@
 
                 function show(item) {
                     scope.comments = [];
-                    initPaginator();
+                    scope.totalItems = 0;
+                    scope.currentPage = 1;
                     scope.form = { text: '' };
                     scope.item = item;
                     scope.internalControl.rating = item.ratings[1];
