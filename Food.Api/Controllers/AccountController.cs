@@ -21,6 +21,7 @@ using Food.Api.DAL;
 using System.Linq;
 using System.Web.Http.Description;
 using Ninject;
+using Pysco68.Owin.Authentication.Ntlm;
 
 namespace Food.Api.Controllers
 {
@@ -60,6 +61,27 @@ namespace Food.Api.Controllers
         }
 
         public ISecureDataFormat<AuthenticationTicket> AccessTokenFormat { get; private set; }
+
+        [AllowAnonymous]
+        [Route("ntlmlogin")]
+        [HttpGet]
+        public IHttpActionResult Ntlmlogin(string redirectUrl)
+        {
+            // create a login challenge if there's no user logged in!
+            if (!User.Identity.IsAuthenticated)
+            {
+                var ap = new AuthenticationProperties()
+                {
+                    RedirectUri = redirectUrl
+                };
+
+                var owin = Request.GetOwinContext();
+                owin.Authentication.Challenge(ap, NtlmAuthenticationDefaults.AuthenticationType);
+                return Unauthorized();
+            }
+
+            return Redirect(redirectUrl);
+        }
 
         // GET api/Account/UserInfo
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]

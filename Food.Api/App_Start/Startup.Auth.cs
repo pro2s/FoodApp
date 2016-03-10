@@ -14,6 +14,8 @@ using Food.Api.Models;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Net.Http;
+using Pysco68.Owin.Authentication.Ntlm;
+using System.Configuration;
 
 namespace Food.Api
 {   
@@ -77,8 +79,8 @@ namespace Food.Api
 
             var options = new FacebookAuthenticationOptions
             {
-                AppId = "1022668231126476",
-                AppSecret = "c46522637e6190a19352a7cc49ff17cf",
+                AppId = ConfigurationManager.AppSettings["FACEBOOK_ID"], 
+                AppSecret = ConfigurationManager.AppSettings["FACEBOOK_SECRET"], 
                 BackchannelHttpHandler = new FacebookBackChannelHandler(),
                 UserInformationEndpoint = "https://graph.facebook.com/v2.4/me?fields=id,name,email",
             };
@@ -87,14 +89,14 @@ namespace Food.Api
         
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "354271380179-ij0k2ijlg5gq2jlg492ppgf77m502lg0.apps.googleusercontent.com",
-                ClientSecret = "ClOTRO7isHvu6d5HfRfkQX2c"
+                ClientId = ConfigurationManager.AppSettings["GOOGLE_ID"],
+                ClientSecret = ConfigurationManager.AppSettings["GOOGLE_SECRET"],
             });
 
+            // NTLM Auth
+            app.UseNtlmAuthentication();
 
-           
-            
-            
+
         }
     }
 }
