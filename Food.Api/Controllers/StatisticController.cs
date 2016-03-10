@@ -34,8 +34,51 @@ namespace Food.Api.Controllers
         {
             StatisticViewModel result = new StatisticViewModel();
             TopStatistic top_0 = GetTopUsersByorder();
+            List<TotalStatistic> totals = GetTotalStatistic();
+            result.Totals = totals;
             result.Tops.Add(top_0);
             return Ok(result);
+        }
+
+        private List<TotalStatistic> GetTotalStatistic()
+        {
+            List<TotalStatistic> result = new List<TotalStatistic>();
+
+            result.Add(new TotalStatistic() {
+                Id = 0,
+                Name = "Users",
+                Value = UserManager.Users.Count().ToString(),
+            });
+            
+            result.Add(new TotalStatistic()
+            {
+                Id = 1,
+                Name = "All Odres",
+                Value = db.UserChoices.Count().ToString(),
+            });
+
+            result.Add(new TotalStatistic()
+            {
+                Id = 2,
+                Name = "Confirmed orders",
+                Value = db.UserChoices.Where(uc=> uc.confirm == true).Count().ToString(),
+            });
+
+            result.Add(new TotalStatistic()
+            {
+                Id = 3,
+                Name = "Menus",
+                Value = db.Menus.Count().ToString(),
+            });
+
+            result.Add(new TotalStatistic()
+            {
+                Id = 4,
+                Name = "Comments",
+                Value = db.ItemComments.Count().ToString(),
+            });
+            
+            return result;
         }
 
         private TopStatistic GetTopUsersByorder()
@@ -44,7 +87,7 @@ namespace Food.Api.Controllers
             result.Id = 0;
             result.Title = "Top users by order";
             result.Count = 10;
-            result.ValueTitle = "Total";
+            result.ValueTitle = "Orders";
             
             result.Data = db.UserChoices
                 .Where(uc => uc.confirm)

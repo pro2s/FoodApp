@@ -33,38 +33,42 @@ namespace Food.Api.Controllers
                 menu.Items = menu.Items.OrderBy(i => i.Order).ToList();
                 foreach (var item in menu.Items)
                 {
-                    var AllRatings = item.Ratings;
-                    item.Ratings = new List<ItemRating>();
+                    // if ratings not calculated (present raiting with id = -1)
+                    if (!item.Ratings.Where(ir=> ir.Id < 0).Any())
+                    {
+                        var AllRatings = item.Ratings.ToList();
+                        item.Ratings.Clear();
 
-                    // [0] - average rating 
-                    if (AllRatings.Count > 0)
-                    {
-                        var avg = AllRatings.Average(r => r.Rate);
-                        item.Ratings.Add(new ItemRating() { Id = -1, ItemId = item.Id, Rate = (int)avg });
-                    }
-                    else
-                    {
-                        ItemRating rate = new ItemRating() { Id = -1, ItemId = item.Id, Rate = 0 };
-                        item.Ratings.Add(rate);
-                    }
-
-                    // [1] - user rating, undefined if not logined
-                    if (UserId != null)
-                    {
-                        var rate = AllRatings.Where(r => r.UserId == UserId);
-                        if (rate.Any())
+                        // [0] - average rating 
+                        if (AllRatings.Count > 0)
                         {
-                            item.Ratings.Add(rate.First());
+                            var avg = AllRatings.Average(r => r.Rate);
+                            item.Ratings.Add(new ItemRating() { Id = -1, ItemId = item.Id, Rate = (int)avg });
                         }
                         else
                         {
-                            item.Ratings.Add(new ItemRating() {
-                                Id = 0,
-                                ItemId = item.Id,
-                                UserId = UserId,
-                                Rate = 0,
-                                Date = DateTime.Today
-                            });
+                            ItemRating rate = new ItemRating() { Id = -1, ItemId = item.Id, Rate = 0 };
+                            item.Ratings.Add(rate);
+                        }
+
+                        // [1] - user rating, undefined if not logined
+                        if (UserId != null)
+                        {
+                            var rate = AllRatings.Where(r => r.UserId == UserId);
+                            if (rate.Any())
+                            {
+                                item.Ratings.Add(rate.First());
+                            }
+                            else
+                            {
+                                item.Ratings.Add(new ItemRating() {
+                                    Id = 0,
+                                    ItemId = item.Id,
+                                    UserId = UserId,
+                                    Rate = 0,
+                                    Date = DateTime.Today
+                                });
+                            }
                         }
                     }
                 }
