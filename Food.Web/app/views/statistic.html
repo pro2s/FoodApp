@@ -1,26 +1,35 @@
 ﻿<div class="row">
-    <div class="col-md-12 lead text-left" ng-bind="vm.title"></div>
-    <div class="col-md-12 lead text-left"><h4>Total</h4></div>
-    <div class="col-md-12 lead text-left"><h4>Top</h4></div>
-    <div ng-repeat="stat in vm.data.tops">
-        <div class="clearfix" ng-if="$index % 3 == 0"></div>
-        <div class="col-md-4" >
-            <div class="panel panel-default">
+    <div class="col-sm-12 lead text-left" ng-bind="vm.title"></div>
+    <div class="col-sm-12 lead text-left"><h4>Total</h4></div>
+    <div class="col-sm-12 clearfix">
+        <div class="col-sm-3" ng-repeat="total in vm.data.totals">
+            <div class="alert alert-success">
+                <span class="badge pull-right">{{total.value}}</span>
+                <strong>{{total.name}}</strong>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 lead text-left"><h4>Top</h4></div>
+    <div class="col-sm-12">
+        <div ng-repeat="stat in vm.data.tops">
+            <div class="clearfix" ng-if="$index % 3 == 0"></div>
+            <div class="col-sm-4">
+                <div class="panel panel-default">
 
-                <div class="panel-heading">{{stat.title}}</div>
+                    <div class="panel-heading">{{stat.title}}</div>
 
-                <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="item in stat.data">
-                        <span class="badge">{{item.value}}</span>
-                        {{item.userName}}
-                    </li>
-                </ul>
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="item in stat.data">
+                            <span class="badge">{{item.value}}</span>
+                            {{item.userName}}
+                        </li>
+                    </ul>
 
-                <div class="panel-footer">
-                    &nbsp;
+                    <div class="panel-footer">
+                        &nbsp;
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>

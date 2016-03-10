@@ -2,21 +2,25 @@
     <div class="col-sm-12">
         <parse-form control="form.parse"></parse-form>
     </div>
-
-    <div class="col-sm-6 lead" ng-bind="vm.title"></div>
-
-    <div class="col-sm-6 text-right">
-        <button type="button" class="btn btn-default" ng-click="form.parse.show()">Parse Menu</button>
-        <button type="button" class="btn btn-default" ng-click="form.add()">Add menu</button>
-        <button type="button" class="btn" ng-class="{'btn-success': vm.components, 'btn-default': !vm.components}" ng-click="vm.components=!vm.components">Components</button>
-        <button type="button" class="btn" ng-class="{'btn-success': vm.tomorrow, 'btn-default': !vm.tomorrow}" ng-click="vm.tomorrow=!vm.tomorrow">Tomorrow Only</button>
+    <div class="col-sm-12">
+        
+        <div class="pull-right">
+            <button type="button" class="btn btn-default" ng-click="form.parse.show()">Parse Menu</button>
+            <button type="button" class="btn btn-default" ng-click="form.add()">Add menu</button>
+            <button type="button" class="btn" ng-class="{'btn-success': vm.components, 'btn-default': !vm.components}" ng-click="vm.components=!vm.components">Components</button>
+            <button type="button" class="btn" ng-class="{'btn-success': vm.tomorrow, 'btn-default': !vm.tomorrow}" ng-click="vm.tomorrow=!vm.tomorrow">Tomorrow Only</button>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="" ng-bind="vm.title"></a></li>
+            <li><a href="">All Menus</a></li>
+        </ul>
     </div>
 
-    <div class="col-sm-offset-2 col-sm-8 clearfix" ng-if="form.isedit">
+    <div class="col-sm-offset-2 col-sm-8 clearfix spacer" ng-if="form.isedit">
         <menu-form menu="form.menu" title="form.title" save="form.save()" cancel="form.cancel()"></menu-form>
     </div>
     
-    <div class="clearfix"></div>
+    <div class="clearfix spacer"></div>
     <div ng-repeat="menu in vm.data.menu" class="col-sm-4" ng-if="vm.isshow(menu)" ng-class="{clearfix:$index % 3 == 0}">
         <div class="panel" ng-class="{'panel-primary': vm.isold(menu.onDate),'panel-default': !vm.isold(menu.onDate)}">
 

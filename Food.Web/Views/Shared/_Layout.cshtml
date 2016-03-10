@@ -10,7 +10,10 @@
     <nav class="navbar navbar-default navbar-static-top" ng-controller="TopMenu as topmenu" >
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">FoodApp</a>
+                <a class="pull-left logo" href="#/">
+                    <img src="~/Content/food.png" width="45" height="45" />
+                </a>
+                <a class="navbar-brand" href="#/">FoodApp</a>
             </div>
             <ul class="nav navbar-nav">
                 <li ng-repeat="item in topmenu.menu" ng-class="{ active: topmenu.isActive(item.url)}">
