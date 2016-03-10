@@ -104,8 +104,12 @@
                     ItemComments(config).save({}, comment, function (data) {
                         refreshComments();
                         scope.form.text = '';
-                    }, function () {
-                        scope.comments = [{ userName: 'System', text: 'Send comments error.' }];
+                    }, function (response) {
+                        var msg = 'Send comment error';
+                        if (response.data.message) {
+                            msg = response.data.message;
+                        }
+                        scope.comments = [{ userName: 'System', text: msg }];
                     });
                 }
             }

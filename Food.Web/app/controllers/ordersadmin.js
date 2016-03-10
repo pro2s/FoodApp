@@ -52,7 +52,6 @@
                 days.$promise
             ])
             .then(function(result) {
-                vm.orders.pageData = days;
                 var nonemenu = sysmenu.pop();	
                 var menucount = {};   
                 
