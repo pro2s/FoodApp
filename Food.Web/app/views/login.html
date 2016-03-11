@@ -39,7 +39,7 @@
                     <a href="" ng-if="login.form.registred" ng-click="login.register()">Registration</a>
                 </div>
                 <div class="col-sm-6">   
-                        <a class="btn btn-block btn-social btn-microsoft" ng-click="login.NTLMLogin()">
+                        <a class="btn btn-block btn-social btn-microsoft" ng-click="login.externalLogin('ntlm')">
                             <span class="fa fa-windows"></span> Sign in with local Domain
                         </a>
                         <a class="btn btn-block btn-social btn-facebook" ng-click="login.externalLogin('Facebook')">

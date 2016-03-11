@@ -48,9 +48,7 @@
             
             function onHide() {
                 login.form.active = false;
-                login.form.error = false;
-                login.form.errors = {};
-
+                authservice.clearForm();
             }
             
             function showLogin() {
@@ -79,7 +77,12 @@
             }
 
             function externalLogin(provider) {
-                authservice.authExternalProvider(provider);
+                if (provider == "ntlm") {
+                    authservice.authNTLM()
+                } else {
+                    authservice.authExternalProvider(provider);
+                }
+                
             }
         }
       

@@ -46,9 +46,11 @@
             registerEvent: registerEvent,
             authEvent: authEvent,
             authExternalProvider: authExternalProvider,
+            authNTLM: authNTLM,
             checkAccess: checkAccess,
             checkRoles: checkRoles,
             setView: setView,
+            clearForm: clearForm,
             showLogin: showLogin,
             showRegister: showRegister,
             doLogin: doLogin,
@@ -170,6 +172,15 @@
             _view = view
         }
 
+        function clearForm() {
+            _form.error = false;
+            _form.errors = {};
+            _form.email = '';
+            _form.username = '';
+            _form.password = '';
+            _form.confirmPassword = '';
+        }
+
         function showLogin() {
             _form.title = "Login";
             _form.btnText = "Login";
@@ -273,6 +284,13 @@
             var externalProviderUrl = Config.get('api') + "api/Account/ExternalLogin?provider=" + provider
                                                         + "&response_type=token&client_id=self" 
                                                         + "&redirect_uri=" + redirectUri;
+            window.$windowScope = service;
+            var oauthWindow = window.open(externalProviderUrl, "Authenticate Account", "location=0,status=0,width=600,height=750");
+        };
+
+        function authNTLM() {
+            var redirectUrl = location.protocol + '//' + location.host + '/authcomplete.html';
+            var externalProviderUrl = Config.get('api') + "api/Account/ntlmlogin?redirecturl=" + redirectUrl;
             window.$windowScope = service;
             var oauthWindow = window.open(externalProviderUrl, "Authenticate Account", "location=0,status=0,width=600,height=750");
         };
