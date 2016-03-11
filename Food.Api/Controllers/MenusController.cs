@@ -159,9 +159,10 @@ namespace Food.Api.Controllers
                 return BadRequest();
             }
 
-            foreach(var item in menu.Items)
+            foreach (var item in menu.Items)
             {
                 item.Ratings = null;
+                db.Entry(item).State = EntityState.Modified;
             }
 
             db.Entry(menu).State = EntityState.Modified;

@@ -15,15 +15,11 @@ namespace Food.Api.Atributes
     public class EnableRangeAttribute : ActionFilterAttribute
     {
 
-        private Type _elementType;
-        private RangeHeaderValue _requestRangeHeader;
         private const string EnityRangeUnit = "x-entity";
-
-
-
+        
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            _requestRangeHeader = actionContext.Request.Headers.Range;
+            var _requestRangeHeader = actionContext.Request.Headers.Range;
 
             if (_requestRangeHeader != null)
             {
@@ -49,6 +45,8 @@ namespace Food.Api.Atributes
 
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {
+            var _requestRangeHeader = actionExecutedContext.Request.Headers.Range;
+
             if (actionExecutedContext.Exception == null && actionExecutedContext.Response.IsSuccessStatusCode)
             {
 
@@ -79,17 +77,15 @@ namespace Food.Api.Atributes
 
                         if (collection != null && collection.Count > 0)
                         {
-                            int real_to = from + collection.Count - 1;
-                            to = to.HasValue ? Math.Min(to.Value, real_to) : real_to;
-                            toString = to.ToString();
-
-                            
                             if (actionExecutedContext.Request.Headers.Contains("X-Range-Total"))
                             {
                                 var total = actionExecutedContext.Request.Headers.GetValues("X-Range-Total").FirstOrDefault();
-                                if (total != "")
+                                int total_int;
+                                if (int.TryParse(total, out total_int))
                                 {
                                     countString = total;
+                                    to = to.HasValue ? Math.Min(to.Value, total_int - 1) : total_int - 1;
+                                    toString = to.ToString();
                                 }
                             }
 

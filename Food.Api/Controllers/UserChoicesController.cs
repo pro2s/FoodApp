@@ -38,7 +38,10 @@ namespace Food.Api.Controllers
                         query = db.UserChoices.Include("Menu").OrderByDescending(uc => uc.date);
                         int total = query.Count();
                         Request.Headers.Add("X-Range-Total", total.ToString());
-                        query = query.Skip(from).Take(count);
+                        if (count > 0 && from < total)
+                        {
+                            query = query.Skip(from).Take(count);
+                        }
                     }
                     break;
                 case "week":

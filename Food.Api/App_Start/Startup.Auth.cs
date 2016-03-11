@@ -49,7 +49,23 @@ namespace Food.Api
 
             // Включение использования файла cookie, в котором приложение может хранить информацию для пользователя, выполнившего вход,
             // и использование файла cookie для временного хранения информации о входах пользователя с помощью стороннего поставщика входа
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            //app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                LoginPath = new PathString("/api/account/ntlmlogin"),
+                Provider = new CookieAuthenticationProvider()
+                {
+                    OnApplyRedirect = ctx =>
+                    {
+                        if (!ctx.Request.IsNtlmAuthenticationCallback())    // <------
+                        {
+                            ctx.Response.Redirect(ctx.RedirectUri);
+                        }
+                    }
+                }
+            });
+
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Настройка приложения для потока обработки на основе OAuth
