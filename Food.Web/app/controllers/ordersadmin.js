@@ -11,21 +11,21 @@
         vm.title = "loading users choice ...";
         vm.working = false;
         vm.activeday = {};
-        vm.menu = {};
         vm.users = {};
         vm.weekdays = {};
+        vm.menucount = {};
         vm.tab = 'week';
         vm.orders = {total: 0, current:1, perPage:10, pageData:[]};
-        
+
         vm.getAllOrders = getAllOrders;
         vm.getUser = getUser;
-        vm.getMenu = getMenu;
+        vm.deleteSelect = deleteSelect;
         vm.confirmSelect = confirmSelect;
         vm.setTab = setTab;
         vm.isTab = isTab;
         vm.pageChanged = pageChanged;
-        
-
+        vm.isConfirmed = isConfirmed;
+        vm.confirmDay = confirmDay;
 
 
         activate();
@@ -43,17 +43,15 @@
             getAllOrders();
 
             var sysmenu = Menu.query({menuMode:'none'});
-            var weekmenu = Menu.query();
             var days = UserDay.query({list:'week'});
             
             $q.all([
                 sysmenu.$promise,
-                weekmenu.$promise,
                 days.$promise
             ])
             .then(function(result) {
                 var nonemenu = sysmenu.pop();	
-                var menucount = {};   
+                vm.menucount = {};   
                 
                 // Generate days from Monday current week to next Monday 
                 vm.weekdays = {};
@@ -70,28 +68,20 @@
                 angular.forEach(days, function(day) {
                     var key = new Date(day.date).toDateString();
                     if (vm.weekdays.hasOwnProperty(key)) {
-                        vm.weekdays[key].userselect.push(day)
                         if (day.menuId != nonemenu.id) {
-                            if (typeof menucount[day.menuId] == 'undefined'){
-                                menucount[day.menuId]=1;
-                                vm.weekdays[key].total++;
+                            vm.weekdays[key].userselect.push(day)
+                            if (typeof vm.weekdays[key].menu[day.menuId] == 'undefined') {
+                                vm.weekdays[key].menu[day.menuId] = {};
+                                vm.weekdays[key].menu[day.menuId].count = 1;
+                                vm.weekdays[key].menu[day.menuId].menu = day.menu
+                                vm.weekdays[key].total = 1;
                             } else {
-                                menucount[day.menuId]++;
+                                vm.weekdays[key].menu[day.menuId].count++;
                                 vm.weekdays[key].total++;
                             }
                         }
                     }
                 });
-                
-                // Fill menu array and add property count to each menu 
-                angular.forEach(weekmenu, function(menu) {
-                    vm.menu[menu.id] = menu;
-                    var key = new Date(menu.onDate).toDateString();
-                    if (vm.weekdays.hasOwnProperty(key)) {
-                        menu.count = menucount[menu.id];
-                        vm.weekdays[key].menu.push(menu);
-                    };
-                });    
                 
                 success();    
             }, failure)
@@ -111,21 +101,30 @@
             return vm.users[userday.userID];
         };
         
-        function getMenu(userday) {
-            return vm.menu[userday.menuId];
-        };
-        
         function confirmSelect(userday) {
-            userday.confirm = true;
+            userday.confirm = !userday.confirm;
             userday.$update({id:userday.id})
                 .then(function () {
-                    vm.users[userday.userID].bill = vm.users[userday.userID].bill - vm.menu[userday.menuId].price;
+                    var price = (userday.confirm ? -1 : 1) * userday.menu.price
+                    vm.users[userday.userID].bill = vm.users[userday.userID].bill + price;
                 })
                 .catch(function () {
                     // TODO: Show error msg
                     userday.confirm = false;
                 });
             
+        }
+
+        function deleteSelect(userselect, index) {
+            var userday = userselect[index];
+            userday.$delete({ id: userday.id })
+                .then(function () {
+                    userselect.splice(index, 1);
+                })
+                .catch(function () {
+                    // TODO: Show error msg
+                });
+
         }
 
         function setTab(name) {
@@ -168,6 +167,7 @@
         function getAllOrders() {
             var from = (vm.orders.current - 1) * vm.orders.perPage;
             var to = from + vm.orders.perPage - 1;
+          
             Config.set('allOrdersRange', 'x-entity=' + from + '-' + to);
 
             UserDay.all({}, function (data, getHeaders) {
@@ -177,6 +177,25 @@
 
             })
         }
-        
+      
+        function isConfirmed(day) {
+            var result = true;
+            for (var i = 0, len = day.userselect.length; i < len; i++) {
+                if (!day.userselect[i].confirm) {
+                    result = false;
+                    break;
+                }
+            }
+            return result;
+        }
+
+        function confirmDay(day) {
+            
+            for (var i = 0, len = day.userselect.length; i < len; i++) {
+                if (!day.userselect[i].confirm) {
+                    confirmSelect(day.userselect[i]);
+                }
+            }
+        }
     };
 })(); 

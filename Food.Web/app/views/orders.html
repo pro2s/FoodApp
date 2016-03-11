@@ -10,21 +10,42 @@
         <div ng-if="vm.isTab('week')" class="col-sm-12 spacer">
             <div class="panel panel-default" ng-repeat="day in vm.weekdays" ng-class="{'panel-success':vm.activeday==$index}" ng-if="day.total>0">
                 <div class="panel-heading">
-                    <a href="" ng-click="vm.activeday=$index">{{day.date|date:'dd.MM.yyyy'}} {{day.date|date:'(EEEE)'}}</a>
+                    <a href="" ng-click="vm.activeday=$index">{{day.date|date:'yyyy-MM-dd'}} {{day.date|date:'(EEEE)'}}</a>
                 </div>
                 <ul class="list-group" ng-show="vm.activeday==$index">
-                    <li ng-repeat="select in day.userselect track by $index" class="list-group-item">
-                        {{vm.getUser(select).userName}} - {{select.menu.name}} ({{select.menu.price}})
-                        <button class="btn btn-sm"
-                                ng-class="{'btn-success':select.confirm, 'btn-default':!select.confirm}"
-                                ng-click="vm.confirmSelect(select)"
-                                ng-disabled="select.confirm">
-                            {{select.confirm?"получено":"выдать"}}
-                        </button>
+                    <li ng-repeat="select in day.userselect track by $index" class="list-group-item clearfix">
+                        <div class="btn-group pull-right">
+                            <button class="btn btn-sm btn-default"
+                                    ng-click="vm.confirmSelect(select)"
+                                    ng-disabled="select.confirm">
+                                {{select.confirm?"Получено":"Выдать"}}
+                            </button>
+                            <button class="btn btn-sm btn-warning"
+                                    ng-if="select.confirm"
+                                    ng-click="vm.confirmSelect(select)">
+                                Отменить
+                            </button>
+                            <button class="btn btn-sm btn-danger"
+                                    ng-click="vm.deleteSelect(day.userselect, $index)">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>
+                        </div>
+                        <div>{{vm.getUser(select).userName}} - {{select.menu.name}} ({{select.menu.price}})</div>
+</li>
+                    <li class="list-group-item clearfix">
+                        <button class="btn btn-sm pull-right"
+                                ng-class="{'btn-success':vm.isConfirmed(day), 'btn-default':!vm.isConfirmed(day)}"
+                                ng-click="vm.confirmDay(day)"
+                                ng-disabled="vm.isConfirmed(day)">
+                            {{vm.isConfirmed(day)?"Роздано":"Выдать всем"}}
+                        </button>           
+                        <div><strong>Итого по меню</strong></div>
+                            
+                        
+                        
                     </li>
-                    <li class="list-group-item"><b>Итого по меню</b></li>
-                    <li ng-repeat="menu in day.menu" class="list-group-item" ng-if="menu.count>0">
-                        {{menu.name}} - {{menu.count}} на сумму {{menu.price * menu.count}}
+                    <li ng-repeat="menu in day.menu track by $index" class="list-group-item" ng-if="menu.count>0">
+                        {{menu.menu.name}} - {{menu.count}} на сумму {{menu.menu.price * menu.count}}
                     </li>
                 </ul>
             </div>
@@ -45,7 +66,7 @@
                 <tbody>
                     <tr ng-repeat="order in vm.orders.pageData">
                         <th>{{order.id}}</th>
-                        <td>{{order.date|date:'dd.MM.yyyy'}}</td>
+                        <td>{{order.date|date:'yyyy-MM-dd'}}</td>
                         <td>{{vm.getUser(order).userName}}</td>
                         <td>{{order.menu.name}}</td>
                         <td>{{order.menu.price}}</td>
