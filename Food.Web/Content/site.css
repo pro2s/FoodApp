@@ -61,6 +61,7 @@ body {
 
 .panel-footer.price {
     background: #fff8dc;
+    padding: 5px 5px;
 }
 
 .validation-summary-valid {
