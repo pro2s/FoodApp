@@ -154,7 +154,6 @@
         
         function saveDay(day) {
             if (isEmpty(day.userday)) {
-                console.log('save');
                 var userday = new UserDay({ menuId: day.select.id, date: day.date });
                 //TODO: show error or success 
                 userday.$save(function (data) {
@@ -163,7 +162,6 @@
                 });
 
             } else if (day.select.id != day.userday.menuId) {
-                console.log('update');
                 //TODO: show error or success
                 day.userday.menu = day.select;
                 day.userday.menuId = day.select.id;

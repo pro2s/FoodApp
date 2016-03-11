@@ -13,6 +13,7 @@
         <ul class="nav nav-tabs">
             <li class="active"><a href="" ng-bind="vm.title"></a></li>
             <li><a href="">All Menus</a></li>
+            <li><a href="">System Menus</a></li>
         </ul>
     </div>
 
@@ -29,13 +30,11 @@
                     <button class="btn btn-default btn-xs" type="button" ng-click="form.edit(menu)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
                     <button class="btn btn-default btn-xs" type="button" ng-click="form.delete(menu)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                 </div>
-                {{menu.name}} {{menu.onDate|date:'dd.MM.yyyy'}}
+                {{menu.name}} {{menu.onDate|date:'yyyy-MM-dd'}}
             </div>
 
             <div class="panel-body">
                 Цена: {{menu.price}} руб.<br />
-                Заказно: шт.<br />
-                Итого: руб.<br />
             </div>
 
             <ul class="list-group" ng-if="vm.components">

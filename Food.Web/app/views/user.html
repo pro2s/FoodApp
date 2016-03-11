@@ -6,7 +6,7 @@
     <div class="col-sm-1" ng-repeat="i in uc.weekOffset() track by $index">&nbsp;</div>
     
     <div ng-repeat="day in uc.weekdays" class="col-sm-2" ng-class="{'col-sm-offset-5':uc.numweekdays == 7 && $index == 6 }">
-        <p class="text-center"><strong>{{day.date|date:'dd.MM.yyyy'}}<br />{{day.date|date:'(EEEE)'}}</strong></p>
+        <p class="text-center"><strong>{{day.date|date:'yyyy-MM-dd'}}<br />{{day.date|date:'(EEEE)'}}</strong></p>
         <div class="text-center">
             <fieldset ng-disabled="uc.isDisable(day)">
                 <div class="btn-group-vertical" data-toggle="buttons">
@@ -41,7 +41,7 @@
         <div class="col-md-3" ng-if="vm.isshow(menu)">
             <div class="panel" ng-class="{'panel-primary': vm.isold(menu.onDate),'panel-default': !vm.isold(menu.onDate)}">
 
-                <div class="panel-heading">{{menu.name}} на {{menu.onDate|date:'dd.MM.yyyy'}}</div>
+                <div class="panel-heading">{{menu.name}} на {{menu.onDate|date:'yyyy-MM-dd'}}</div>
 
                 <ul class="list-group">
                     <li class="list-group-item usermenu"  ng-repeat="item in menu.items">
