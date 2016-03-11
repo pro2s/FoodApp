@@ -29,7 +29,7 @@
                 scope.message = '';
                 scope.sources = [];
                 scope.source = {};
-                scope.input = {start:'', count:'', update:false}
+                scope.input = {start:'', count:'', update:false, next: true}
                 scope.startDays = [];
 
                 scope.internalControl = scope.control || {};
@@ -96,7 +96,8 @@
                             id: id,
                             start: scope.input.start,
                             count: scope.input.count,
-                            update: scope.input.update
+                            update: scope.input.update,
+                            next: scope.input.next,
                         }
                         Parser.get(config, function (data) {
                             scope.message = data.message;

@@ -44,6 +44,7 @@
             form.backupmenu = angular.copy(menu);
             form.menu = menu;
             form.menu.onDate = new Date(menu.onDate);
+            $window.scrollTo(0, angular.element('parse-form').offsetTop);
         };
         
         function cancel() {
@@ -60,11 +61,7 @@
             }
 
             function success(menu){
-                // returned id must by assign to menu
-                if (form.menu.id == 0 ) {
-                    GlobalMenu.addMenu(menu);
-                    // Need access to ViewMenu controller
-                }
+                GlobalMenu.updateMenu();
                 form.isedit = false;
             }
             

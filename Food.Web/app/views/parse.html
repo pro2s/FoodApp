@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <label for="fromDate">From date</label>
                     <div class="input-group">
-                        <input type="date" class="form-control" ng-model="input.start">
+                        <input type="date" class="form-control" ng-model="input.start" placeholder="{{startDays[0].date | date:'yyyy-MM-dd'}}">
                         <div class="input-group-btn">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Day <span class="caret"></span></button>
                             <ul class="dropdown-menu dropdown-menu-right">
@@ -47,6 +47,11 @@
                 <div class="checkbox">
                     <label>
                         <input type="checkbox" ng-model="input.update"> Update menu
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="input.next"> Get menus on next Monday
                     </label>
                 </div>
             </div>
