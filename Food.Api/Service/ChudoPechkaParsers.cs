@@ -39,12 +39,22 @@ namespace Food.Api
             return _info;
         }
         
-        public List<Menu> ParseMenu()
+        public List<Menu> ParseMenu(DateTime? start = null)
         {
+            if (start != null)
+            {
+                _monday = (DateTime)start;
+            }
             ParseHtml();
             return _weekmenu;
         }
 
+        public List<Menu> GetDayMenu()
+        {
+            List<Item> items = new List<Item>();
+            List<Menu> menus = FillMenu(items, 0);
+            return menus;
+        }
 
         /// <summary>
         /// Load and parse menu from html page
@@ -86,7 +96,7 @@ namespace Food.Api
 
                 if (items.Count > 0)
                 {
-                    FillMenu(items, day);
+                    _weekmenu.AddRange(FillMenu(items, day));
                 }
 
                 ++day;
@@ -122,10 +132,21 @@ namespace Food.Api
             return _info;
         }
 
-        public List<Menu> ParseMenu()
+        public List<Menu> ParseMenu(DateTime? start = null)
         {
+            if (start != null)
+            {
+                _monday = (DateTime) start;
+            }
             ParseDoc();
             return _weekmenu;
+        }
+
+        public List<Menu> GetDayMenu()
+        {
+            List<Item> items = new List<Item>();
+            List<Menu> menus = FillMenu(items, 0);
+            return menus;
         }
 
         protected string GetText(Word.Cell cell)
@@ -181,7 +202,7 @@ namespace Food.Api
                                 items.RemoveAt(0);
                             }
 
-                            FillMenu(items, day);
+                            _weekmenu.AddRange(FillMenu(items, day)); 
                             items.Clear();
                             ++day;
                         }
@@ -192,12 +213,13 @@ namespace Food.Api
             }
             if (items.Count > 0)
             {
-                FillMenu(items, day);
+                _weekmenu.AddRange(FillMenu(items, day));
             }
 
             ((Word._Application)wordApp).Quit();
         }
 
+        
     }
 
 
@@ -246,10 +268,11 @@ namespace Food.Api
             _weekmenu.Clear();
         }
 
-        
-     
-        protected void FillMenu(List<Item> items, int day)
+
+
+        protected List<Menu> FillMenu(List<Item> items, int day)
         {
+            List<Menu> result = new List<Menu>();
             int order = 0;
             foreach (var item in items)
             {
@@ -270,8 +293,8 @@ namespace Food.Api
                 OnDate = _monday.AddDays(day),
                 Type = MenuType.NormalMenu,
             };
-            
-            _weekmenu.Add(daymenu);
+
+            result.Add(daymenu);
 
             copy_items = new List<Item>();
             copy_items = items.ConvertAll(item => (Item)item.Clone());
@@ -290,7 +313,9 @@ namespace Food.Api
                 Type = MenuType.NormalMenu,
             };
 
-            _weekmenu.Add(daymenu);
+            result.Add(daymenu);
+
+            return result;
         }
         
     }

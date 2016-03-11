@@ -10,7 +10,8 @@ namespace Food.Api
     public interface IMenuParser
     {
         string Id();
-        List<Menu> ParseMenu();
+        List<Menu> ParseMenu(DateTime? start);
+        List<Menu> GetDayMenu();
         Dictionary<string, string> GetInfo();
     }
 }

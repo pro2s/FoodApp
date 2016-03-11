@@ -568,7 +568,7 @@
             Dictionary with keys - id, name, icon
             </returns>
         </member>
-        <member name="M:Food.Api.McDonalds.ParseMenu">
+        <member name="M:Food.Api.McDonalds.ParseMenu(System.Nullable{System.DateTime})">
             <summary>
             Parse menu from site or file
             </summary>

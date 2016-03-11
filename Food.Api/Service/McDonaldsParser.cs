@@ -43,7 +43,13 @@ namespace Food.Api
         /// Parse menu from site or file
         /// </summary>
         /// <returns>List of Menu</returns>
-        public List<Menu> ParseMenu()
+        public List<Menu> ParseMenu(DateTime? start = null)
+        {
+            var menus = new List<Menu>();
+            return menus;
+        }
+
+        public List<Menu> GetDayMenu()
         {
             var menus = new List<Menu>();
             return menus;
