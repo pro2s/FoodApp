@@ -22,6 +22,7 @@ using System.Linq;
 using System.Web.Http.Description;
 using Ninject;
 using Pysco68.Owin.Authentication.Ntlm;
+using System.Diagnostics;
 
 namespace Food.Api.Controllers
 {
@@ -94,6 +95,7 @@ namespace Food.Api.Controllers
             bool IsEmailConfirmed = false;
             int Balance = 0;
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
+            string LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null;
 
             if (externalLogin == null)
             {
@@ -104,6 +106,11 @@ namespace Food.Api.Controllers
                 Email = user.Email;
                 IsEmailConfirmed = user.EmailConfirmed;
                 Balance = _payments.GetUserBalance(UserId);
+                if (user.Logins.Count > 0)
+                {
+                    LoginProvider = user.Logins.First().LoginProvider;
+                }
+                
             }
 
 
@@ -116,7 +123,7 @@ namespace Food.Api.Controllers
                 IsEmailConfirmed = IsEmailConfirmed,
                 Balance = Balance,
                 HasRegistered = externalLogin == null,
-                LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
+                LoginProvider = LoginProvider
             };
         }
 

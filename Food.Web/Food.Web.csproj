@@ -176,6 +176,7 @@
     <Content Include="App\controllers\viewmenu.js" />
     <Content Include="App\directives\commentsform.js" />
     <Content Include="App\directives\menuform.js" />
+    <Content Include="App\directives\changepassword.js" />
     <Content Include="App\directives\parseform.js" />
     <Content Include="App\directives\loginform.js" />
     <Content Include="App\directives\starrating.js" />
@@ -183,7 +184,7 @@
     <Content Include="App\services\apiinterceptor.js" />
     <Content Include="App\services\authservice.js" />
     <Content Include="App\services\config.js" />
-    <Content Include="App\services\pageservice.js" />
+    <Content Include="App\services\paginationservice.js" />
     <Content Include="App\services\dateservice.js" />
     <Content Include="App\services\menuservice.js" />
     <Content Include="App\services\statisticservice.js" />
@@ -193,6 +194,7 @@
     <Content Include="App\userservice.module.js" />
     <Content Include="App\views\comments.html" />
     <Content Include="App\views\menuform.html" />
+    <Content Include="App\views\changepassword.html" />
     <Content Include="App\views\parse.html" />
     <Content Include="App\views\statistic.html" />
     <Content Include="App\views\useradmin.html" />

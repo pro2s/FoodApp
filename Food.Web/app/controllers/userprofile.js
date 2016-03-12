@@ -5,30 +5,34 @@
         .controller('UserProfile', UserProfile)
         
     
-    UserProfile.$inject = ['User', 'Account', 'Payment', 'UserDay', 'authservice'];
+    UserProfile.$inject = ['User', 'Account', 'Payment', 'UserDay', 'authservice', 'Pagination'];
     
-    function UserProfile(User, Account, Payment, UserDay, authservice) {
+    function UserProfile(User, Account, Payment, UserDay, authservice, Pagination) {
         var vm = this;
+        var ordersPaginationID = "userOrders"
         vm.auth = {}
         vm.payments = [];
-        vm.userchoices = [];
+        vm.userorders = [];
         vm.share = {
             amount: 0,
             email: ''
         }
+        vm.changePwd = {};
+        vm.ordersPages = {};
 
         vm.confirmEmail = confirmEmail;
         vm.shareBalance = shareBalance;
         vm.getPaymentSum = getPaymentSum;
         vm.getChoicesSum = getChoicesSum;
-
+        vm.getUserOrders = getUserOrders
         activate();
 
         function activate() {
+            vm.ordersPages = Pagination.addPagination(ordersPaginationID, 7);
             authservice.reloadUserInfo();
             vm.auth = authservice.state
             getPayments();
-            getUserChoices();
+            getUserOrders();
         }
 
         function getPayments() {
@@ -42,10 +46,10 @@
             );
         }
 
-        function getUserChoices() {
-            UserDay.query({list:'personal'},
+        function getUserOrders() {
+            UserDay.query({ list: 'personal', pagination: ordersPaginationID },
                 function (data) {
-                    vm.userchoices = data;
+                    vm.userorders = data;
                 },
                 function (data) {
                     vm.userchoices = [];

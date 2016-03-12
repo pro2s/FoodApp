@@ -5,11 +5,12 @@
             {{vm.auth.email}}
             &nbsp;
             <span ng-if="vm.auth.userinfo.isEmailConfirmed" class="glyphicon glyphicon-ok"></span>
-            <a href="" ng-click="vm.confirmEmail()" ng-if="!vm.auth.userinfo.isEmailConfirmed">Подтвердить e-mail</a>
         </p>
     </div>
     <div class="users col-md-6">
-    
+        <button class="btn btn-default" ng-click="vm.confirmEmail()" ng-if="!vm.auth.userinfo.isEmailConfirmed">Confirm e-mail</button>
+        <button  class="btn btn-default" type="button" ng-if="!vm.auth.userinfo.loginProvider" ng-click="vm.changePwd.show()">Change password</button>
+        <change-password control="vm.changePwd"></change-password>
     </div>
 </div>
 <div class="col-md-12 alert alert-info text-center" role="alert"><b>Balance:</b> {{vm.auth.userinfo.balance}}</div>
@@ -52,9 +53,10 @@
         <div class="panel panel-default">
             <div class="panel-heading">User orders</div>
             <div class="panel-body">
-                <div ng-class="{'text-success':choice.confirm}" ng-repeat="choice in vm.userchoices">
+                <div ng-class="{'text-success':choice.confirm}" ng-repeat="choice in vm.userorders">
                     {{choice.date|date:'yyyy-MM-dd'}} - {{choice.menu.name}} ({{choice.menu.price}})&nbsp;<span ng-if="choice.confirm" class="glyphicon glyphicon-ok"></span>
                 </div>
+                <uib-pagination total-items="vm.ordersPages.totalItems" ng-model="vm.ordersPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getUserOrders()" items-per-page="vm.ordersPages.perPage"></uib-pagination>
             </div>
             <div class="panel-footer"><b>Total:</b> {{vm.getChoicesSum()}}</div>
         </div>
