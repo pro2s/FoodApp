@@ -64,7 +64,7 @@
             return range;
         }
 
-        function parseHeader(name, contentRange) {
+        function parseHeader(name, contentRange, datalength) {
             var info = _paginator[name];
             if (info) {
                 var range = parseRange(contentRange);
@@ -72,7 +72,7 @@
                     info.totalItems = range.total;
                     info.currentPage = Math.ceil(range.from / info.perPage) + 1;
                 } else {
-                    info.totalItems = value.length;
+                    info.totalItems = datalength;
                     info.currentPage = 1;
                 }
             }
@@ -108,7 +108,7 @@
                         
                         config.transformResponse = appendTransform(config.transformResponse, function (value, getHeaders, status) {
                             var range = getHeaders('content-range');
-                            Pagination.parseHeader(name, range);
+                            Pagination.parseHeader(name, range, value.length);
                             return value;
                         })
                     }

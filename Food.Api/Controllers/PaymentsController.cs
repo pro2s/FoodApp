@@ -14,10 +14,11 @@ using System.Web.Http.Cors;
 using Microsoft.AspNet.Identity;
 
 using Microsoft.AspNet.Identity.Owin;
+using Food.Api.Atributes;
 
 namespace Food.Api.Controllers
 {
-    
+    [RoutePrefix("api/Payments")]
     public class PaymentsController : ApiController
     {
         private FoodDBContext db;
@@ -42,18 +43,41 @@ namespace Food.Api.Controllers
         }
 
         // GET: api/Payments
-        public IQueryable<Payment> GetPayments(string list = "user")
+        [EnableRange]
+        public List<Payment> GetPayments(string list = "user", bool range = false, int from = 0, int to = 0)
         {
             string id = User.Identity.GetUserId();
+            IQueryable<Payment> query;
             if (User.IsInRole("Admin") && list == "all")
             {
-                return db.Payments;
+                query = db.Payments.OrderByDescending(p=>p.Date).ThenByDescending(p => p.Id); 
             }
             else
             {
-                return db.Payments.Where(p => p.UserID == id);
+                query = db.Payments.Where(p => p.UserID == id).OrderByDescending(p => p.Date).ThenByDescending(p=> p.Id); 
             }
-            
+
+            if (range)
+            {
+                int count = to - from + 1;
+                int total = query.Count();
+                Request.Headers.Add("X-Range-Total", total.ToString());
+                if (count > 0 && from < total)
+                {
+                    query = query.Skip(from).Take(count);
+                }
+            }
+
+            return query.ToList();
+        }
+
+        // GET: api/Payments
+        [Route("Sum")]
+        public IHttpActionResult GetPaymentsSum()
+        {
+            string id = User.Identity.GetUserId();
+            int sum = db.Payments.Where(uc => uc.UserID == id).Sum(uc => uc.Sum);
+            return Ok(new { Sum = sum });
         }
 
         // GET: api/Payments/5
@@ -107,7 +131,7 @@ namespace Food.Api.Controllers
         // POST: api/Payments/Share
         [ResponseType(typeof(Payment))]
         [HttpPost]
-        [Route("api/Payments/Share", Name="ShareBalance")]
+        [Route("Share", Name="ShareBalance")]
         public IHttpActionResult ShareBalance(ShareToBindingModel Share)
         {
 
@@ -136,14 +160,14 @@ namespace Food.Api.Controllers
             {
                 UserID = ToUser.Id,
                 Sum = Share.Amount,
-                Date = DateTime.Today
+                Date = DateTime.Now
             };
 
             Payment payment_from = new Payment()
             {
                 UserID = UserId,
                 Sum = -1 * Share.Amount,
-                Date = DateTime.Today
+                Date = DateTime.Now
             };
 
 
@@ -158,7 +182,7 @@ namespace Food.Api.Controllers
         [ResponseType(typeof(Payment))]
         public IHttpActionResult PostPayment(Payment payment)
         {
-            payment.Date = DateTime.Today;
+            payment.Date = DateTime.Now;
             Validate(payment);
 
             if (!ModelState.IsValid)

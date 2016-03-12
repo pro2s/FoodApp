@@ -17,13 +17,15 @@ using Food.Api.Atributes;
 namespace Food.Api.Controllers
 {
     [Authorize]
+    [RoutePrefix("api/UserChoices")]
     public class UserChoicesController : ApiController
     {
         private FoodDBContext db = new FoodDBContext();
 
         // GET: api/UserChoices
         [EnableRange]
-        public List<UserChoice> GetUserChoices(string list = "user", DateTime? startdate = null, bool range = false, int from = 0, int to = 0)
+        [Route("")]
+        public List<UserChoice> Get(string list = "user", DateTime? startdate = null, bool range = false, int from = 0, int to = 0)
         {
             DateTime monday = DateTime.Today.AddDays(1 - (int)DateTime.Today.DayOfWeek);
             string id = User.Identity.GetUserId();
@@ -34,36 +36,53 @@ namespace Food.Api.Controllers
                     if (User.IsInRole("Admin") || User.IsInRole("GlobalAdmin"))
                     {
                         // TODO: return userchoices for admin organisation
-                        int count = to - from + 1;
                         query = db.UserChoices.Include("Menu").OrderByDescending(uc => uc.date);
-                        int total = query.Count();
-                        Request.Headers.Add("X-Range-Total", total.ToString());
-                        if (count > 0 && from < total)
-                        {
-                            query = query.Skip(from).Take(count);
-                        }
                     }
                     break;
                 case "week":
                     if (User.IsInRole("Admin") || User.IsInRole("GlobalAdmin"))
                     {
                         // TODO: return userchoices for admin organisation
-                        query = db.UserChoices.Include("Menu").Where(uc => uc.date >= monday);
+                        query = db.UserChoices.Include("Menu").Where(uc => uc.date >= monday).OrderByDescending(uc => uc.date);
                     }
                     break;
                 case "personal":
-                    query = db.UserChoices.Include("Menu").Where(uc => uc.UserID == id);
+                    query = db.UserChoices.Include("Menu").Where(uc => uc.UserID == id).OrderByDescending(uc => uc.date); ;
                     break;
             }
 
+            if (range)
+            {
+                int count = to - from + 1;
+                int total = query.Count();
+                Request.Headers.Add("X-Range-Total", total.ToString());
+                if (count > 0 && from < total)
+                {
+                    query = query.Skip(from).Take(count);
+                }
+            }
 
             return query.ToList();
             
         }
 
-        // GET: api/UserChoices/5
+
+        // GET: api/UserChoices/Sum
+        [Route("Sum")]
+        [HttpGet]
         [ResponseType(typeof(UserChoice))]
-        public IHttpActionResult GetUserChoice(int id)
+        public IHttpActionResult GetUserChoiceSum()
+        {
+            string id = User.Identity.GetUserId();
+            int sum = db.UserChoices.Include("Menu").Where(uc => uc.UserID == id && uc.confirm).Sum(uc => uc.Menu.Price);
+            return Ok(new { Sum = sum });
+        }
+
+
+        // GET: api/UserChoices/5
+        [Route("{id:int}")]
+        [ResponseType(typeof(UserChoice))]
+        public IHttpActionResult Get(int id)
         {
             UserChoice userChoice = db.UserChoices.Find(id);
             if (userChoice == null)
@@ -76,7 +95,7 @@ namespace Food.Api.Controllers
 
         // PUT: api/UserChoices/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutUserChoice(int id, UserChoice userChoice)
+        public IHttpActionResult Put(int id, UserChoice userChoice)
         {
             if (!ModelState.IsValid || id != userChoice.Id)
             {
@@ -147,7 +166,7 @@ namespace Food.Api.Controllers
 
         // POST: api/UserChoices
         [ResponseType(typeof(UserChoice))]
-        public IHttpActionResult PostUserChoice(UserChoice userChoice)
+        public IHttpActionResult Post(UserChoice userChoice)
         {
             if (userChoice.UserID == null)
             {
@@ -178,7 +197,7 @@ namespace Food.Api.Controllers
 
         // DELETE: api/UserChoices/5
         [ResponseType(typeof(UserChoice))]
-        public IHttpActionResult DeleteUserChoice(int id)
+        public IHttpActionResult Delete(int id)
         {
             UserChoice userChoice = db.UserChoices.Find(id);
             if (userChoice == null)

@@ -9,34 +9,40 @@
     
     function UserProfile(User, Account, Payment, UserDay, authservice, Pagination) {
         var vm = this;
-        var ordersPaginationID = "userOrders"
+        var ordersPaginationID = "userOrders";
+        var paymentsPaginationID = "userPayments"
         vm.auth = {}
         vm.payments = [];
         vm.userorders = [];
+        vm.ordersSum = 0;
+        vm.paymentsSum = 0;
         vm.share = {
             amount: 0,
             email: ''
         }
         vm.changePwd = {};
         vm.ordersPages = {};
+        vm.paymentsPages = {};
 
         vm.confirmEmail = confirmEmail;
         vm.shareBalance = shareBalance;
-        vm.getPaymentSum = getPaymentSum;
-        vm.getChoicesSum = getChoicesSum;
-        vm.getUserOrders = getUserOrders
+        vm.getUserOrders = getUserOrders;
+        vm.getPayments = getPayments;
         activate();
 
         function activate() {
             vm.ordersPages = Pagination.addPagination(ordersPaginationID, 7);
+            vm.paymentsPages = Pagination.addPagination(paymentsPaginationID, 7);
             authservice.reloadUserInfo();
             vm.auth = authservice.state
             getPayments();
             getUserOrders();
+            getOrdersSum();
+            getPaymentsSum();
         }
 
         function getPayments() {
-            Payment.query(
+            Payment.query({pagination: paymentsPaginationID },
                 function (data) {
                     vm.payments = data;
                 },
@@ -57,22 +63,16 @@
             );
         }
 
-        function getPaymentSum() {
-            var sum = 0;
-            angular.forEach(vm.payments, function (payment) {
-                sum += payment.sum;
+        function getPaymentsSum() {
+            Payment.get({ id: 'Sum' }, function (data) {
+                vm.paymentsSum = data.sum;
             })
-            return sum;
         }
 
-        function getChoicesSum() {
-            var sum = 0;
-            angular.forEach(vm.userchoices, function (choice) {
-                if (choice.confirm) {
-                    sum += choice.menu.price;
-                }
+        function getOrdersSum() {
+            UserDay.get({ id: 'Sum' }, function (data) {
+                vm.ordersSum = data.sum;
             })
-            return sum;
         }
 
 
@@ -84,8 +84,11 @@
         function shareBalance(form) {
             var payment = new Payment(vm.share);
             payment.$share({},function (payment) {
-                vm.payments.push(payment);
+                getPayments();
+                getPaymentsSum();
+                // Balance from UserInfo 
                 authservice.reloadUserInfo();
+                
             }, function (error) {
                 vm.shareError = "Send balance error.";
                 if (error.data.modelState['share.Email']) {
