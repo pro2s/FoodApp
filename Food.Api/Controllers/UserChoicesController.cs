@@ -158,6 +158,11 @@ namespace Food.Api.Controllers
                         result = true;
                     }
                 }
+
+                if (!userChoice.confirm && oldChoice.confirm)
+                {
+                    result = true;
+                }
             }
 
             if (userChoice.UserID == User.Identity.GetUserId() && !userChoice.confirm)

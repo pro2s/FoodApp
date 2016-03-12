@@ -2,45 +2,52 @@
     <div class="col-sm-5"><h4 ng-bind="vm.titleWeek"></h4></div>
     <div class="col-sm-7"><h4 ng-bind="vm.titleAll"></h4></div>
     <div class="col-sm-5 spacer">
-        <div class="panel panel-default no-margin" ng-repeat="day in vm.weekdays" ng-class="{'panel-success':vm.activeday==$index}" ng-if="day.total>0">
+        <div class="panel panel-default no-margin" ng-repeat="day in vm.weekdays" ng-class="{'panel-success':vm.activeday==$index}" ng-if="day.userselect.length>0">
             <div class="panel-heading">
                 <a href="" ng-click="vm.activeday=$index">{{day.date|date:'yyyy-MM-dd'}} {{day.date|date:'(EEEE)'}}</a>
             </div>
             <ul class="list-group" ng-show="vm.activeday==$index">
                 <li ng-repeat="select in day.userselect track by $index" class="list-group-item clearfix">
-                    <div class="btn-group pull-right">
-                        <button class="btn btn-sm btn-default"
+                    <div class="btn-group btn-group-sm pull-right">
+                        <button class="btn btn-default"
                                 ng-class="{'btn-default':!select.confirm, 'btn-success':select.confirm}"
                                 ng-click="vm.confirmSelect(select)"
                                 ng-disabled="select.confirm">
                             <i class="glyphicon glyphicon-ok"></i>
                         </button>
-                        <button class="btn btn-sm btn-warning"
+                        <button class="btn btn-warning"
                                 ng-if="select.confirm"
                                 ng-click="vm.confirmSelect(select)">
-                            <i class="glyphicon glyphicon-refresh"></i>
+                            <i class="fa fa-undo"></i>
                         </button>
-                        <button class="btn btn-sm btn-danger"
-                                ng-click="vm.deleteSelect(day.userselect, $index)">
-                            <i class="glyphicon glyphicon-remove"></i>
+                        <button class="btn btn-danger"
+                                ng-click="vm.deleteSelect(day, $index)">
+                            <i class="fa fa-remove"></i>
                         </button>
                     </div>
                     <div>{{vm.getUser(select).userName}} - {{select.menu.name}} ({{select.menu.price}})</div>
                 </li>
                 <li class="list-group-item clearfix">
-                    <button class="btn btn-sm pull-right"
+                    <div class="btn-group btn-group-sm pull-right">
+                    <button class="btn"
                             ng-class="{'btn-success':vm.isConfirmed(day), 'btn-default':!vm.isConfirmed(day)}"
                             ng-click="vm.confirmDay(day)"
                             ng-disabled="vm.isConfirmed(day)">
                         {{vm.isConfirmed(day)?"Роздано":"Выдать всем"}}
                     </button>
+                    <button class="btn btn-default"
+                            ng-click="vm.totalOnDay(day)">
+                            <i class="fa fa-refresh"></i>
+                    </button>
+                    </div>
                     <div><strong>Итого по меню</strong></div>
 
 
 
                 </li>
+                
                 <li ng-repeat="menu in day.menu track by $index" class="list-group-item" ng-if="menu.count>0">
-                    {{menu.menu.name}} - {{menu.count}} на сумму {{menu.menu.price * menu.count}}
+                    {{menu.name}} - {{menu.count}} на сумму {{menu.price * menu.count}}
                 </li>
             </ul>
         </div>
@@ -72,16 +79,16 @@
                                             ng-class="{'btn-default':!order.confirm, 'btn-success':order.confirm}"
                                             ng-click="vm.confirmSelect(order)"
                                             ng-disabled="order.confirm">
-                                        <i class="glyphicon glyphicon-ok"></i>
+                                        <i class="glyphicon glyphicon-ok" ></i>
                                     </button>
                                     <button class="btn btn-sm btn-warning"
                                             ng-if="order.confirm"
                                             ng-click="vm.confirmSelect(order)">
-                                        <i class="glyphicon glyphicon-refresh"></i>
+                                        <i class="fa fa-undo"></i>
                                     </button>
                                     <button class="btn btn-sm btn-danger"
                                             ng-click="vm.deleteSelect(vm.orders, $index)">
-                                        <i class="glyphicon glyphicon-remove"></i>
+                                        <i class="fa fa-remove"></i>
                                     </button>
                                 </div>
                             </td>
