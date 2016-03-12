@@ -9,22 +9,23 @@
         <p class="text-center"><strong>{{day.date|date:'yyyy-MM-dd'}}<br />{{day.date|date:'(EEEE)'}}</strong></p>
         <div class="text-center">
             <fieldset ng-disabled="uc.isDisable(day)">
-                <div class="btn-group-vertical" data-toggle="buttons">
-                    <label class="btn btn-default"
-                           ng-repeat="menu in day.menu"
-                           ng-click="uc.setDaySelect(day, menu)"
-                           ng-class="{active: day.select.id == menu.id, 'btn-info': day.select.id == menu.id}">
-                        <input type="radio" name="choice" id="{{menu.id}}" autocomplete="off" />{{menu.name}}
-                    </label>
+                <div class="btn-group-vertical">
+                    <button type="button" 
+                            ng-repeat="menu in day.menu"
+                            ng-click="uc.setUserOrder(day, menu)"
+                            class="btn btn-default" 
+                            ng-class="{active: day.userday.menuId == menu.id, 'btn-info': day.userday.menuId == menu.id}">
+                            {{menu.name}}
+                    </button>
                 </div>
             </fieldset>
         </div>
         <dl>
-            <dt class="text-center">{{day.select.name}}</dt>
-            <dd ng-repeat="item in day.select.items">
+            <dt class="text-center">{{day.userday.menu.name}}</dt>
+            <dd ng-repeat="item in day.userday.menu.items">
                 {{$index+1}}. {{item.name}}
             </dd>
-            <dt ng-if="day.select.price>0" class="text-center">{{day.select.price}}</dt>
+            <dt ng-if="day.userday.menu.price>0" class="text-center">{{day.userday.menu.price}}</dt>
         </dl>
     </div>
 </div>
@@ -67,5 +68,5 @@
             </div>
         </div>
     </div>
-    <comments-form control="vm.comments" readonly="uc.readonly" set-rating="vm.setRating(vm.comments.rating)"></form-comments>
+    <comments-form control="vm.comments" readonly="uc.readonly" set-rating="vm.setRating(vm.comments.rating)"></comments-form>
 </div>

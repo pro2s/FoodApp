@@ -27,9 +27,13 @@ namespace Food.Api.Controllers
         [Route("")]
         public List<UserChoice> Get(string list = "user", DateTime? startdate = null, bool range = false, int from = 0, int to = 0)
         {
-            DateTime monday = DateTime.Today.AddDays(1 - (int)DateTime.Today.DayOfWeek);
+            DateTime monday = DateTime.Today.StartOfWeek();
+                
             string id = User.Identity.GetUserId();
-            IQueryable <UserChoice> query = db.UserChoices.Include("Menu").Where(uc => uc.UserID == id && uc.date >= monday);
+            
+            //list == 'user'
+            IQueryable<UserChoice> query = db.UserChoices.Include("Menu").Include("Menu.Items").Where(uc => uc.UserID == id && uc.date >= monday);
+
             switch (list)
             {
                 case "all":
@@ -74,13 +78,13 @@ namespace Food.Api.Controllers
         public IHttpActionResult GetUserChoiceSum()
         {
             string id = User.Identity.GetUserId();
-            int sum = db.UserChoices.Include("Menu").Where(uc => uc.UserID == id && uc.confirm).Sum(uc => uc.Menu.Price);
+            int sum = db.UserChoices.Include("Menu").Where(uc => uc.UserID == id && uc.confirm).Sum(uc => (int?)uc.Menu.Price) ?? 0;
             return Ok(new { Sum = sum });
         }
 
 
         // GET: api/UserChoices/5
-        [Route("{id:int}")]
+        [Route("{id:int}", Name ="Get")]
         [ResponseType(typeof(UserChoice))]
         public IHttpActionResult Get(int id)
         {
@@ -94,6 +98,7 @@ namespace Food.Api.Controllers
         }
 
         // PUT: api/UserChoices/5
+        [Route("{id:int}")]
         [ResponseType(typeof(void))]
         public IHttpActionResult Put(int id, UserChoice userChoice)
         {
@@ -101,14 +106,15 @@ namespace Food.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
-            userChoice.Menu = null;
-            db.Entry(userChoice).State = EntityState.Modified;
-
+            
+            
             if (!CheckUserChoise(userChoice))
             {
-                return BadRequest(ModelState);
+                return BadRequest("Not enough money");
             }
 
+            userChoice.Menu = null;
+            db.Entry(userChoice).State = EntityState.Modified;
             try
             {
                 db.SaveChanges();
@@ -128,43 +134,45 @@ namespace Food.Api.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        /// <summary>
+        /// Check is posibe to confirm user order
+        /// </summary>
+        /// <param name="userChoice"></param>
+        /// <returns>true if posible confirm order</returns>
         private bool CheckUserChoise(UserChoice userChoice)
         {
-            bool result = true;
+            bool result = false;
             UserChoice oldChoice = db.UserChoices.Where(uc => uc.Id == userChoice.Id).First();
+            db.Entry(oldChoice).State = EntityState.Detached;
             Menu menu = db.Menus.First(m => m.Id == userChoice.MenuId);
             int balance = db.GetUserBalance(userChoice.UserID);
+            
 
             if (User.IsInRole("Admin") || User.IsInRole("GlobalAdmin"))
             {
                 if (userChoice.confirm && !oldChoice.confirm)
                 {
                     balance = balance - menu.Price;
-                    if (balance < 0)
+                    if (balance >= 0)
                     {
-                        result = false;
+                        result = true;
                     }
-                }
-            }
-            else
-            {
-                if (userChoice.UserID == User.Identity.GetUserId())
-                {
-                    if (balance > menu.Price)
-                    {
-                        result = false;
-                    }
-                }
-                else
-                {
-                    result = false;
                 }
             }
 
+            if (userChoice.UserID == User.Identity.GetUserId() && !userChoice.confirm)
+            {
+                if (balance >= menu.Price)
+                {
+                    result = true;
+                }
+            }
+            
             return result;
         }
 
         // POST: api/UserChoices
+        [Route("")]
         [ResponseType(typeof(UserChoice))]
         public IHttpActionResult Post(UserChoice userChoice)
         {
@@ -181,7 +189,7 @@ namespace Food.Api.Controllers
 
             Menu menu = db.Menus.First(m => m.Id == userChoice.MenuId);
             int balance = db.GetUserBalance(userChoice.UserID);
-            if (balance > menu.Price)
+            if (balance >= menu.Price)
             {
                 db.UserChoices.Add(userChoice);
                 db.SaveChanges();
@@ -189,13 +197,14 @@ namespace Food.Api.Controllers
             }
             else
             {
-                return BadRequest(ModelState);
+                return BadRequest("Not enough money");
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = userChoice.Id }, userChoice);
+            return CreatedAtRoute("Get", new { id = userChoice.Id }, userChoice);
         }
 
         // DELETE: api/UserChoices/5
+        [Route("{id:int}")]
         [ResponseType(typeof(UserChoice))]
         public IHttpActionResult Delete(int id)
         {

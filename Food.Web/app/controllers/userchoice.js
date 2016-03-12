@@ -22,7 +22,7 @@
 
         uc.init = activate;
         uc.isDisable = isDisable;
-        uc.setDaySelect = setDaySelect;
+        uc.setUserOrder = setUserOrder;
         uc.weekOffset = weekOffset;
 
         activate();
@@ -54,7 +54,7 @@
             uc.status = "Loading food ...";
             uc.working = true;
             uc.error = true;
-            
+            uc.weekdays = {};
             
             uc.sysmenu = Menu.query({menuMode:'none'});
             uc.weekmenu = Menu.query();
@@ -74,7 +74,6 @@
                 
                 // Fill days with menu for this day
                 angular.forEach(uc.weekmenu, function(menu) {
-                    var day = new Date(menu.onDate).getDay()-1;
                     var key = new Date(menu.onDate).toDateString();
                     if (uc.weekdays.hasOwnProperty(key)) {
                         uc.weekdays[key].menu.push(menu);
@@ -96,17 +95,11 @@
                 angular.forEach(uc.days, function(day) {
                     var key = new Date(day.date).toDateString();
                     if (uc.weekdays.hasOwnProperty(key)) {
-                        angular.forEach(uc.weekdays[key].menu, function(menu) {
-                            if (menu.id == day.menuId){
-                                uc.weekdays[key].select = menu;
-                                uc.weekdays[key].userday = day;
-                            }		
-                        });
+                        uc.weekdays[key].userday = day;
                     }
                 });
                 
                 success();
-                console.log('all done');            
                 
             }, failure);
         }
@@ -120,7 +113,7 @@
                 menu.push(nonemenu);
                 
                 var date = new Date(+monday)
-                var day = {date:date,menu:menu,select:{},userday:{}};
+                var day = {date:date,menu:menu,userday:{}};
                 var key = date.toDateString();
                 week[key] = day;
                 monday.setDate(monday.getDate() + 1); 
@@ -145,29 +138,34 @@
         };
         
         
-        function setDaySelect(day, menu) {
+        function setUserOrder(day, menu) {
             if (dateservice.check(day.date) && !day.userday.confirm) {
-                day.select = menu;
-                saveDay(day);
+                var oldmenu = day.userday.menu;
+                if (isEmpty(day.userday)) {
+                    day.userday = {};
+                    day.userday.menuId = menu.id;
+                    var userday = new UserDay({ menuId: menu.id, date: day.date });
+                    userday.$save(function (data) {
+                        day.userday = data;
+                        day.userday.menu = menu;
+                    }, function () {
+                        day.userday = {};
+                        // Error
+                    });
+
+                } else if (menu.id != day.userday.menuId) {
+                    
+                    day.userday.menuId = menu.id;
+                    day.userday.$update({ id: day.userday.id }, function () {
+                        day.userday.menu = menu;
+                    }, function () {
+                        day.userday.menu = oldmenu;
+                        day.userday.menuId = oldmenu.id;
+                        // Error
+                    });
+                }
             }
         };
-        
-        function saveDay(day) {
-            if (isEmpty(day.userday)) {
-                var userday = new UserDay({ menuId: day.select.id, date: day.date });
-                //TODO: show error or success 
-                userday.$save(function (data) {
-                    day.userday = data;
-                }, function () {
-                });
-
-            } else if (day.select.id != day.userday.menuId) {
-                //TODO: show error or success
-                day.userday.menu = day.select;
-                day.userday.menuId = day.select.id;
-                day.userday.$update({ id: day.userday.id });
-            }
-        }
 
 
     };
