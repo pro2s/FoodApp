@@ -4,10 +4,12 @@
         .module('app.admin')
         .controller('OrdersAdmin', OrdersAdmin);
         
-    OrdersAdmin.$inject = ['$q', 'User', 'UserDay' , 'Menu', 'Config'];    
+    OrdersAdmin.$inject = ['$q', 'User', 'UserDay' , 'Menu', 'Config', 'Pagination'];    
     
-    function OrdersAdmin($q, User, UserDay, Menu, Config) {
+    function OrdersAdmin($q, User, UserDay, Menu, Config, Pagination) {
         var vm = this;
+        var paginationID = 'allOrders';
+
         vm.title = "loading users choice ...";
         vm.working = false;
         vm.activeday = {};
@@ -15,7 +17,8 @@
         vm.weekdays = {};
         vm.menucount = {};
         vm.tab = 'week';
-        vm.orders = {total: 0, current:1, perPage:10, pageData:[]};
+        vm.orders = [];
+        vm.pages = {};
 
         vm.getAllOrders = getAllOrders;
         vm.getUser = getUser;
@@ -32,6 +35,7 @@
         
         // TODO: Decompose on methods 
         function activate() {
+            vm.pages = Pagination.addPagination(paginationID);
             vm.working = true;
             vm.title = "Users choice";
             
@@ -139,42 +143,11 @@
             getAllOrders();
         }
 
-        function parseRange(hdr) {
-            var m = hdr && hdr.match(/^(?:\S+ )?(\d+)-(\d+)\/(\d+|\*)$/);
-            if (m) {
-                return {
-                    from: +m[1],
-                    to: +m[2],
-                    total: m[3] === '*' ? Infinity : +m[3]
-                };
-            } else if (hdr === '*/0') {
-                return { total: 0 };
-            }
-            return null;
-        }
-
-        function parseHeaders(headers) {
-            var range = parseRange(headers['content-range']);
-            if (range) {
-                vm.orders.total = range.total;
-                vm.orders.current = Math.ceil(range.from / vm.orders.perPage) + 1;
-            } else {
-                vm.orders.total = vm.orders.pageData.length;
-                vm.orders.currentPage = 1;
-            }
-        }
-
         function getAllOrders() {
-            var from = (vm.orders.current - 1) * vm.orders.perPage;
-            var to = from + vm.orders.perPage - 1;
-          
-            Config.set('allOrdersRange', 'x-entity=' + from + '-' + to);
-
-            UserDay.all({}, function (data, getHeaders) {
-                vm.orders.pageData = data;
-                parseHeaders(getHeaders());
+            UserDay.all({ pagination: paginationID }, function (data, getHeaders) {
+                vm.orders = data;
             }, function () {
-
+                // TODO: Show error msg
             })
         }
       

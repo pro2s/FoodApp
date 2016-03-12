@@ -27,7 +27,7 @@
                         </div>
                     </li>
                 </ul>
-                <uib-pagination total-items="totalItems" ng-model="currentPage" max-size="5" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="pageChanged()" items-per-page="perPage"></uib-pagination>
+                <uib-pagination total-items="pages.totalItems" ng-model="pages.currentPage" max-size="5" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="pageChanged()" items-per-page="pages.perPage"></uib-pagination>
                 
                 <form ng-if="!readonly">
                     <div class="form-group">

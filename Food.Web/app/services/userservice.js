@@ -3,15 +3,12 @@
     angular
         .module('app.userservice')
         .factory('User', User)	 
-        .factory('UserDay', ['$resource', 'Config',
+        .factory('UserDay', ['$resource',
           function($resource, Config){
-            function getRange(){
-                return Config.get('allOrdersRange');
-            }
             return $resource('/api/userchoices/:id', {}, {
               query: {method:'GET', params:{id:''}, isArray:true},
               update: { method: 'PUT', params: { id: '' } },
-              all: { method: 'GET', params: { id: '', list:'all'}, isArray:true, headers:{'Range':getRange}},
+              all: { method: 'GET', params: { id: '', list:'all'}, isArray:true},
             });
         }])
         .factory('Payment', ['$resource',

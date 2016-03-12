@@ -183,6 +183,7 @@
     <Content Include="App\services\apiinterceptor.js" />
     <Content Include="App\services\authservice.js" />
     <Content Include="App\services\config.js" />
+    <Content Include="App\services\pageservice.js" />
     <Content Include="App\services\dateservice.js" />
     <Content Include="App\services\menuservice.js" />
     <Content Include="App\services\statisticservice.js" />
@@ -201,12 +202,15 @@
     <Content Include="App\views\user.html" />
     <Content Include="App\views\userprofile.html" />
     <Content Include="authcomplete.html" />
+    <Content Include="Content\background.jpg" />
     <Content Include="Content\bootstrap-social.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\food.png" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="favicon.ico" />
+    <Content Include="favicon.png" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -238,6 +242,7 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
+    <None Include="Properties\PublishProfiles\WebUI.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

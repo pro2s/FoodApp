@@ -67,6 +67,7 @@ angular
         });
 
         $httpProvider.interceptors.push('APIInterceptor');
+        $httpProvider.interceptors.push('PaginationInterceptor');
         // $locationProvider.html5Mode(true);
     }])
     .run(['$route', '$rootScope', '$location', 'authservice', function ($route, $rootScope, $location, authservice) {

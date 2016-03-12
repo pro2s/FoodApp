@@ -64,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="order in vm.orders.pageData">
+                    <tr ng-repeat="order in vm.orders">
                         <th>{{order.id}}</th>
                         <td>{{order.date|date:'yyyy-MM-dd'}}</td>
                         <td>{{vm.getUser(order).userName}}</td>
@@ -75,7 +75,7 @@
                 </tbody>
             </table>
             
-            <uib-pagination total-items="vm.orders.total" ng-model="vm.orders.current" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.pageChanged()" items-per-page="vm.orders.perPage"></uib-pagination>
+            <uib-pagination total-items="vm.pages.totalItems" ng-model="vm.pages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.pageChanged()" items-per-page="vm.pages.perPage"></uib-pagination>
 
         </div>
     </div>

@@ -27,26 +27,23 @@
     }
     
     ItemRating.$inject = ['$resource'];
-    function ItemRating($resource) {
-        return $resource('/api/itemratings/:id', {}, {
-            query: { method: 'GET', params: { id: '' }, isArray: true },
-            update: { method: 'PUT', params: { id: '' } },
-        });
+        function ItemRating($resource) {
+            return $resource('/api/itemratings/:id', {}, {
+                query: { method: 'GET', params: { id: '' }, isArray: true },
+                update: { method: 'PUT', params: { id: '' } },
+            });
     }
 
     ItemComments.$inject = ['$resource'];
     function ItemComments($resource) {
-        return function (config) {
-            return $resource('/api/itemcomments/:id', {}, {
-                query: { 
-                    method: 'GET', 
-                    params: { id: '', range: '@range' }, 
-                    isArray: true, 
-                    headers: config.headers,
-                },
-                update: { method: 'PUT', params: { id: '' }}
-            });
-        }
+        return $resource('/api/itemcomments/:id', {}, {
+            query: { 
+                method: 'GET', 
+                params: { id: '', range: '@range' }, 
+                isArray: true, 
+            },
+            update: { method: 'PUT', params: { id: '' }}
+        });
     }
 
     GlobalMenu.$inject = ['Menu','authservice'];

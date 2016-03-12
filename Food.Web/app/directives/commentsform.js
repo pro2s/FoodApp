@@ -4,8 +4,8 @@
         .module('app')
         .directive('commentsForm', commentsForm);
 
-    commentsForm.$inject = ['ItemComments'];
-    function commentsForm(ItemComments) {
+    commentsForm.$inject = ['ItemComments', 'Pagination'];
+    function commentsForm(ItemComments, Pagination) {
         
         var directive = {
             restrict: 'E',
@@ -17,15 +17,15 @@
             },
             templateUrl: 'app/views/comments.html',
             link: function (scope, element, attrs) {
+                var paginationId = 'userComments';
+
                 scope.id = 'commentsModal';
                 scope.item = {};
                 scope.comments = [];
                 scope.form = { text: '' };
                 scope.internalControl = {}
-                scope.perPage = 5;
-                scope.currentPage = 1;
-                scope.totalItems = 0;
-                
+                scope.pages = {}
+
                 scope.pageChanged = pageChanged;
                 scope.sendComment = sendComment;
                 scope.refreshComments = refreshComments;
@@ -33,50 +33,22 @@
                 activate();
 
                 function activate() {
+                    scope.pages = Pagination.addPagination(paginationId, 5);
                     scope.internalControl = scope.control || {};
                     scope.internalControl.rating = {};
                     scope.internalControl.show = show;
                     scope.internalControl.hide = hide;
                 }
 
-                function parseRange(hdr) {
-                    var m = hdr && hdr.match(/^(?:\S+ )?(\d+)-(\d+)\/(\d+|\*)$/);
-                    if (m) {
-                        return {
-                            from: +m[1],
-                            to: +m[2],
-                            total: m[3] === '*' ? Infinity : +m[3]
-                        };
-                    } else if (hdr === '*/0') {
-                        return { total: 0 };
-                    }
-                    return null;
-                }
-
+               
                 function pageChanged(){
                     refreshComments();
                 }
 
-                function parseHeaders(headers) {
-                    var range = parseRange(headers['content-range']);
-                    if (range) {
-                        scope.totalItems = range.total;
-                        scope.currentPage = Math.ceil(range.from / scope.perPage) + 1;
-                    } else {
-                        scope.totalItems = scope.comments.length;
-                        scope.currentPage = 1;
-                    }
-                }
-
+              
                 function refreshComments() {
-                    var config = { headers: {} };
-                    var from = (scope.currentPage - 1) * scope.perPage;
-                    var to = from + scope.perPage - 1;
-                    config.headers['Range'] = 'x-entity=' + from + '-' + to;
-
-                    ItemComments(config).query({ itemId: scope.item.id }, function (data, getHeaders) {
+                    ItemComments.query({ itemId: scope.item.id, pagination:paginationId }, function (data, getHeaders) {
                         scope.comments = data;
-                        parseHeaders(getHeaders());
                     }, function () {
                         scope.comments = [{ userName: 'System', text: 'Get comments error.' }];
                     });
@@ -99,9 +71,8 @@
                 }
 
                 function sendComment() {
-                    var config = {};
                     var comment = { itemId: scope.item.id, text: scope.form.text };
-                    ItemComments(config).save({}, comment, function (data) {
+                    ItemComments.save({}, comment, function (data) {
                         refreshComments();
                         scope.form.text = '';
                     }, function (response) {
