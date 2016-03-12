@@ -70,7 +70,25 @@
                         <td>{{vm.getUser(order).userName}}</td>
                         <td>{{order.menu.name}}</td>
                         <td>{{order.menu.price}}</td>
-                        <td><i class="glyphicon glyphicon-ok" ng-if="order.confirm"></i></td>
+                        <td>
+                            <div class="btn-group pull-right">
+                                <button class="btn btn-sm"
+                                        ng-class="{'btn-default':!order.confirm, 'btn-success':order.confirm}"
+                                        ng-click="vm.confirmSelect(order)"
+                                        ng-disabled="order.confirm">
+                                        <i class="glyphicon glyphicon-ok"></i>
+                                </button>
+                                <button class="btn btn-sm btn-warning"
+                                        ng-if="order.confirm"
+                                        ng-click="vm.confirmSelect(order)">
+                                        <i class="glyphicon glyphicon-refresh"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger"
+                                        ng-click="vm.deleteSelect(vm.orders, $index)">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
