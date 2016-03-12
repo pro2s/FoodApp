@@ -47,14 +47,27 @@ namespace Food.Api.Controllers
         /// </summary>
         /// <returns>List users</returns>
         // POST api/Users
+        [EnableRange]
         [Authorize(Roles = "Admin, GlobalAdmin")]
         [Route("~/api/Users")]
         [ResponseType(typeof(List<UserInfoViewModel>))]
-        public List<UserInfoViewModel> GetUsers()
+        public List<UserInfoViewModel> GetUsers(bool range = false, int from = 0, int to = 0)
         {
             List<UserInfoViewModel> result = new List<UserInfoViewModel>();
-            List<ApplicationUser> users = UserManager.Users.ToList();
-            foreach (var user in users)
+            IQueryable<ApplicationUser> users = UserManager.Users.OrderBy(u=>u.Id);
+            
+            if (range)
+            {
+                int count = to - from + 1;
+                int total = users.Count();
+                Request.Headers.Add("X-Range-Total", total.ToString());
+                if (count > 0 && from < total)
+                {
+                    users = users.Skip(from).Take(count);
+                }
+            }
+
+            foreach (var user in users.ToList())
             {
                 result.Add(FillUserInfo(user));
             }

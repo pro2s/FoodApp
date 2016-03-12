@@ -44,7 +44,7 @@ namespace Food.Api.Controllers
 
         // GET: api/Payments
         [EnableRange]
-        public List<Payment> GetPayments(string list = "user", bool range = false, int from = 0, int to = 0)
+        public List<PaymentViewModel> GetPayments(string list = "user", bool range = false, int from = 0, int to = 0)
         {
             string id = User.Identity.GetUserId();
             IQueryable<Payment> query;
@@ -68,7 +68,16 @@ namespace Food.Api.Controllers
                 }
             }
 
-            return query.ToList();
+            var result = query.ToList().Select(p => new PaymentViewModel() {
+                Id = p.Id,
+                Sum = p.Sum,
+                UserId = p.UserID,
+                Date = p.Date,
+                UserName = UserManager.FindById(p.UserID).UserName,
+                });
+
+            return result.ToList();
+            
         }
 
         // GET: api/Payments

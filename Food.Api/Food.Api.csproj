@@ -324,6 +324,7 @@
     <Compile Include="DAL\MenuRepository.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaymentBindingModel.cs" />
+    <Compile Include="Models\PaymentViewModels.cs" />
     <Compile Include="Models\StatisticViewModels.cs" />
     <Compile Include="Models\UserChoice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

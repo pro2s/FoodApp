@@ -517,7 +517,7 @@
             <param name="StartDate">return menu from this date</param>
             <returns>Menu on week</returns>
         </member>
-        <member name="M:Food.Api.Controllers.UsersController.GetUsers">
+        <member name="M:Food.Api.Controllers.UsersController.GetUsers(System.Boolean,System.Int32,System.Int32)">
             <summary>
             Get users info
             </summary>

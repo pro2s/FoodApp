@@ -1,56 +1,81 @@
 ﻿<div class="row">
-    <div class="col-md-8"><h4 ng-bind="vm.title"></h4></div>
-    <div class="col-md-8">
-        <table class="table table-striped set-bg">
-            <thead>
-                <tr><th>User Name</th><th>E-mail</th><th>Balance</th><th>Action</th></tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="user in vm.users" id="{{user.id}}" >
-                        <td class="v-align" ng-bind="user.userName"></td>
-                        <td class="v-align" ng-class="{'text-danger':!user.isEmailConfirmed, 'text-success':user.isEmailConfirmed}"ng-bind="user.email"></td>
-                        <td>
-                            <div ng-if="!vm.isadd(user.id)">
-                                <div class="input-group">
-                                    <span class="input-group-addon">$</span>
-                                    <input type="text" class="form-control" ng-model="user.balance" readonly>
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" ng-click="vm.onadd(user.id)">
-                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                        </button>
-                                    </span>
+    <div class="col-sm-7"><h4 ng-bind="vm.title"></h4></div>
+    <div class="col-sm-5"><h4>Payments</h4></div>
+    <div class="col-sm-7">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr><th>User Name</th><th>E-mail</th><th>Balance</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="user in vm.users" id="{{user.id}}">
+                            <td class="v-align" ng-bind="user.userName"></td>
+                            <td class="v-align" ng-class="{'text-danger':!user.isEmailConfirmed, 'text-success':user.isEmailConfirmed}" ng-bind="user.email"></td>
+                            <td>
+                                <div ng-if="!vm.isadd(user.id)">
+                                    <div class="input-group input-group-sm">
+                                        <span class="input-group-addon">$</span>
+                                        <input type="text" class="form-control" ng-model="user.balance" readonly>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" ng-click="vm.onadd(user.id)">
+                                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div ng-if="vm.isadd(user.id)">
-                                <div class="input-group" ng-class="{'has-error':vm.payment.error}">
-                                    <span class="input-group-addon">$</span>
-                                    <input type="text" class="form-control" ng-model="vm.payment.value">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" ng-click="vm.sendpayment(user)" ng-class="{'btn-danger':vm.payment.error}">
-                                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                                        </button>
-                                        <button class="btn btn-default" type="button" ng-click="vm.cancel()">
-                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                                        </button>
-                                    </span>
+                                <div ng-if="vm.isadd(user.id)">
+                                    <div class="input-group input-group-sm" ng-class="{'has-error':vm.payment.error}">
+                                        <span class="input-group-addon">$</span>
+                                        <input type="text" class="form-control" ng-model="vm.payment.value">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" ng-click="vm.sendpayment(user)" ng-class="{'btn-danger':vm.payment.error}">
+                                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                            </button>
+                                            <button class="btn btn-default" type="button" ng-click="vm.cancel()">
+                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                            </button>
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="btn-group pull-right">
-                                <button class="btn btn-default" ng-class="{'btn-success':vm.checkClaim(user,'comments','readonly')}" type="button" ng-click="vm.setClaim(user,'comments','readonly')"><span class="fa fa-microphone-slash" aria-hidden="true"></span></button>
-                                <button class="btn btn-default" ng-class="{'btn-success':vm.isLockout(user)}" type="button" ng-click="vm.lockout(user)"><span class="fa fa-user-times" aria-hidden="true"></span></button>
-                                <button class="btn btn-default" ng-class="{'btn-success':vm.isAdmin(user)}" type="button" ng-click="vm.switchRole(user)"><span class="fa fa-wrench" aria-hidden="true"></span></button>
-                            </div>
-                        </td>
-                </tr>     
-            </tbody> 
-            
-        </table>
-        
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm pull-right">
+                                    <button class="btn btn-default" ng-class="{'btn-success':vm.checkClaim(user,'comments','readonly')}" type="button" ng-click="vm.setClaim(user,'comments','readonly')"><span class="fa fa-microphone-slash" aria-hidden="true"></span></button>
+                                    <button class="btn btn-default" ng-class="{'btn-success':vm.isLockout(user)}" type="button" ng-click="vm.lockout(user)"><span class="fa fa-user-times" aria-hidden="true"></span></button>
+                                    <button class="btn btn-default" ng-class="{'btn-success':vm.isAdmin(user)}" type="button" ng-click="vm.switchRole(user)"><span class="fa fa-wrench" aria-hidden="true"></span></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <uib-pagination total-items="vm.usersPages.totalItems" ng-model="vm.usersPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getUsers()" items-per-page="vm.usersPages.perPage"></uib-pagination>
+            </div>
+        </div>
     </div>
-	
-        
-    
+    <div class="col-sm-5">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr><th>Date</th><th>User Name</th><th>Payment</th><th>Action</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="payment in vm.payments">
+                            <td>{{payment.date|date:'yyyy-MM-dd'}}</td>
+                            <td ng-bind="payment.userName"></td>
+                            <td>{{payment.sum}}&nbsp;<i ng-if="payment.sum<0" class="fa fa-share"></i></td>
+                            <td>
+                                <div class="btn-group btn-group-sm pull-right">
+                                    <button class="btn btn-danger" type="button" ng-click="vm.deletePayment(payment)"><span class="fa fa-remove" aria-hidden="true"></span></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <uib-pagination total-items="vm.paymentsPages.totalItems" ng-model="vm.paymentsPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getPayments()" items-per-page="vm.paymentsPages.perPage"></uib-pagination>
+            </div>
+        </div>
+    </div>
 </div>
