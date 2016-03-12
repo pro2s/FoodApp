@@ -12,12 +12,29 @@
         form.menu = {};
         form.backupmenu = {};
         form.parse = {};
+        form.tab = 'week';
 
+        form.setTab = setTab;
+        form.isTab = isTab;
         form.add = add;
         form.edit = edit;
         form.cancel = cancel;
         form.save = save;
         form.delete = deleteMenu;
+
+        activate();
+
+        function activate() {
+    
+        }
+
+        function setTab(name) {
+            form.tab = name;
+        }
+
+        function isTab(name) {
+            return form.tab == name;
+        }
 
         function deleteMenu(menu) {
             var result = $window.confirm('Delete Menu "' + menu.name + '"');

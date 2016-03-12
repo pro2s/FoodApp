@@ -3,7 +3,6 @@
         <parse-form control="form.parse"></parse-form>
     </div>
     <div class="col-sm-12">
-        
         <div class="pull-right">
             <button type="button" class="btn btn-default" ng-click="form.parse.show()">Parse Menu</button>
             <button type="button" class="btn btn-default" ng-click="form.add()">Add menu</button>
@@ -11,9 +10,9 @@
             <button type="button" class="btn" ng-class="{'btn-success': vm.tomorrow, 'btn-default': !vm.tomorrow}" ng-click="vm.tomorrow=!vm.tomorrow">Tomorrow Only</button>
         </div>
         <ul class="nav nav-tabs">
-            <li class="active"><a href="" ng-bind="vm.title"></a></li>
-            <li><a href="">All Menus</a></li>
-            <li><a href="">System Menus</a></li>
+            <li ng-class="{active:form.isTab('week')}"><a href="" ng-click="form.setTab('week')">Week Menu</a></li>
+            <li ng-class="{active:form.isTab('all')}"><a href="" ng-click="form.setTab('all')">All Menus</a></li>
+            <li ng-class="{active:form.isTab('system')}"><a href="" ng-click="form.setTab('system')">System Menus</a></li>
         </ul>
     </div>
 
@@ -22,27 +21,31 @@
     </div>
     
     <div class="clearfix spacer"></div>
-    <div ng-repeat="menu in vm.data.menu" class="col-sm-4" ng-if="vm.isshow(menu)" ng-class="{clearfix:$index % 3 == 0}">
-        <div class="panel" ng-class="{'panel-primary': vm.isold(menu.onDate),'panel-default': !vm.isold(menu.onDate)}">
+    <div ng-if="form.isTab('week')">
+        <div ng-repeat="menu in vm.data.menu" class="col-sm-4" ng-if="vm.isshow(menu)" ng-class="{clearfix:$index % 3 == 0}">
+            <div class="panel" ng-class="{'panel-primary': vm.isold(menu.onDate),'panel-default': !vm.isold(menu.onDate)}">
 
-            <div class="panel-heading">
-                <div class="btn-group pull-right">
-                    <button class="btn btn-default btn-xs" type="button" ng-click="form.edit(menu)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                    <button class="btn btn-default btn-xs" type="button" ng-click="form.delete(menu)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                <div class="panel-heading">
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-default btn-xs" type="button" ng-click="form.edit(menu)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                        <button class="btn btn-default btn-xs" type="button" ng-click="form.delete(menu)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    </div>
+                    {{menu.name}} {{menu.onDate|date:'yyyy-MM-dd'}}
                 </div>
-                {{menu.name}} {{menu.onDate|date:'yyyy-MM-dd'}}
+
+                <div class="panel-body">
+                    Цена: {{menu.price}} руб.<br />
+                </div>
+
+                <ul class="list-group" ng-if="vm.components">
+                    <li class="list-group-item" ng-repeat="item in menu.items"><span class="badge">{{item.weight}}</span>{{item.name}}</li>
+                </ul>
+
             </div>
-
-            <div class="panel-body">
-                Цена: {{menu.price}} руб.<br />
-            </div>
-
-            <ul class="list-group" ng-if="vm.components">
-                <li class="list-group-item" ng-repeat="item in menu.items"><span class="badge">{{item.weight}}</span>{{item.name}}</li>
-            </ul>
-
         </div>
     </div>
-
-
+    <div ng-if="vm.isTab('all')">
+    </div>
+    <div ng-if="vm.isTab('system')">
+    </div>
 </div>
