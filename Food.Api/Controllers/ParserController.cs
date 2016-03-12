@@ -45,11 +45,11 @@ namespace Food.Api.Controllers
             {
                 start = start.Value.Date;
                 nextmonday = (DateTime)start;
-                nextmonday = nextmonday.AddDays(8 - (int)nextmonday.DayOfWeek);
+                nextmonday = nextmonday.StartOfWeek(); 
             }
             else
             {
-                nextmonday = DateTime.Today.AddDays(8 - (int)DateTime.Today.DayOfWeek);
+                nextmonday = DateTime.Today.StartOfWeek().AddDays(7);
             }
             
 

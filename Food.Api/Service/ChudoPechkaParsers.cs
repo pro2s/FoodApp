@@ -258,7 +258,7 @@ namespace Food.Api
         public ChudoPechka()
         {
             _url = "http://chudo-pechka.by/";
-            _monday = DateTime.Today.AddDays(1-(int)DateTime.Today.DayOfWeek);
+            _monday = DateTime.Today.StartOfWeek();
             _weekmenu = new List<Menu>();
             ReadData();
         }

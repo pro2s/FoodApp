@@ -331,6 +331,7 @@
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Service\ChudoPechkaParsers.cs" />
+    <Compile Include="Service\DateTimeExtension.cs" />
     <Compile Include="Service\McDonaldsParser.cs" />
     <Compile Include="Service\MenuParserInterface.cs" />
     <Compile Include="Startup.cs" />

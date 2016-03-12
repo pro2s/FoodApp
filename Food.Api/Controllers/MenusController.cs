@@ -89,7 +89,7 @@ namespace Food.Api.Controllers
 
             if (StartDate == null)
             {
-                StartDate = DateTime.Today.AddDays(1 - (int)DateTime.Today.DayOfWeek);
+                StartDate = DateTime.Today.StartOfWeek();
             }
 
             switch (MenuMode)

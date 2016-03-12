@@ -85,7 +85,7 @@ namespace Food.Api.Controllers
         public IHttpActionResult GetPaymentsSum()
         {
             string id = User.Identity.GetUserId();
-            int sum = db.Payments.Where(uc => uc.UserID == id).Sum(uc => uc.Sum);
+            int sum = db.Payments.Where(uc => uc.UserID == id).Sum(uc => (int?)uc.Sum) ?? 0;
             return Ok(new { Sum = sum });
         }
 
