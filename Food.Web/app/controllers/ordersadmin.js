@@ -16,18 +16,18 @@
         vm.activeday = {};
         vm.users = {};
         vm.weekdays = {};
-        vm.menucount = {};
         vm.orders = [];
         vm.pages = {};
 
         vm.getAllOrders = getAllOrders;
         vm.getUser = getUser;
-        vm.deleteSelect = deleteSelect;
-        vm.confirmSelect = confirmSelect;
+        vm.deleteOrder = deleteOrder;
+        vm.confirmOrder = confirmOrder;
         vm.pageChanged = pageChanged;
         vm.isConfirmed = isConfirmed;
         vm.confirmDay = confirmDay;
         vm.totalOnDay = totalOnDay;
+        vm.updateDay = updateDay;
 
         activate();
         
@@ -37,53 +37,35 @@
             vm.working = true;
             vm.titleWeek = "Users orders";
             
-            var day = new Date().getDay();
-            vm.activeday =  (day == 0 ? 6: day);
+            vm.today = new Date().toDateString();
                 
             vm.users = User.getUsers();
             
             getAllOrders();
 
-            var sysmenu = Menu.query({menuMode:'none'});
-            var days = UserDay.query({list:'week'});
+            var promises = [];
             
-            $q.all([
-                sysmenu.$promise,
-                days.$promise
-            ])
+            vm.weekdays = {};
+            var monday = new Date().GetMonday();
+            for (var i = 0; i < 8; i++) {
+                var date = new Date(+monday)
+                var key = date.toDateString();
+                var day = { date: date, orders: {}, menu: {} };
+                day.orders = UserDay.query({ list: 'day', startdate: date });
+                promises.push(day.orders.$promise);
+                vm.weekdays[key] = day;
+                monday.setDate(monday.getDate() + 1); 
+            }
+                
+            
+            
+            $q.all(promises)
             .then(function(result) {
-                var nonemenu = sysmenu.pop();	
-                vm.menucount = {};   
                 
-                // Generate days from Monday current week to next Monday 
-                vm.weekdays = {};
-                var monday = new Date().GetMonday();
-                for (var i = 0; i < 8; i++) {
-                    var date = new Date(+monday)
-                    var day = {date:date,userselect:[],menu:{}};
-                    var key = date.toDateString();
-                    vm.weekdays[key] = day;
-                    monday.setDate(monday.getDate() + 1); 
-                }
-                
-                // Fill days with users choice, count menu and day choice
-                angular.forEach(days, function(day) {
-                    var key = new Date(day.date).toDateString();
-                    if (vm.weekdays.hasOwnProperty(key)) {
-                        if (day.menuId != nonemenu.id) {
-                            vm.weekdays[key].userselect.push(day)
-
-                            if (typeof vm.weekdays[key].menu[day.menuId] == 'undefined') {
-                                vm.weekdays[key].menu[day.menuId] = day.menu;
-                                vm.weekdays[key].menu[day.menuId].count = 1;
-                            } else {
-                                vm.weekdays[key].menu[day.menuId].count++;
-                            }
-                            
-                        }
-                    }
-                });
-                
+                for (var key in vm.weekdays) {
+                    totalOnDay(vm.weekdays[key]);
+                }              
+              
                 success();    
             }, failure)
             
@@ -97,11 +79,19 @@
             vm.titleWeek = "Oops... something went wrong";
             vm.working = false;
         };
-            
+         
+        
+         
+        /**
+         * Calculate totlas on menu for day
+         * @param {object} day object (date,oders,menu)
+         */
         function totalOnDay(day) {
+            
+
             day.menu = {};
-            for (var i = 0, len = day.userselect.length; i < len; i++) {
-                var menu = day.userselect[i].menu;
+            for (var i = 0, len = day.orders.length; i < len; i++) {
+                var menu = day.orders[i].menu;
                 if (typeof day.menu[menu.id] == 'undefined') {
                     day.menu[menu.id] = menu;
                     day.menu[menu.id].count = 1;
@@ -115,36 +105,54 @@
         function getUser(userday) {
             return vm.users[userday.userID];
         };
-        
-        function confirmSelect(userday, bulk) {
 
+        /**
+         * Update orders on date
+         * @param {Date} date
+         */
+        function updateDay(date) {
+            var key = new Date(date).toDateString();
+            var day = vm.weekdays[key];
+            var orders = UserDay.query({ list: 'day', startdate: date }, function () {
+                day.orders = orders;
+                totalOnDay(day);
+            });
+        }
+
+
+        /**
+         * Confirm user order
+         * @param {UserDay} order - user order
+         * @param {bool} bulk - true when bulk operation
+         */
+        function confirmOrder(order, bulk) {
             if (!bulk) {
                 bulk = false;
             }
-
-            userday.confirm = !userday.confirm;
-            userday.$update({id:userday.id})
-                .then(function () {
-                    if (!bulk) {
-                        getAllOrders();
-                    }
-                    // Ok
-                })
-                .catch(function () {
-                    // TODO: Show error 
-                    userday.confirm = !userday.confirm;
-                });
+            var d = $q.defer();
             
+            order.confirm = !order.confirm;
+            UserDay.update({ id: order.id }, order, function () {
+                if (!bulk) {
+                    getAllOrders();
+                    updateDay(order.date);
+                }
+                d.resolve();
+                // Ok
+            }, function () {
+                // Error
+                order.confirm = !order.confirm;
+            });
+
+            return d.promise;
         }
 
-        function deleteSelect(orders, index) {
-            var userday = orders[index];
-            userday.$delete({ id: userday.id })
-                .then(function () {
-                    orders.splice(index, 1);
-                })
-                .catch(function () {
-                    // TODO: Show error msg
+        function deleteOrder(order) {
+            UserDay.delete({ id: order.id }, function () {
+                    getAllOrders();
+                    updateDay(order.date);
+                }, function () {
+                    // Error
                 });
 
         }
@@ -163,8 +171,8 @@
       
         function isConfirmed(day) {
             var result = true;
-            for (var i = 0, len = day.userselect.length; i < len; i++) {
-                if (!day.userselect[i].confirm) {
+            for (var i = 0, len = day.orders.length; i < len; i++) {
+                if (!day.orders[i].confirm) {
                     result = false;
                     break;
                 }
@@ -172,16 +180,21 @@
             return result;
         }
 
+        /**
+         * Confirm all orders for day
+         * @param {object} day 
+         */
         function confirmDay(day) {
-            
-            for (var i = 0, len = day.userselect.length; i < len; i++) {
-                if (!day.userselect[i].confirm) {
-                    confirmSelect(day.userselect[i],true);
+            var promises = [];
+            for (var i = 0, len = day.orders.length; i < len; i++) {
+                if (!day.orders[i].confirm) {
+                    promises.push(confirmOrder(day.orders[i], true));
                 }
             }
-            // need promises from confirm
-            getAllOrders();
-            totalOnDay(day);
+            $q.all(promises).then(function () {
+                    getAllOrders();
+                    totalOnDay(day);
+            });
         }
     };
 })(); 

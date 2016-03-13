@@ -30,6 +30,10 @@ namespace Food.Api.Controllers
             DateTime monday = DateTime.Today.StartOfWeek();
                 
             string id = User.Identity.GetUserId();
+            if (startdate != null)
+            {
+                startdate = startdate.Value.Date;
+            }
             
             //list == 'user'
             IQueryable<UserChoice> query = db.UserChoices.Include("Menu").Include("Menu.Items").Where(uc => uc.UserID == id && uc.date >= monday);
@@ -41,6 +45,17 @@ namespace Food.Api.Controllers
                     {
                         // TODO: return userchoices for admin organisation
                         query = db.UserChoices.Include("Menu").OrderByDescending(uc => uc.date);
+                    }
+                    break;
+                // user orders on day without none menus
+                case "day":
+                    if (User.IsInRole("Admin") || User.IsInRole("GlobalAdmin"))
+                    {
+                        // TODO: return userchoices for admin organisation
+                        query = db.UserChoices
+                            .Include("Menu")
+                            .Where(uc => DbFunctions.TruncateTime(uc.date) == startdate && uc.Menu.Type != MenuType.NoneMenu)
+                            .OrderByDescending(uc => uc.date);
                     }
                     break;
                 case "week":
