@@ -85,7 +85,9 @@ namespace Food.Api.Controllers
                     var dbitem = db.Items.Where(i => i.Name == item.Name && i.Weight == item.Weight).FirstOrDefault();
                     if (dbitem != null)
                     {
-                        if(dbitem.Parts.Length < item.Parts.Length)
+                        string dbParts = dbitem.Parts ?? "";
+                        string menuParts = item.Parts ?? "";
+                        if(dbParts.Length < menuParts.Length)
                         {
                             dbitem.Parts = item.Parts;
                             db.Entry(dbitem).State = EntityState.Modified;
