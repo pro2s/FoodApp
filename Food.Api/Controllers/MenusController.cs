@@ -12,6 +12,7 @@ using Food.Api.DAL;
 using Food.Api.Models;
 using System.Web.Http.Cors;
 using Microsoft.AspNet.Identity;
+using Food.Api.Atributes;
 
 namespace Food.Api.Controllers
 {
@@ -74,15 +75,19 @@ namespace Food.Api.Controllers
                 }
             }
         }
-
+    
         /// <summary>
         /// Gets menu on week begin from StartDate. 
         /// GET: api/Menus
         /// </summary>
         /// <param name="MenuMode"></param>
         /// <param name="StartDate">return menu from this date</param>
-        /// <returns>Menu on week</returns>
-        public List<Menu> GetMenus(string MenuMode = "normal", DateTime? StartDate = null)
+        /// <param name="range">is range</param>
+        /// <param name="from">from</param>
+        /// <param name="to">to</param>
+        /// <returns>List of Menu</returns>
+        [EnableRange]
+        public List<Menu> GetMenus(string MenuMode = "normal", DateTime? StartDate = null, bool range = false, int from = 0, int to = 0)
         {
             MenuType get_type = MenuType.NormalMenu;
             List<Menu> result = new List<Menu>();
@@ -99,7 +104,19 @@ namespace Food.Api.Controllers
                     result = db.Menus.Include("Items").Where(m => m.Type == get_type).ToList();
                     break;
                 case "all":
-                    result = db.Menus.Include("Items").Where(m => m.Type == get_type).ToList();
+                    IQueryable<Menu> query = db.Menus.Include("Items").OrderByDescending(m=>m.OnDate);
+                    if (range)
+                    {
+                        int count = to - from + 1;
+                        int total = query.Count();
+                        Request.Headers.Add("X-Range-Total", total.ToString());
+                        if (count > 0 && from < total)
+                        {
+                            query = query.Skip(from).Take(count);
+                        }
+                    }
+                    result = query.ToList();
+
                     break;
                 default:
                     result = db.Menus.Include("Items").Include("Items.Ratings")

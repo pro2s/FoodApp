@@ -12,7 +12,6 @@
         <ul class="nav nav-tabs">
             <li ng-class="{active:form.isTab('week')}"><a href="" ng-click="form.setTab('week')">Week Menu</a></li>
             <li ng-class="{active:form.isTab('all')}"><a href="" ng-click="form.setTab('all')">All Menus</a></li>
-            <li ng-class="{active:form.isTab('system')}"><a href="" ng-click="form.setTab('system')">System Menus</a></li>
         </ul>
     </div>
 
@@ -47,8 +46,36 @@
             </div>
         </div>
     </div>
-    <div ng-if="vm.isTab('all')">
-    </div>
-    <div ng-if="vm.isTab('system')">
+    <div ng-if="form.isTab('all')" class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>On Date</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Items</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tr ng-repeat="menu in form.allMenus">
+                        <th>{{menu.id}}</th>
+                        <td>{{menu.onDate|date:'yyyy-MM-dd'}}</td>    
+                        <td>{{menu.name}}</td>
+                        <td>{{menu.price}}</td>
+                        <td>{{menu.items.length}}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm pull-right">
+                                <button class="btn btn-default" type="button" ng-click="form.edit(menu)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                                <button class="btn btn-default" type="button" ng-click="form.delete(menu)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <uib-pagination total-items="form.menusPages.totalItems" ng-model="form.menusPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="form.menusChanged()" items-per-page="form.menusPages.perPage"></uib-pagination>
+            </div>
+        </div>
     </div>
 </div>

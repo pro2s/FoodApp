@@ -4,15 +4,19 @@
         .module('app.menu')
         .controller('EditMenu', EditMenu);
     
-    EditMenu.$inject = ['GlobalMenu','Menu','MenuItem','dateservice','$window'];    
+    EditMenu.$inject = ['GlobalMenu', 'Menu', 'MenuItem', 'dateservice', '$window', 'Pagination'];
     
-    function EditMenu(GlobalMenu, Menu, MenuItem, dateservice, $window) {
+    function EditMenu(GlobalMenu, Menu, MenuItem, dateservice, $window, Pagination) {
         var form = this;
+        var paginationID = 'allMenus';
+
         form.title = "New Menu";
         form.menu = {};
         form.backupmenu = {};
         form.parse = {};
         form.tab = 'week';
+        form.menusPages = {};
+        form.allMenus = [];
 
         form.setTab = setTab;
         form.isTab = isTab;
@@ -21,12 +25,21 @@
         form.cancel = cancel;
         form.save = save;
         form.delete = deleteMenu;
-
+        form.menusChanged = menusChanged;
         activate();
 
         function activate() {
-    
+            form.menusPages = Pagination.addPagination(paginationID);
+            menusChanged();
         }
+
+        function menusChanged() {
+            Menu.query({ menumode: 'all', pagination: paginationID }, function (data) {
+                form.allMenus = data;
+            }, function () {
+                // Error
+            });
+        };
 
         function setTab(name) {
             form.tab = name;
