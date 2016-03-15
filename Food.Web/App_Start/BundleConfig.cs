@@ -17,13 +17,17 @@ namespace Food.Web
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                        "~/Scripts/bootstrap.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                         "~/Scripts/angular.js",
                         "~/Scripts/angular-*",
-                        "~/Scripts/angular-ui/*tpls.js"));
+                        "~/Scripts/angular-ui/*tpls.js"
+                        ));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                        "~/Scripts/bootstrap.js"));
+            bundles.Add(new ScriptBundle("~/bundles/angular-translate").IncludeDirectory(
+                        "~/Scripts/angular-translate", "*.js", true));
 
             bundles.Add(new ScriptBundle("~/bundles/app").IncludeDirectory(
                         "~/app", "*.js", true));
