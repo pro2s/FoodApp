@@ -113,7 +113,7 @@
             _state.init = true;
             doLogout();
             if (_form.active) {
-                _form.msg = 'Failed get user info, try again';
+                _form.msg = 'Error.Auth.Info';
                 _form.error = true;
             }
             authEvent('UserNotLogged', _state);
@@ -217,7 +217,7 @@
                 init();
             } else {
                 _form.error = true;
-                var msg = 'Authorization failed';
+                var msg = 'Error.Auth.Failed';
             }
             
         }
@@ -229,7 +229,7 @@
             if (data) {
                 _form.msg = data.error_description;
             } else {
-                _form.msg = 'Password or email is incorrect';
+                _form.msg = 'Error.Auth.Password';
             }
         }
 
@@ -261,7 +261,7 @@
                 _form.errors['password'] = data.modelState['model.Password'];
                 _form.errors['confirmPassword'] = data.modelState['model.ConfirmPassword'];
             } else {
-                _form.msg = 'Registration failed';
+                _form.msg = 'Error.Auth.Registration';
             }
             _view.isError();
         }

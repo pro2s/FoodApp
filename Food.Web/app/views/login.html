@@ -10,30 +10,30 @@
                 <div class="modal-body row">
                 
                 <div class="col-sm-6">   
-                    <div class="alert alert-danger" role="alert" ng-bind="login.form.msg" ng-if="login.form.error"></div>
+                    <div class="alert alert-danger" role="alert" translate="{{login.form.msg|translate}}" ng-if="login.form.error"></div>
                     
                     <div class="form-group" ng-class="{'has-error':login.form.errors.userName}" ng-if="!login.form.registred">
                         <label class="control-label" translate>UserName</label>
                         <input type="text" class="form-control" id="userName" placeholder="UserName" name="userName" ng-model="login.form.username">
-                        <p class="text-danger" ng-repeat="error in login.form.errors.userName" ng-bind="error"></p>
+                        <p class="text-danger" ng-repeat="error in login.form.errors.userName" translate="{{error}}"></p>
                     </div>
 
                     <div class="form-group" ng-class="{'has-error':loginForm.$error.email, 'has-error':login.form.errors.email}">
                         <label class="control-label" for="loginEmail" translate>Email</label>
                         <input type="email" class="form-control" id="loginEmail" placeholder="Email" ng-model="login.form.email" value="">
-                        <p class="text-danger" ng-repeat="error in login.form.errors.email" ng-bind="error"></p>
+                        <p class="text-danger" ng-repeat="error in login.form.errors.email" translate="{{error}}"></p>
                     </div>
                     
                     <div class="form-group" ng-class="{'has-error':login.form.errors.password}">
                         <label class="control-label" for="loginPassword" translate>Password</label>
                         <input type="password" class="form-control" id="loginPassword" placeholder="Password" ng-model="login.form.password">
-                        <p class="text-danger" ng-repeat="error in login.form.errors.password" ng-bind="error"></p>
+                        <p class="text-danger" ng-repeat="error in login.form.errors.password" translate="{{error}}"></p>
                     </div>
 
                     <div class="form-group" ng-if="!login.form.registred" ng-class="{'has-error':login.form.errors.confirmPassword}">
                         <label class="control-label" for="loginConfirmPassword" translate>ConfirmPassword</label>
                         <input type="password" class="form-control" id="loginConfirmPassword" placeholder="Confirm Password" ng-model="login.form.confirmPassword">
-                        <p class="text-danger" ng-repeat="error in login.form.errors.confirmPassword" ng-bind="error"></p>
+                        <p class="text-danger" ng-repeat="error in login.form.errors.confirmPassword" translate="{{error}}"></p>
                     </div>
 
                     <a href="" ng-if="login.form.registred" ng-click="login.register()" translate>Registration</a>
