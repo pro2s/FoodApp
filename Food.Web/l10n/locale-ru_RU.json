@@ -5,7 +5,15 @@
   "Logout": "Выход",
   "Home": "Обед",
   "Statistic": "Статистика",
-  "Close": "Выход",
+  "Close": "Закрыть",
+  "Email" : "Email",
+  "UserName" : "Имя пользователя",
+  "Password" : "Пароль",
+  "ConfirmPassword" : "Повторите пароль",
+  "Domain" : "Войти через Домен",
+  "Facebook" : "Войти через Facebook",
+  "Google" : "Войти через Google", 
+
   "load": {
     "static": {
       "TITLE": "Как загрузить статические файлы?",

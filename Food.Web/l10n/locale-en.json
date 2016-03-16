@@ -1,11 +1,18 @@
 {
   "FoodApp": "FoodApp",
-  "Login": "Войти",
-  "Registration": "Регистрация",
+  "Login": "Login",
+  "Registration": "Registration",
   "Logout": "Logout",
   "Home": "Home",
   "Statistic": "Statistic",
   "Close": "Close",
+  "Email" : "Email",
+  "UserName" : "User Name",
+  "Password" : "Password",
+  "ConfirmPassword" : "Confirm password",
+  "Domain" : "Sign in with local Domain",
+  "Facebook" : "Sign in with Facebook",
+  "Google" : "Sign in with Google", 
 
   "load": {
     "static": {
