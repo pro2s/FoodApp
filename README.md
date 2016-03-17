@@ -1,4 +1,4 @@
-# Ordering system for the delivery of food to the office
+## Ordering system for the delivery of food to the office
 
 [Prototype system](http://pro2s.github.io/FoodApp/Food.Web/)
 
