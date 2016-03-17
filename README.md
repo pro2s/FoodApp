@@ -1,6 +1,6 @@
-# Food administration system
+# Ordering system for the delivery of food to the office
 
-[Test system](http://pro2s.github.io/FoodApp/Food.Web/)
+[Prototype system](http://pro2s.github.io/FoodApp/Food.Web/)
 
 Logins:  
 User - test@test.tt  
