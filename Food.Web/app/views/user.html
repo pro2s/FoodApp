@@ -31,10 +31,9 @@
 </div>
 
 <div class="row" ng-controller="ViewMenu as vm">
-    <div class="col-md-10 lead text-left" ng-bind="vm.title"></div>
+    <div class="col-md-10 lead text-left" translate="{{vm.title}}"></div>
     <div class="col-md-2 text-right">
-        <button type="button" class="btn" ng-class="{'btn-success': vm.tomorrow, 'btn-default': !vm.tomorrow}" ng-click="vm.tomorrow=!vm.tomorrow">
-            Tomorrow Only 
+        <button type="button" class="btn" ng-class="{'btn-success': vm.tomorrow, 'btn-default': !vm.tomorrow}" ng-click="vm.tomorrow=!vm.tomorrow" translate="Tomorrow">
         </button>
     </div>
     <div ng-repeat="menu in vm.data.menu" >

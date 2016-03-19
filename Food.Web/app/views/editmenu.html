@@ -4,14 +4,14 @@
     </div>
     <div class="col-sm-12">
         <div class="pull-right">
-            <button type="button" class="btn btn-default" ng-click="form.parse.show()">Parse Menu</button>
-            <button type="button" class="btn btn-default" ng-click="form.add()">Add menu</button>
-            <button type="button" class="btn" ng-class="{'btn-success': vm.components, 'btn-default': !vm.components}" ng-click="vm.components=!vm.components">Components</button>
-            <button type="button" class="btn" ng-class="{'btn-success': vm.tomorrow, 'btn-default': !vm.tomorrow}" ng-click="vm.tomorrow=!vm.tomorrow">Tomorrow Only</button>
+            <button type="button" class="btn btn-default" ng-click="form.parse.show()" translate>ParseMenu</button>
+            <button type="button" class="btn btn-default" ng-click="form.add()" translate>AddMenu</button>
+            <button type="button" class="btn" ng-class="{'btn-success': vm.components, 'btn-default': !vm.components}" ng-click="vm.components=!vm.components" translate>Components</button>
+            <button type="button" class="btn" ng-class="{'btn-success': vm.tomorrow, 'btn-default': !vm.tomorrow}" ng-click="vm.tomorrow=!vm.tomorrow" translate>Tomorrow</button>
         </div>
         <ul class="nav nav-tabs">
-            <li ng-class="{active:form.isTab('week')}"><a href="" ng-click="form.setTab('week')">Week Menu</a></li>
-            <li ng-class="{active:form.isTab('all')}"><a href="" ng-click="form.setTab('all')">All Menus</a></li>
+            <li ng-class="{active:form.isTab('week')}"><a href="" ng-click="form.setTab('week')" translate>WeekMenu</a></li>
+            <li ng-class="{active:form.isTab('all')}"><a href="" ng-click="form.setTab('all')" translate>AllMenus</a></li>
         </ul>
     </div>
 
@@ -34,9 +34,7 @@
                         {{menu.name}} {{menu.onDate|date:'yyyy-MM-dd'}}
                     </div>
 
-                    <div class="panel-body">
-                        Цена: {{menu.price}} руб.<br />
-                    </div>
+                    <div class="panel-body" translate="MenuPrice" translate-value-price="{{menu.price}} "></div>
 
                     <ul class="list-group" ng-if="vm.components">
                         <li class="list-group-item" ng-repeat="item in menu.items"><span class="badge">{{item.weight}}</span>{{item.name}}</li>
@@ -51,13 +49,13 @@
             <div class="panel-body">
                 <table class="table table-striped">
                     <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>On Date</th>
-                            <th>Name</th>
-                            <th>Price</th>
-                            <th>Items</th>
-                            <th>Actions</th>
+                        <tr translate-namespace="menutable">
+                            <th translate>.#</th>
+                            <th translate>.OnDate</th>
+                            <th translate>.Name</th>
+                            <th translate>.Price</th>
+                            <th translate>.Items</th>
+                            <th translate>.Actions</th>
                         </tr>
                     </thead>
                     <tr ng-repeat="menu in form.allMenus">

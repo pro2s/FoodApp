@@ -31,8 +31,23 @@
   "Total": "Всего",
   "Ammount": "Сумму",
   "ToEmail": "на Email",
-  "Send": "Отправить", 
+  "Send": "Отправить",
+  "Tomorrow": "на Завтра",
+  "WeekMenu": "Меню на неделю",
+  "AllMenus": "Все меню",
+  "MenuPrice": "Цена {{price}} руб.",
+  "Components": "Компоненты",
+  "AddMenu": "Добавить меню",
+  "ParseMenu": "Получить меню",
   "Error": "Проблема ... что то пошло не так.",
+  "menutable": {
+    "#": "№",
+    "OnDate": "на Дату",
+    "Name": "Имя",
+    "Price": "Цена",
+    "Items": "Кол-во пунктов",
+    "Actions": "Действия"
+  },
   "error": {
     "profile": {
       "Share": "Ощибка перевода баланса."

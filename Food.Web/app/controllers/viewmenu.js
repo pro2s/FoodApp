@@ -8,7 +8,7 @@
     
     function ViewMenu(GlobalMenu, ItemRating, dateservice) {
         var vm = this;
-        vm.title = "Week Menu";
+        vm.title = "WeekMenu";
         vm.data = {};
         vm.comments = {item:{}, data:[], text:''};
         vm.tomorrow = false;

@@ -32,7 +32,22 @@
   "Ammount": "Ammount",
   "ToEmail": "to Email",
   "Send": "Send",
+  "Tomorrow": "on Tomorrow",
+  "WeekMenu": "Week Menu",
+  "AllMenus": "All Menus",
+  "MenuPrice": "Price {{price}} $",
+  "Components": "Components",
+  "AddMenu": "Add Menu",
+  "ParseMenu": "Parse Menu",
   "Error": "Oops... something went wrong",
+  "menutable": {
+    "#": "",
+    "OnDate": "On Date",
+    "Name": "Name",
+    "Price": "Price",
+    "Items": "Items",
+    "Actions": "Actions"
+  },
   "error": {
     "profile": {
       "Share": "Share balance error."
