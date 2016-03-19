@@ -6,24 +6,22 @@
   "Home": "Обед",
   "Statistic": "Статистика",
   "Close": "Закрыть",
-  "Email" : "Email",
-  "UserName" : "Имя пользователя",
-  "Password" : "Пароль",
+  "Email": "Email",
+  "UserName": "Имя пользователя",
+  "Password": "Пароль",
   "ConfirmPassword" : "Повторите пароль",
-  "Domain" : "Войти через Домен",
-  "Facebook" : "Войти через Facebook",
-  "Google" : "Войти через Google", 
+  "Domain": "Войти через Домен",
+  "Facebook": "Войти через Facebook",
+  "Google": "Войти через Google", 
   "Error": "Проблема ... что то пошло не так.",
-  "Error": {
-      "Auth" {
+  "error": {
+      "auth": {
           "Info": "Ошибка при получени информации о пользователе, попробуйте снова.",
           "Failed": "Ошибка авторизации",
-          "Password" : "Пароль или e-mail не коректны",
-          "Registration": "Ошибка при регистрации",
-          
+          "Password": "Пароль или e-mail не коректны",
+          "Registration": "Ошибка при регистрации"
       }
-  }
-
+  },
   "load": {
     "static": {
       "TITLE": "Как загрузить статические файлы?",

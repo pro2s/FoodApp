@@ -10,19 +10,18 @@
   "UserName" : "User Name",
   "Password" : "Password",
   "ConfirmPassword" : "Confirm password",
-  "Domain" : "Sign in with local Domain",
-  "Facebook" : "Sign in with Facebook",
-  "Google" : "Sign in with Google", 
+  "Domain": "Sign in with local Domain",
+  "Facebook": "Sign in with Facebook",
+  "Google": "Sign in with Google", 
   "Error": "Oops... something went wrong",
-  "Error": {
-      "Auth" {
+  "error": {
+      "auth": {
           "Info": "Failed get user info, try again",
           "Failed": "Authorization failed",
           "Password" : "Password or email is incorrect",
-          "Registration": "Registration failed",
-          
+          "Registration": "Registration failed"
       }
-  }
+  },
   "load": {
     "static": {
       "TITLE": "How to load static files?",

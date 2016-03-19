@@ -113,7 +113,7 @@
             _state.init = true;
             doLogout();
             if (_form.active) {
-                _form.msg = 'Error.Auth.Info';
+                _form.msg = 'error.auth.Info';
                 _form.error = true;
             }
             authEvent('UserNotLogged', _state);
@@ -217,7 +217,7 @@
                 init();
             } else {
                 _form.error = true;
-                var msg = 'Error.Auth.Failed';
+                var msg = 'error.auth.Failed';
             }
             
         }
@@ -229,7 +229,7 @@
             if (data) {
                 _form.msg = data.error_description;
             } else {
-                _form.msg = 'Error.Auth.Password';
+                _form.msg = 'error.auth.Password';
             }
         }
 
@@ -261,7 +261,7 @@
                 _form.errors['password'] = data.modelState['model.Password'];
                 _form.errors['confirmPassword'] = data.modelState['model.ConfirmPassword'];
             } else {
-                _form.msg = 'Error.Auth.Registration';
+                _form.msg = 'error.auth.Registration';
             }
             _view.isError();
         }
