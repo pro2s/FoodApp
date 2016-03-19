@@ -20,9 +20,9 @@
                 </a>
                 <a class="navbar-brand" href="#/" translate>FoodApp</a>
             </div>
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav" translate-namespace="topmenu">
                 <li ng-repeat="item in topmenu.menu" ng-class="{ active: topmenu.isActive(item.url)}">
-                    <a href="#{{item.url}}" translate="{{item.name}}"></a>
+                    <a href="#{{item.url}}" translate=".{{item.name}}"></a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="topmenu.isAuth()">

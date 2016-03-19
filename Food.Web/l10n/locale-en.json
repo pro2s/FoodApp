@@ -1,11 +1,16 @@
 {
   "FoodApp": "FoodApp",
+  "topmenu": {
+    "Home": "Home",
+    "Statistic": "Statistic",
+    "Users": "Users",
+    "Orders": "Orders",
+    "Menu": "Menu"
+  },
   "Login": "Login",
   "Registration": "Registration",
   "Register": "Register",
   "Logout": "Logout",
-  "Home": "Home",
-  "Statistic": "Statistic",
   "Close": "Close",
   "Email" : "Email",
   "UserName" : "User Name",
@@ -16,12 +21,12 @@
   "Google": "Sign in with Google", 
   "Error": "Oops... something went wrong",
   "error": {
-      "auth": {
-          "Info": "Failed get user info, try again",
-          "Failed": "Authorization failed",
-          "Password" : "Password or email is incorrect",
-          "Registration": "Registration failed"
-      }
+    "auth": {
+      "Info": "Failed get user info, try again",
+      "Failed": "Authorization failed",
+      "Password": "Password or email is incorrect",
+      "Registration": "Registration failed"
+    }
   },
   "load": {
     "static": {
