@@ -25,6 +25,7 @@ angular
     ])
     .config(['$routeProvider', '$locationProvider', '$httpProvider', '$translateProvider', function ($routeProvider, $locationProvider, $httpProvider, $translateProvider) {
         
+        $translateProvider.useSanitizeValueStrategy('escape');
         $translateProvider.useStaticFilesLoader({
             prefix: 'l10n/locale-',
             suffix: '.json'

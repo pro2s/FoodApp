@@ -289,7 +289,7 @@
         };
 
         function authNTLM() {
-            var redirectUrl = location.protocol + '//' + location.host + '/authcomplete.html';
+            var redirectUrl = Config.get('redirectUrl') + '/authcomplete.html';
             var externalProviderUrl = Config.get('api') + "api/Account/ntlmlogin?redirecturl=" + redirectUrl;
             window.$windowScope = service;
             var oauthWindow = window.open(externalProviderUrl, "Authenticate Account", "location=0,status=0,width=600,height=750");

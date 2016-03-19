@@ -11,24 +11,28 @@
     		host: '',
     		config: {
     		    api: 'http://publicfoodapi.azurewebsites.net/',
+    		    redirectUrl: ''
     		}
     	},
     	dev: {
     		host: 'localhost:52124',
     		config: {
     		    api: 'http://localhost:53058/',
+    		    redirectUrl: 'http://localhost:52124/',
     		}
     	},
     	test: {
     		host: 'pro2s.github.io',
     		config: {
     		    api: 'http://publicfoodapi.azurewebsites.net/',
+    		    redirectUrl: 'http://pro2s.github.io/FoodApp/Food.Web/',
     		}
     	},
         prod: {
     		host: 'production.com',
     		config: {
-    			api: 'http://production.com/',
+    		    api: 'http://production.com/',
+    		    redirectUrl: 'http://production.com/'
     		}
     	}
     },
