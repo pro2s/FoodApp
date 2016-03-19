@@ -10,30 +10,25 @@
     	local: {
     		host: '',
     		config: {
-    			api: 'http://mezfiles.appspot.com/',
-    		    allOrdersRange: 'x-entity=0-9'
+    		    api: 'http://publicfoodapi.azurewebsites.net/',
     		}
     	},
     	dev: {
     		host: 'localhost:52124',
     		config: {
     		    api: 'http://localhost:53058/',
-    		    allOrdersRange: 'x-entity=0-9'
-
     		}
     	},
     	test: {
     		host: 'pro2s.github.io',
     		config: {
-    			api: 'http://mezfiles.appspot.com/',
-    		    allOrdersRange: 'x-entity=0-9'
+    		    api: 'http://publicfoodapi.azurewebsites.net/',
     		}
     	},
         prod: {
     		host: 'production.com',
     		config: {
     			api: 'http://production.com/',
-    		    allOrdersRange: 'x-entity=0-9'
     		}
     	}
     },
