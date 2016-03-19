@@ -280,7 +280,7 @@
         }
 
         function authExternalProvider(provider) {
-            var redirectUri = location.protocol + '//' + location.host + '/authcomplete.html';
+            var redirectUri = Config.get('redirectUrl') + '/authcomplete.html';
             var externalProviderUrl = Config.get('api') + "api/Account/ExternalLogin?provider=" + provider
                                                         + "&response_type=token&client_id=self" 
                                                         + "&redirect_uri=" + redirectUri;
