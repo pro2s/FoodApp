@@ -1,15 +1,15 @@
 ﻿<div class="modal fade" tabindex="-1" role="dialog" ng-attr-id="{{id}}">
-    <div class="modal-dialog">
+    <div class="modal-dialog" translate-namespace="parser">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Parse Menu</h4>
+                <h4 class="modal-title" translate>.ParseMenu</h4>
             </div>
             <div class="modal-body">
-                <p ng-class="{'text-warning':error, 'text-success':!error}" ng-bind="message" ng-if="message!=''"></p>
+                <p ng-class="{'text-warning':error, 'text-success':!error}" translate=".{{message}}" translate-source-value="{{source.name}}" ng-if="message!=''" ></p>
                 <div class="form-group">
                     <div class="pull-right">{{source.info}}</div>
-                    <label for="source">Source</label>
+                    <label for="source" translate>.Source</label>
                     <div class="dropdown">
                             <button class="btn btn-default dropdown-toggle" type="button" id="sourceSelect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 <img ng-src="{{source.icon}}" width="24" height="24">
@@ -29,35 +29,35 @@
 
                 </div>
                 <div class="form-group">
-                    <label for="fromDate">From date</label>
+                    <label for="fromDate" translate>.From</label>
                     <div class="input-group">
                         <input type="date" class="form-control" ng-model="input.start" placeholder="{{startDays[0].date | date:'yyyy-MM-dd'}}">
                         <div class="input-group-btn">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Select Day <span class="caret"></span></button>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span translate>.SelectDay</span>&nbsp;<span class="caret"></span></button>
                             <ul class="dropdown-menu dropdown-menu-right">
-                                <li ng-repeat="day in startDays"><a href="" ng-click="setStart(day)">{{day.name}}</a></li>
+                                <li ng-repeat="day in startDays"><a href="" ng-click="setStart(day)" translate=".{{day.name}}"></a></li>
                             </ul>
                         </div><!-- /btn-group -->
                     </div><!-- /input-group -->
                 </div>
                 <div class="form-group">
-                    <label for="fromDate">Count Days</label>
+                    <label for="fromDate" translate>.Count</label>
                     <input type="text" class="form-control" id="fromDate" placeholder="" ng-model="input.count">
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" ng-model="input.update"> Update menu
+                        <input type="checkbox" ng-model="input.update"> <p  translate>.Update</p>
                     </label>
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" ng-model="input.next"> Get menus on next Monday
-                    </label>
+                        <input type="checkbox" ng-model="input.next"> <p translate>.Next</p>
+</label>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="doParse()">Parse</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
+                <button type="button" class="btn btn-primary" ng-click="doParse()" translate>.Parse</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

@@ -49,7 +49,7 @@
                 function activate() {
                     getParsers();
                     $(document).on('hide.bs.modal', '#' + scope.id, onHide);
-                    scope.startDays.push({ name: "Next Monday", date: dateservice.getNextMonday()})
+                    scope.startDays.push({ name: "NextMonday", date: dateservice.getNextMonday()})
                     scope.startDays.push({ name: "Monday", date: dateservice.getMonday() })
                     scope.startDays.push({ name: "Today", date: new Date() });
                 }
@@ -59,7 +59,7 @@
                 }
                 
                 function getParsers() {
-                    scope.message = 'Loading Parsers ...';
+                    scope.message = 'Loading...';
                     scope.sources = []
                     Parser.query(function (data) {
                         scope.sources = data;
@@ -67,7 +67,7 @@
                         scope.message = '';
                     }, function () {
                         scope.error = true;
-                        scope.message = 'Get Parsers Error, try again leter.';
+                        scope.message = 'GetError';
                     });
                 }
 
@@ -91,7 +91,7 @@
                 }
 
                 function doParse() {
-                    scope.message = 'Parse menu ...';
+                    scope.message = 'Parse...';
                     var id = scope.source.id;
                     if (id) {
                         var config = {
@@ -108,7 +108,7 @@
                             $timeout(hide, 2000);
                         }, function () {
                             scope.error = true;
-                            scope.message = 'Error parse Menu from' + scope.source.name;
+                            scope.message = 'ParseError';
                         });
                     }
                     

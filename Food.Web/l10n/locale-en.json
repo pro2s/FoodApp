@@ -48,6 +48,23 @@
     "Items": "Items",
     "Actions": "Actions"
   },
+  "parser": {
+    "ParseMenu": "Parse Menu",
+    "Source": "Source",
+    "Parse": "Parse",
+    "Next": "Get menu on next Monday.",
+    "Update": "Update if exist.",
+    "Count": "Count days",
+    "From": "From date",
+    "SelectDay": "Select Day", 
+    "NextMonday": "Next Monday", 
+    "Monday": "Monday",
+    "Today": "Today",
+    "Loading...": "Loading Parsers ...",
+    "Parse...": "Parse menu ...",
+    "GetError": "Get Parsers Error, try again leter.",
+    "ParseError": "Error parse Menu from {{source}}."
+  }, 
   "error": {
     "profile": {
       "Share": "Share balance error."
