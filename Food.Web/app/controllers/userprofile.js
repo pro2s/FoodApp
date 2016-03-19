@@ -90,7 +90,7 @@
                 authservice.reloadUserInfo();
                 
             }, function (error) {
-                vm.shareError = "Send balance error.";
+                vm.shareError = "error.profile.Share";
                 if (error.data.modelState['share.Email']) {
                     form.email.$setValidity('email', false); 
                 } else {
