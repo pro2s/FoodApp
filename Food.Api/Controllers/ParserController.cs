@@ -37,7 +37,7 @@ namespace Food.Api.Controllers
         [Route("api/Parser/{id}")]
         [Authorize(Roles = "Admin, GlobalAdmin")]
         [HttpGet]
-        public IHttpActionResult ParseMenu(string id, DateTime? start, int count = 0, bool update = false, bool next = false)
+        public IHttpActionResult ParseMenu(string id, DateTime? start = null, int count = 0, bool update = false, bool next = false)
         {
             var result = new ParserResultView();
             DateTime nextmonday;
