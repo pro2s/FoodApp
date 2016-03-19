@@ -26,6 +26,7 @@
         form.save = save;
         form.delete = deleteMenu;
         form.menusChanged = menusChanged;
+        form.updateMenu = updateMenu;
         activate();
 
         function activate() {
@@ -48,12 +49,18 @@
         function isTab(name) {
             return form.tab == name;
         }
-
+        
+        function updateMenu() {
+            GlobalMenu.updateMenu();
+            menusChanged();
+        }
+        
         function deleteMenu(menu) {
             var result = $window.confirm('Delete Menu "' + menu.name + '"');
             if (result) {
                 Menu.delete({ id: menu.id }, function () {
                     GlobalMenu.deleteMenu(menu);
+                    menusChanged();
                 })
                 
             } 
@@ -91,7 +98,7 @@
             }
 
             function success(menu){
-                GlobalMenu.updateMenu();
+                updateMenu();
                 form.isedit = false;
             }
             

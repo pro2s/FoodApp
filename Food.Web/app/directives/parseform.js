@@ -12,14 +12,15 @@
         });
     }
 
-    parseForm.$inject = ['Parser', 'GlobalMenu','dateservice', '$timeout'];
-    function parseForm(Parser, GlobalMenu, dateservice, $timeout) {
+    parseForm.$inject = ['Parser', 'dateservice', '$timeout'];
+    function parseForm(Parser, dateservice, $timeout) {
         
         var directive = {
             restrict: 'E',
             replace: true,
             scope: {
-                control: '='
+                control: '=',
+                onCompleat: '&?'
             },
             templateUrl: 'app/views/parse.html',
             link: function (scope, element, attrs) {
@@ -35,6 +36,7 @@
                 scope.internalControl = scope.control || {};
                 scope.internalControl.show = show;
                 scope.internalControl.hide = hide;
+                
 
                 scope.setSource = setSource;
                 scope.setStart = setStart;
@@ -47,8 +49,8 @@
                 function activate() {
                     getParsers();
                     $(document).on('hide.bs.modal', '#' + scope.id, onHide);
-                    scope.startDays.push({ name: "Monday", date: dateservice.getMonday() })
                     scope.startDays.push({ name: "Next Monday", date: dateservice.getNextMonday()})
+                    scope.startDays.push({ name: "Monday", date: dateservice.getMonday() })
                     scope.startDays.push({ name: "Today", date: new Date() });
                 }
 
@@ -102,7 +104,7 @@
                         Parser.get(config, function (data) {
                             scope.message = data.message;
                             scope.error = false;
-                            GlobalMenu.updateMenu();
+                            scope.onCompleat();
                             $timeout(hide, 2000);
                         }, function () {
                             scope.error = true;
