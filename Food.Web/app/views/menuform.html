@@ -1,29 +1,29 @@
 ﻿<div class="panel panel-default">
-    <div class="panel-heading" ng-bind="title"></div>
-    <div class="panel-body">
+    <div class="panel-heading" translate="menuform.{{title}}"></div>
+    <div class="panel-body" translate-namespace="menuform">
 
 
         <form name="menuForm">
             <div class="form-group">
-                <label for="menuName">Name</label>
-                <input type="text" class="form-control" id="menuName" placeholder="Menu name" ng-model="menu.name">
+                <label for="menuName" translate>.Name</label>
+                <input type="text" class="form-control" id="menuName" placeholder="{{'menuform.MenuName' | translate}}" ng-model="menu.name">
             </div>
             <div class="form-group">
-                <label for="menuPrice">Price</label>
+                <label for="menuPrice" translate>.Price</label>
                 <input type="text" class="form-control" id="menuPrice" placeholder="00 000" ng-model="menu.price">
             </div>
             <div class="form-group">
-                <label for="ondatePrice">On Date</label>
+                <label for="ondatePrice" translate>.OnDate</label>
                 <input type="date" class="form-control" id="menuPrice" placeholder="2016-01-31" ng-model="menu.onDate">
             </div>
             <div class="form-group">
-                <label>Components</label>
+                <label translate>.Components</label>
                 <div class="input-group many-input-group" for="menuItems">
-                    <input type="text" class="form-control" placeholder="Name" id="itemName" aria-describedby="itemName" ng-model="menuitem.name">
+                    <input type="text" class="form-control" placeholder="{{'menuform.Name' | translate}}" id="itemName" aria-describedby="itemName" ng-model="menuitem.name">
                     <span class="input-group-btn"></span>
-                    <input type="text" class="form-control" placeholder="Parts" id="itemParts" aria-describedby="itemParts" ng-model="menuitem.parts">
+                    <input type="text" class="form-control" placeholder="{{'menuform.Parts' | translate}}" id="itemParts" aria-describedby="itemParts" ng-model="menuitem.parts">
                     <span class="input-group-btn"></span>
-                    <input type="text" class="form-control" placeholder="Weight" aria-describedby="itemDesc" ng-model="menuitem.weight">
+                    <input type="text" class="form-control" placeholder="{{'menuform.Weight' | translate}}" aria-describedby="itemDesc" ng-model="menuitem.weight">
                     <span class="input-group-btn">
                         <button class="btn btn-default" type="button" ng-click="addItem(menuitem)">
                             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -35,9 +35,9 @@
                 <table class="table grid" id="grid">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Parts</th>
-                            <th>Weight</th>
+                            <th translate>.Name</th>
+                            <th translate>.Parts</th>
+                            <th translate>.Weight</thtranslate>
                             <th></th>
                         </tr>
                     </thead>
@@ -85,8 +85,8 @@
 
 
             </div>
-            <button type="submit" class="btn btn-default" ng-click="save()">Submit</button>
-            <button type="submit" class="btn btn-default" ng-click="cancel()">Cancel</button>
+            <button type="submit" class="btn btn-default" ng-click="save()" translate>Submit</button>
+            <button type="submit" class="btn btn-default" ng-click="cancel()" translate>Cancel</button>
         </form>
 
     </div>

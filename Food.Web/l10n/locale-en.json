@@ -7,6 +7,8 @@
     "Orders": "Orders",
     "Menu": "Menu"
   },
+  "Submit": "Submit",
+  "Cancel": "Cancel",
   "Login": "Login",
   "Registration": "Registration",
   "Register": "Register",
@@ -41,6 +43,17 @@
   "DeleteMenu": "Delete menu '{{menu}}'?",
   "ParseMenu": "Parse Menu",
   "Error": "Oops... something went wrong",
+  "menuform": {
+    "NewMenu": "New Menu",
+    "EditMenu": "Edit Menu",
+    "Name": "Name",
+    "MenuName": "Menu name",
+    "Price": "Price",
+    "OnDate": "On Date",
+    "Components": "Components",
+    "Parts": "Parts",
+    "Weight": "Weight"
+  },
   "menutable": {
     "#": "",
     "OnDate": "On Date",

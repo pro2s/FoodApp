@@ -10,7 +10,7 @@
         var form = this;
         var paginationID = 'allMenus';
 
-        form.title = "New Menu";
+        form.title = "NewMenu";
         form.menu = {};
         form.backupmenu = {};
         form.parse = {};
@@ -68,7 +68,7 @@
         }
 
         function add() {
-            form.title = "New menu";
+            form.title = "NewMenu";
             form.menu = {};
             form.menu.id = 0;
             form.menu.items = [];
@@ -78,7 +78,7 @@
         
         function edit(menu) {
             form.add();
-            form.title = "Edit menu";
+            form.title = "EditMenu";
             form.backupmenu = angular.copy(menu);
             form.menu = menu;
             form.menu.onDate = new Date(menu.onDate);
