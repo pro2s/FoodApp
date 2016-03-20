@@ -4,9 +4,9 @@
         .module('app.menu')
         .controller('EditMenu', EditMenu);
     
-    EditMenu.$inject = ['GlobalMenu', 'Menu', 'MenuItem', 'dateservice', '$window', 'Pagination'];
+    EditMenu.$inject = ['GlobalMenu', 'Menu', 'MenuItem', 'dateservice', '$window', 'Pagination','$translate'];
     
-    function EditMenu(GlobalMenu, Menu, MenuItem, dateservice, $window, Pagination) {
+    function EditMenu(GlobalMenu, Menu, MenuItem, dateservice, $window, Pagination, $translate) {
         var form = this;
         var paginationID = 'allMenus';
 
@@ -56,14 +56,15 @@
         }
         
         function deleteMenu(menu) {
-            var result = $window.confirm('Delete Menu "' + menu.name + '"');
-            if (result) {
-                Menu.delete({ id: menu.id }, function () {
-                    GlobalMenu.deleteMenu(menu);
-                    menusChanged();
-                })
-                
-            } 
+            $translate('DeleteMenu', { menu: menu.name }).then(function (text) {
+                var result = $window.confirm(text);
+                if (result) {
+                    Menu.delete({ id: menu.id }, function () {
+                        GlobalMenu.deleteMenu(menu);
+                        menusChanged();
+                    });
+                }
+            });
         }
 
         function add() {

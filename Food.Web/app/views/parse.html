@@ -6,7 +6,7 @@
                 <h4 class="modal-title" translate>.ParseMenu</h4>
             </div>
             <div class="modal-body">
-                <p ng-class="{'text-warning':error, 'text-success':!error}" translate=".{{message}}" translate-source-value="{{source.name}}" ng-if="message!=''" ></p>
+                <p ng-class="{'text-warning':error, 'text-success':!error}" translate=".{{message}}" translate-value-data="{{messageData}}" ng-if="message!=''" ></p>
                 <div class="form-group">
                     <div class="pull-right">{{source.info}}</div>
                     <label for="source" translate>.Source</label>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" ng-model="input.update"> <p  translate>.Update</p>
+                        <input type="checkbox" ng-model="input.update"> <p translate>.Update</p>
                     </label>
                 </div>
                 <div class="checkbox">

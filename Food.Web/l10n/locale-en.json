@@ -38,6 +38,7 @@
   "MenuPrice": "Price {{price}} $",
   "Components": "Components",
   "AddMenu": "Add Menu",
+  "DeleteMenu": "Delete menu '{{menu}}'?",
   "ParseMenu": "Parse Menu",
   "Error": "Oops... something went wrong",
   "menutable": {
@@ -63,7 +64,8 @@
     "Loading...": "Loading Parsers ...",
     "Parse...": "Parse menu ...",
     "GetError": "Get Parsers Error, try again leter.",
-    "ParseError": "Error parse Menu from {{source}}."
+    "ParseError": "Error parse Menu from {{data}}.",
+    "ParseOk": "Parse success - {{data}}."
   }, 
   "error": {
     "profile": {

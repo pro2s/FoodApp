@@ -28,11 +28,12 @@
                 scope.parseForm = {};
                 scope.error = false;
                 scope.message = '';
+                scope.messageData = '';
                 scope.sources = [];
                 scope.source = {};
                 scope.input = {start:'', count:'', update:false, next: true}
                 scope.startDays = [];
-
+                
                 scope.internalControl = scope.control || {};
                 scope.internalControl.show = show;
                 scope.internalControl.hide = hide;
@@ -102,12 +103,14 @@
                             next: scope.input.next,
                         }
                         Parser.get(config, function (data) {
-                            scope.message = data.message;
+                            scope.messageData = data.message;
+                            scope.message = 'ParseOk';
                             scope.error = false;
                             scope.onCompleat();
                             $timeout(hide, 2000);
                         }, function () {
                             scope.error = true;
+                            scope.messageData = scope.source.name;
                             scope.message = 'ParseError';
                         });
                     }
