@@ -44,6 +44,7 @@
   "ParseMenu": "Parse Menu",
   "Error": "Oops... something went wrong",
   "menuform": {
+    "Error": "@:Error",
     "NewMenu": "New Menu",
     "EditMenu": "Edit Menu",
     "Name": "Name",

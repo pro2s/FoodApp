@@ -104,7 +104,7 @@
             }
             
             function failure(data){
-                form.title = "Oops... something went wrong";
+                form.title = "Error";
             };
         }
 
