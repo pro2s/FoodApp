@@ -3,7 +3,7 @@
 }
 
 body {
-   background-color: #fff;
+   background-color: #ffffff;
    background-image: url("../Content/background.jpg");
    background-position: center top; /*Positioning*/
    background-repeat: no-repeat; /*Prevent showing multiple background images*/     
