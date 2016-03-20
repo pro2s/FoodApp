@@ -132,6 +132,18 @@
       <HintPath>..\packages\Pysco68.Owin.Authentication.Ntlm.1.0.2\lib\net45\Pysco68.Owin.Authentication.Ntlm.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Spire.Doc, Version=5.5.0.54040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\FreeSpire.Doc.5.5\lib\net40\Spire.Doc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Spire.License, Version=1.3.5.40, Culture=neutral, PublicKeyToken=b1144360237c8b3f, processorArchitecture=MSIL">
+      <HintPath>..\packages\FreeSpire.Doc.5.5\lib\net40\Spire.License.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Spire.Pdf, Version=3.4.108.54040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
+      <HintPath>..\packages\FreeSpire.Doc.5.5\lib\net40\Spire.Pdf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -330,7 +342,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
-    <Compile Include="Service\ChudoPechkaParsers.cs" />
+    <Compile Include="Service\ChudoPechkaHtmlParser.cs" />
+    <Compile Include="Service\ChudoPechka.cs" />
+    <Compile Include="Service\ChudoPechkaWordParser.cs" />
     <Compile Include="Service\DateTimeExtension.cs" />
     <Compile Include="Service\McDonaldsParser.cs" />
     <Compile Include="Service\MenuParserInterface.cs" />
@@ -345,7 +359,6 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Microsoft.Office.Interop.Word.dll" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\bootstrap.js" />

@@ -62,20 +62,16 @@ namespace Food.Api.Controllers
             DateTime? old = null;
             List<Menu> menus = parser.ParseMenu(start);
             
-            int num = 1;
+            int num = 0;
             foreach (var menu in menus)
             {
-                if (old == null)
-                {
-                    old = menu.OnDate;
-                }
-
                 if (old != menu.OnDate)
                 {
                     ++num;
+                    old = menu.OnDate;
                 }
 
-                if (count > 0 && count < num)
+                if (count > 0 && num > count)
                 {
                     break;
                 }
@@ -122,6 +118,7 @@ namespace Food.Api.Controllers
                     db.SaveChanges();
                 }
 
+
             }
 
             if (next)
@@ -137,7 +134,7 @@ namespace Food.Api.Controllers
                 ++num;
             }
 
-            result.Message = string.Format("Parse complete, get {0} menus.", num);
+            result.Message = string.Format("Parse menus on {0} days.", num - 1);
 
             return Ok(result);
         }
