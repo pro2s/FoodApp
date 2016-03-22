@@ -539,30 +539,30 @@
             </summary>
             <returns>user info</returns>
         </member>
-        <member name="T:Food.Api.ChudoPechkaHtml">
+        <member name="T:Food.Api.ChudoPechkaHtmlParser">
             <summary>
             Get menu from html chudo-pechka.by
             </summary>
         </member>
-        <member name="M:Food.Api.ChudoPechkaHtml.ParseHtml">
+        <member name="M:Food.Api.ChudoPechkaHtmlParser.ParseHtml">
             <summary>
             Load and parse menu from html page
-            </summary>
-        </member>
-        <member name="T:Food.Api.ChudoPechkaWord">
-            <summary>
-            Get menu from doc file placed on chudo-pechka.by
-            </summary>
-        </member>
-        <member name="M:Food.Api.ChudoPechkaWord.ParseDoc">
-            <summary>
-            Load and parse menu from .doc file
             </summary>
         </member>
         <member name="T:Food.Api.ChudoPechka">
             <summary>
             Base class for parsing menu from site chudo-pechka.by
             Reading page and get raw info - html for menu and link to doc file with menu
+            </summary>
+        </member>
+        <member name="T:Food.Api.ChudoPechkaWordParser">
+            <summary>
+            Get menu from doc file placed on chudo-pechka.by
+            </summary>
+        </member>
+        <member name="M:Food.Api.ChudoPechkaWordParser.ParseDoc">
+            <summary>
+            Load and parse menu from .doc file
             </summary>
         </member>
         <member name="T:Food.Api.McDonalds">

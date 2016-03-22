@@ -7,9 +7,14 @@ function isEmpty(obj) {
     for (var x in obj) { return false; }
     return true;
 }
+
+var translations = {
+    TITLE: 'FoodApp',
+};
     
 angular
     .module('app', [
+        'pascalprecht.translate',
         'ngRoute',
         'ui.bootstrap',
         'app.user',
@@ -18,7 +23,15 @@ angular
         'app.statistic',
         'app.userservice',
     ])
-    .config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
+    .config(['$routeProvider', '$locationProvider', '$httpProvider', '$translateProvider', function ($routeProvider, $locationProvider, $httpProvider, $translateProvider) {
+        
+        $translateProvider.useSanitizeValueStrategy('escape');
+        $translateProvider.useStaticFilesLoader({
+            prefix: 'l10n/locale-',
+            suffix: '.json'
+        });
+        $translateProvider.determinePreferredLanguage();
+        $translateProvider.fallbackLanguage('en');
 
         $routeProvider.otherwise({ redirectTo: '/' });
         $routeProvider

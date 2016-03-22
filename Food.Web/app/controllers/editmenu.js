@@ -4,13 +4,13 @@
         .module('app.menu')
         .controller('EditMenu', EditMenu);
     
-    EditMenu.$inject = ['GlobalMenu', 'Menu', 'MenuItem', 'dateservice', '$window', 'Pagination'];
+    EditMenu.$inject = ['GlobalMenu', 'Menu', 'MenuItem', 'dateservice', '$window', 'Pagination','$translate'];
     
-    function EditMenu(GlobalMenu, Menu, MenuItem, dateservice, $window, Pagination) {
+    function EditMenu(GlobalMenu, Menu, MenuItem, dateservice, $window, Pagination, $translate) {
         var form = this;
         var paginationID = 'allMenus';
 
-        form.title = "New Menu";
+        form.title = "NewMenu";
         form.menu = {};
         form.backupmenu = {};
         form.parse = {};
@@ -26,6 +26,7 @@
         form.save = save;
         form.delete = deleteMenu;
         form.menusChanged = menusChanged;
+        form.updateMenu = updateMenu;
         activate();
 
         function activate() {
@@ -48,19 +49,26 @@
         function isTab(name) {
             return form.tab == name;
         }
-
+        
+        function updateMenu() {
+            GlobalMenu.updateMenu();
+            menusChanged();
+        }
+        
         function deleteMenu(menu) {
-            var result = $window.confirm('Delete Menu "' + menu.name + '"');
-            if (result) {
-                Menu.delete({ id: menu.id }, function () {
-                    GlobalMenu.deleteMenu(menu);
-                })
-                
-            } 
+            $translate('DeleteMenu', { menu: menu.name }).then(function (text) {
+                var result = $window.confirm(text);
+                if (result) {
+                    Menu.delete({ id: menu.id }, function () {
+                        GlobalMenu.deleteMenu(menu);
+                        menusChanged();
+                    });
+                }
+            });
         }
 
         function add() {
-            form.title = "New menu";
+            form.title = "NewMenu";
             form.menu = {};
             form.menu.id = 0;
             form.menu.items = [];
@@ -70,7 +78,7 @@
         
         function edit(menu) {
             form.add();
-            form.title = "Edit menu";
+            form.title = "EditMenu";
             form.backupmenu = angular.copy(menu);
             form.menu = menu;
             form.menu.onDate = new Date(menu.onDate);
@@ -91,12 +99,12 @@
             }
 
             function success(menu){
-                GlobalMenu.updateMenu();
+                updateMenu();
                 form.isedit = false;
             }
             
             function failure(data){
-                form.title = "Oops... something went wrong";
+                form.title = "Error";
             };
         }
 

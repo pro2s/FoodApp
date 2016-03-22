@@ -61,8 +61,8 @@ namespace Food.Api.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind<IMenuParser>().To<ChudoPechkaHtml>();
-            kernel.Bind<IMenuParser>().To<ChudoPechkaWord>();
+            kernel.Bind<IMenuParser>().To<ChudoPechkaHtmlParser>();
+            kernel.Bind<IMenuParser>().To<ChudoPechkaWordParser>();
             kernel.Bind<IMenuParser>().To<McDonalds>();
             kernel.Bind<IPaymentRepository>().To<PaymentRepository>();
         }        

@@ -113,7 +113,7 @@
             _state.init = true;
             doLogout();
             if (_form.active) {
-                _form.msg = 'Failed get user info, try again';
+                _form.msg = 'error.auth.Info';
                 _form.error = true;
             }
             authEvent('UserNotLogged', _state);
@@ -217,7 +217,7 @@
                 init();
             } else {
                 _form.error = true;
-                var msg = 'Authorization failed';
+                var msg = 'error.auth.Failed';
             }
             
         }
@@ -229,7 +229,7 @@
             if (data) {
                 _form.msg = data.error_description;
             } else {
-                _form.msg = 'Password or email is incorrect';
+                _form.msg = 'error.auth.Password';
             }
         }
 
@@ -261,7 +261,7 @@
                 _form.errors['password'] = data.modelState['model.Password'];
                 _form.errors['confirmPassword'] = data.modelState['model.ConfirmPassword'];
             } else {
-                _form.msg = 'Registration failed';
+                _form.msg = 'error.auth.Registration';
             }
             _view.isError();
         }
@@ -280,7 +280,7 @@
         }
 
         function authExternalProvider(provider) {
-            var redirectUri = location.protocol + '//' + location.host + '/authcomplete.html';
+            var redirectUri = Config.get('redirectUrl') + '/authcomplete.html';
             var externalProviderUrl = Config.get('api') + "api/Account/ExternalLogin?provider=" + provider
                                                         + "&response_type=token&client_id=self" 
                                                         + "&redirect_uri=" + redirectUri;
@@ -289,7 +289,7 @@
         };
 
         function authNTLM() {
-            var redirectUrl = location.protocol + '//' + location.host + '/authcomplete.html';
+            var redirectUrl = Config.get('redirectUrl') + '/authcomplete.html';
             var externalProviderUrl = Config.get('api') + "api/Account/ntlmlogin?redirecturl=" + redirectUrl;
             window.$windowScope = service;
             var oauthWindow = window.open(externalProviderUrl, "Authenticate Account", "location=0,status=0,width=600,height=750");

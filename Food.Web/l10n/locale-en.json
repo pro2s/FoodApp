@@ -1,0 +1,110 @@
+{
+  "FoodApp": "FoodApp",
+  "topmenu": {
+    "Home": "Home",
+    "Statistic": "Statistic",
+    "Users": "Users",
+    "Orders": "Orders",
+    "Menu": "Menu"
+  },
+  "Submit": "Submit",
+  "Cancel": "Cancel",
+  "Login": "Login",
+  "Registration": "Registration",
+  "Register": "Register",
+  "Logout": "Logout",
+  "Close": "Close",
+  "Change": "Change",
+  "Email" : "Email",
+  "UserName" : "User Name",
+  "Password": "Password",
+  "OldPassword": "Old password",
+  "NewPassword": "New password",
+  "ChangePassword": "Change password", 
+  "ConfirmPassword" : "Confirm password",
+  "Domain": "Sign in with local Domain",
+  "Facebook": "Sign in with Facebook",
+  "Google": "Sign in with Google",
+  "ConfirmEmail": "Confirm E-mail",
+  "Balance": "Balance",
+  "ShareBalance": "Share Balance",
+  "UserPayments": "User Payments",
+  "UserOrders": "User Orders",
+  "Total": "Total",
+  "Ammount": "Ammount",
+  "ToEmail": "to Email",
+  "Send": "Send",
+  "Tomorrow": "on Tomorrow",
+  "WeekMenu": "Week Menu",
+  "AllMenus": "All Menus",
+  "MenuPrice": "Price {{price}} $",
+  "Components": "Components",
+  "AddMenu": "Add Menu",
+  "DeleteMenu": "Delete menu '{{menu}}'?",
+  "ParseMenu": "Parse Menu",
+  "Error": "Oops... something went wrong",
+  "menuform": {
+    "Error": "@:Error",
+    "NewMenu": "New Menu",
+    "EditMenu": "Edit Menu",
+    "Name": "Name",
+    "MenuName": "Menu name",
+    "Price": "Price",
+    "OnDate": "On Date",
+    "Components": "Components",
+    "Parts": "Parts",
+    "Weight": "Weight"
+  },
+  "menutable": {
+    "#": "",
+    "OnDate": "On Date",
+    "Name": "Name",
+    "Price": "Price",
+    "Items": "Items",
+    "Actions": "Actions"
+  },
+  "parser": {
+    "ParseMenu": "Parse Menu",
+    "Source": "Source",
+    "Parse": "Parse",
+    "Next": "Get menu on next Monday.",
+    "Update": "Update if exist.",
+    "Count": "Count days",
+    "From": "From date",
+    "SelectDay": "Select Day", 
+    "NextMonday": "Next Monday", 
+    "Monday": "Monday",
+    "Today": "Today",
+    "Loading...": "Loading Parsers ...",
+    "Parse...": "Parse menu ...",
+    "GetError": "Get Parsers Error, try again leter.",
+    "ParseError": "Error parse Menu from {{data}}.",
+    "ParseOk": "Parse success - {{data}}."
+  }, 
+  "error": {
+    "profile": {
+      "Share": "Share balance error."
+    },
+    "auth": {
+      "Info": "Failed get user info, try again",
+      "Failed": "Authorization failed",
+      "Password": "Password or email is incorrect",
+      "Registration": "Registration failed"
+    }
+  },
+  "load": {
+    "static": {
+      "TITLE": "How to load static files?",
+      "HEADER": "The module can lazzy load a translations table when it's needed.",
+      "SUBHEADER": "So, you can load only those languages, which will be used.",
+      "TEXT": "This is only some text to fill the space.",
+      "ONLY_EN": "only English",
+      "EN_RU": "EN and RU - EN Edition",
+      "ARRAY": [
+        "Item 1",
+        "Item 2",
+        "Item 3"
+      ]
+    }
+  }
+}

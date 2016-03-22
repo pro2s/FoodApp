@@ -1,13 +1,19 @@
-﻿[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+﻿[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak, .translate-cloak {
   display: none !important;
 }
 
 body {
-   
+  
+   background-color: #ffffff;
    background-image: url("../Content/background.jpg");
-   background-position: center top; /*Positioning*/
-   background-repeat: no-repeat; /*Prevent showing multiple background images*/     
+   background-position: center top; 
+   background-repeat: no-repeat; 
    background-attachment: fixed;
+   -moz-background-size: 100%; 
+   -webkit-background-size: 100%; 
+   -o-background-size: 100%; 
+   background-size: 100%;
+   
 }
 
 .logo > img {

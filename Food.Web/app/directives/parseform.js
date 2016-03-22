@@ -12,14 +12,15 @@
         });
     }
 
-    parseForm.$inject = ['Parser', 'GlobalMenu','dateservice', '$timeout'];
-    function parseForm(Parser, GlobalMenu, dateservice, $timeout) {
+    parseForm.$inject = ['Parser', 'dateservice', '$timeout'];
+    function parseForm(Parser, dateservice, $timeout) {
         
         var directive = {
             restrict: 'E',
             replace: true,
             scope: {
-                control: '='
+                control: '=',
+                onCompleat: '&?'
             },
             templateUrl: 'app/views/parse.html',
             link: function (scope, element, attrs) {
@@ -27,14 +28,16 @@
                 scope.parseForm = {};
                 scope.error = false;
                 scope.message = '';
+                scope.messageData = '';
                 scope.sources = [];
                 scope.source = {};
                 scope.input = {start:'', count:'', update:false, next: true}
                 scope.startDays = [];
-
+                
                 scope.internalControl = scope.control || {};
                 scope.internalControl.show = show;
                 scope.internalControl.hide = hide;
+                
 
                 scope.setSource = setSource;
                 scope.setStart = setStart;
@@ -47,8 +50,8 @@
                 function activate() {
                     getParsers();
                     $(document).on('hide.bs.modal', '#' + scope.id, onHide);
+                    scope.startDays.push({ name: "NextMonday", date: dateservice.getNextMonday()})
                     scope.startDays.push({ name: "Monday", date: dateservice.getMonday() })
-                    scope.startDays.push({ name: "Next Monday", date: dateservice.getNextMonday()})
                     scope.startDays.push({ name: "Today", date: new Date() });
                 }
 
@@ -57,7 +60,7 @@
                 }
                 
                 function getParsers() {
-                    scope.message = 'Loading Parsers ...';
+                    scope.message = 'Loading...';
                     scope.sources = []
                     Parser.query(function (data) {
                         scope.sources = data;
@@ -65,7 +68,7 @@
                         scope.message = '';
                     }, function () {
                         scope.error = true;
-                        scope.message = 'Get Parsers Error, try again leter.';
+                        scope.message = 'GetError';
                     });
                 }
 
@@ -89,7 +92,7 @@
                 }
 
                 function doParse() {
-                    scope.message = 'Parse menu ...';
+                    scope.message = 'Parse...';
                     var id = scope.source.id;
                     if (id) {
                         var config = {
@@ -100,13 +103,15 @@
                             next: scope.input.next,
                         }
                         Parser.get(config, function (data) {
-                            scope.message = data.message;
+                            scope.messageData = data.message;
+                            scope.message = 'ParseOk';
                             scope.error = false;
-                            GlobalMenu.updateMenu();
+                            scope.onCompleat();
                             $timeout(hide, 2000);
                         }, function () {
                             scope.error = true;
-                            scope.message = 'Error parse Menu from' + scope.source.name;
+                            scope.messageData = scope.source.name;
+                            scope.message = 'ParseError';
                         });
                     }
                     

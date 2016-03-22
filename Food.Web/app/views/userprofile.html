@@ -8,29 +8,29 @@
         </p>
     </div>
     <div class="users col-md-6">
-        <button class="btn btn-default" ng-click="vm.confirmEmail()" ng-if="!vm.auth.userinfo.isEmailConfirmed">Confirm e-mail</button>
-        <button  class="btn btn-default" type="button" ng-if="!vm.auth.userinfo.loginProvider" ng-click="vm.changePwd.show()">Change password</button>
+        <button class="btn btn-default" ng-click="vm.confirmEmail()" ng-if="!vm.auth.userinfo.isEmailConfirmed" translate>ConfirmEmail</button>
+        <button  class="btn btn-default" type="button" ng-if="!vm.auth.userinfo.loginProvider" ng-click="vm.changePwd.show()" translate>ChangePassword</button>
         <change-password control="vm.changePwd"></change-password>
     </div>
 </div>
-<div class="col-md-12 alert alert-info text-center" role="alert"><b>Balance:</b> {{vm.auth.userinfo.balance}}</div>
+<div class="col-md-12 alert alert-info text-center" role="alert"><strong translate>Balance</strong>:&nbsp;{{vm.auth.userinfo.balance}}</div>
 <div class="row">
     
     <div class="col-md-12">
         <div class="panel panel-default">
-            <div class="panel-heading">Sharing Balance</div>
+            <div class="panel-heading" translate>ShareBalance</div>
             <div class="panel-body">
                 <form class="form-inline" name="shareBalance">
                     <p class="text-danger" ng-show="shareBalance.$invalid" ng-bind="vm.shareError">...</p>
                     <div class="form-group" ng-class="{ 'has-error' : shareBalance.amount.$invalid }">
-                        <label class="control-label" for="amount">Ammount</label>
+                        <label class="control-label" for="amount" translate>Ammount</label>
                         <input type="text" class="form-control form-control-inline" id="amount" name="amount" placeholder="" ng-model="vm.share.amount">
                     </div>
                     <div class="form-group" ng-class="{ 'has-error' : shareBalance.email.$invalid }">
-                        <label class="control-label" for="email">send to Email</label>
+                        <label class="control-label" for="email" translate>ToEmail</label>
                         <input type="email" class="form-control form-control-inline" id="email" name="email" placeholder="jane.doe@example.com" ng-model="vm.share.email">
                     </div>
-                    <button type="submit" class="btn btn-default" ng-click="vm.shareBalance(shareBalance)">Send</button>
+                    <button type="submit" class="btn btn-default" ng-click="vm.shareBalance(shareBalance)" translate>Send</button>
                 </form>
             </div>
         </div>
@@ -40,26 +40,26 @@
 <div class="row">
     <div class="col-md-6">
         <div class="panel panel-default">
-            <div class="panel-heading">User payments</div>
+            <div class="panel-heading" translate>UserPayments</div>
             <div class="panel-body">
                 <div ng-class="{'text-danger':payment.sum<0}" ng-repeat="payment in vm.payments">
                     {{payment.date|date:'yyyy-MM-dd'}} : {{payment.sum}} <span ng-show="payment.sum<0">Balance sharing</span>
                 </div>
                 <uib-pagination total-items="vm.paymentsPages.totalItems" ng-model="vm.paymentsPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getPayments()" items-per-page="vm.paymentsPages.perPage"></uib-pagination>
             </div>
-            <div class="panel-footer"><b>Total:</b> {{vm.paymentsSum}}</div>
+            <div class="panel-footer"><strong translate>Total</strong>:&nbsp;{{vm.paymentsSum}}</div>
         </div>
     </div>
     <div class="col-md-6">
         <div class="panel panel-default">
-            <div class="panel-heading">User orders</div>
+            <div class="panel-heading" translate>UserOrders</div>
             <div class="panel-body">
                 <div ng-class="{'text-success':choice.confirm}" ng-repeat="choice in vm.userorders">
                     {{choice.date|date:'yyyy-MM-dd'}} - {{choice.menu.name}} ({{choice.menu.price}})&nbsp;<span ng-if="choice.confirm" class="glyphicon glyphicon-ok"></span>
                 </div>
                 <uib-pagination total-items="vm.ordersPages.totalItems" ng-model="vm.ordersPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getUserOrders()" items-per-page="vm.ordersPages.perPage"></uib-pagination>
             </div>
-            <div class="panel-footer"><b>Total:</b> {{vm.ordersSum}}</div>
+            <div class="panel-footer"><strong translate>Total</strong>:&nbsp;{{vm.ordersSum}}</div>
         </div>
         
         

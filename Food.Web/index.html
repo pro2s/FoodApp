@@ -3,8 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <!-- <base href="http://localhost:3000/static.html"> -->
-    <title></title>
+    <title translate>FoodApp</title>
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico" />
     <link href="./Content/bootstrap.css" rel="stylesheet"/>
     <link href="./Content/font-awesome.css" rel="stylesheet"/>
     <link href="./Content/bootstrap-social.css" rel="stylesheet"/>
@@ -13,24 +14,26 @@
 <body>
     <nav class="navbar navbar-default navbar-static-top" ng-controller="TopMenu as topmenu">
         <div class="container">
-             <div class="navbar-header">
+            <div class="navbar-header">
                 <a class="pull-left logo" href="#/">
                     <img src="./Content/food.png" width="45" height="45" />
                 </a>
-                <a class="navbar-brand" href="#/">FoodApp</a>
+                <a class="navbar-brand" href="#/" translate>FoodApp</a>
             </div>
-            <ul class="nav navbar-nav">
-                <li ng-repeat="item in topmenu.menu" ng-class="{ active: topmenu.isActive(item.url)}"><a href="#{{item.url}}" ng-bind="item.name"></a></li>
+            <ul class="nav navbar-nav" translate-namespace="topmenu">
+                <li ng-repeat="item in topmenu.menu" ng-class="{ active: topmenu.isActive(item.url)}">
+                    <a href="#{{item.url}}" translate=".{{item.name}}"></a>
+                </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="topmenu.auth.isLogged">
-                <li ng-class="{ active: topmenu.isActive('/user')}" >
+            <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="topmenu.isAuth()">
+                <li ng-class="{ active: topmenu.isActive('/user')}">
                     <a href="#/profile" ng-bind="topmenu.auth.username">User</a>
                 </li>
-                <li><a href="" ng-click="topmenu.logout()">Logout</a></li>
+                <li><a href="" ng-click="topmenu.logout()" translate>Logout</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="!topmenu.auth.isLogged">
-                <li><a href="" ng-click="topmenu.showLogin()">Login</a></li>
-                <li><a href="" ng-click="topmenu.showRegister()">Registration</a></li>
+            <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="!topmenu.isAuth()">
+                <li><a href="" ng-click="topmenu.showLogin()" translate>Login</a></li>
+                <li><a href="" ng-click="topmenu.showRegister()" translate>Registration</a></li>
             </ul>
         </div>
     </nav>
@@ -53,13 +56,33 @@
         </div>
     </div>
 
-<script src="./Scripts/jquery-1.10.2.js"></script>
-<script src="./Scripts/angular.js"></script>
-<script src="./Scripts/angular-mocks.js"></script>
-<script src="./Scripts/angular-resource.js"></script>
-<script src="./Scripts/angular-route.js"></script>
-<script src="./Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
-<script src="./Scripts/bootstrap.js"></script>
+<script src="./scripts/jquery-1.10.2.js"></script>
+<script src="./scripts/angular.js"></script>
+<script src="./scripts/angular-mocks.js"></script>
+<script src="./scripts/angular-resource.js"></script>
+<script src="./scripts/angular-route.js"></script>
+<script src="./scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+<script src="./scripts/bootstrap.js"></script>
+
+<script src="./scripts/angular-translate/translate.js"></script>
+<script src="./scripts/angular-translate/directive/translate-cloak.js"></script>
+<script src="./scripts/angular-translate/directive/translate-language.js"></script>
+<script src="./scripts/angular-translate/directive/translate-namespace.js"></script>
+<script src="./scripts/angular-translate/directive/translate.js"></script>
+<script src="./scripts/angular-translate/filter/translate.js"></script>
+<script src="./scripts/angular-translate/service/default-interpolation.js"></script>
+<script src="./scripts/angular-translate/service/handler-log.js"></script>
+<script src="./scripts/angular-translate/service/loader-partial.js"></script>
+<script src="./scripts/angular-translate/service/loader-static-files.js"></script>
+<script src="./scripts/angular-translate/service/loader-url.js"></script>
+<script src="./scripts/angular-translate/service/messageformat-interpolation.js"></script>
+<script src="./scripts/angular-translate/service/sanitization.js"></script>
+<script src="./scripts/angular-translate/service/storage-cookie.js"></script>
+<script src="./scripts/angular-translate/service/storage-key.js"></script>
+<script src="./scripts/angular-translate/service/storage-local.js"></script>
+<script src="./scripts/angular-translate/service/translate.js"></script>
+<script src="./scripts/angular-translate/service/translationCache.js"></script>
+
 <script src="./app/admin.module.js"></script>
 <script src="./app/app.js"></script>
 <script src="./app/menu.module.js"></script>

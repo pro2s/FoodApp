@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <title translate>@ViewBag.Title</title>
     <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />  
     <link rel="icon" type="image/x-icon" href="~/favicon.ico" />  
     @Styles.Render("~/Content/css")
@@ -15,22 +15,22 @@
                 <a class="pull-left logo" href="#/">
                     <img src="~/Content/food.png" width="45" height="45" />
                 </a>
-                <a class="navbar-brand" href="#/">FoodApp</a>
+                <a class="navbar-brand" href="#/" translate>FoodApp</a>
             </div>
-            <ul class="nav navbar-nav">
+            <ul class="nav navbar-nav" translate-namespace="topmenu">
                 <li ng-repeat="item in topmenu.menu" ng-class="{ active: topmenu.isActive(item.url)}">
-                    <a href="#{{item.url}}" ng-bind="item.name"></a>
+                    <a href="#{{item.url}}" translate=".{{item.name}}"></a>
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="topmenu.isAuth()">
                 <li ng-class="{ active: topmenu.isActive('/user')}" >
                     <a href="#/profile" ng-bind="topmenu.auth.username">User</a>
                 </li>
-                <li><a href="" ng-click="topmenu.logout()">Logout</a></li>
+                <li><a href="" ng-click="topmenu.logout()" translate>Logout</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="!topmenu.isAuth()">
-                <li><a href="" ng-click="topmenu.showLogin()">Login</a></li>
-                <li><a href="" ng-click="topmenu.showRegister()">Registration</a></li>
+                <li><a href="" ng-click="topmenu.showLogin()" translate>Login</a></li>
+                <li><a href="" ng-click="topmenu.showRegister()" translate>Registration</a></li>
             </ul>
         </div>
     </nav>
@@ -47,7 +47,7 @@
             <div class="modal-content">
                 <div class="modal-body text-center">
                     <h3 class="text-danger">Service is offline, try again leter ...</h3>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
                 </div>
             </div>
         </div>
@@ -59,8 +59,9 @@
     </div>
 
         @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/angular")
         @Scripts.Render("~/bundles/bootstrap")
+        @Scripts.Render("~/bundles/angular")
+        @Scripts.Render("~/bundles/angular-translate")
         @Scripts.Render("~/bundles/app")
         @RenderSection("scripts", required: false)
 </body>
