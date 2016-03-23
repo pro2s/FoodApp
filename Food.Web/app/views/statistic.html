@@ -1,6 +1,6 @@
 ﻿<div class="row">
-    <div class="col-sm-12 lead text-left" ng-bind="vm.title"></div>
-    <div class="col-sm-12 lead text-left"><h4>Total</h4></div>
+    <div class="col-sm-12 lead text-left" translate="{{vm.title}}"></div>
+    <div class="col-sm-12 lead text-left"><h4 translate>TotalStat</h4></div>
     <div class="col-sm-12 clearfix">
         <div class="col-sm-3" ng-repeat="total in vm.data.totals">
             <div class="alert alert-success">
@@ -9,7 +9,7 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-12 lead text-left"><h4>Top</h4></div>
+    <div class="col-sm-12 lead text-left"><h4 translate>Top</h4></div>
     <div class="col-sm-12">
         <div ng-repeat="stat in vm.data.tops">
             <div class="clearfix" ng-if="$index % 3 == 0"></div>

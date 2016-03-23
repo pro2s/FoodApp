@@ -12,7 +12,7 @@
         var paymentsPaginationID = "userAdminPayments"
         var usersPaginationID = "userAdmin"
 
-        vm.title = "loading users ...";
+        vm.title = "LoadingUsers";
         vm.payment = {id: 0, value: 0, error: false};
         vm.addId = -1;
         vm.users = {};
