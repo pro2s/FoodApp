@@ -45,7 +45,7 @@ namespace Food.Api.Controllers
             {
                 start = start.Value.Date;
                 nextmonday = (DateTime)start;
-                nextmonday = nextmonday.StartOfWeek(); 
+                nextmonday = nextmonday.StartOfWeek().AddDays(7);  
             }
             else
             {
@@ -109,16 +109,18 @@ namespace Food.Api.Controllers
                     {
                         dbmenu.Items = menu.Items;
                         db.Entry(dbmenu).State = EntityState.Modified;
-                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        db.Menus.Add(menu);
                     }
                 }
                 else
                 {
                     db.Menus.Add(menu);
-                    db.SaveChanges();
                 }
 
-
+                db.SaveChanges();
             }
 
             if (next)
