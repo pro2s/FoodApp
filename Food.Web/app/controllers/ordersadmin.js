@@ -10,8 +10,8 @@
         var vm = this;
         var paginationID = 'allOrders';
 
-        vm.titleWeek = "loading users orders ...";
-        vm.titleAll = "All orders"
+        vm.titleWeek = "LoadingOrders";
+        vm.titleAll = "AllOrders"
         vm.working = false;
         vm.activeday = {};
         vm.users = {};
@@ -35,7 +35,7 @@
         function activate() {
             vm.pages = Pagination.addPagination(paginationID);
             vm.working = true;
-            vm.titleWeek = "Users orders";
+            vm.titleWeek = "WeekOrders";
             
             vm.today = new Date().toDateString();
                 
@@ -76,7 +76,7 @@
         };
         
         function failure(data){
-            vm.titleWeek = "Oops... something went wrong";
+            vm.titleWeek = "Error";
             vm.working = false;
         };
          

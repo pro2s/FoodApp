@@ -15,7 +15,7 @@
   "Logout": "Выход",
   "Close": "Закрыть",
   "Change": "Изменить",
-  "Email": "Email",
+  "Email": "E-mail",
   "UserName": "Имя пользователя",
   "Password": "Пароль",
   "OldPassword": "Старый пароль",
@@ -25,15 +25,17 @@
   "Domain": "Войти через Домен",
   "Facebook": "Войти через Facebook",
   "Google": "Войти через Google",
+  
   "ConfirmEmail": "Подтвердить E-mail",
   "Balance": "Баланс",
   "ShareBalance": "Поделится балансом",
   "UserPayments": "Платежи пользователя",
   "UserOrders": "Заказы пользователя",
   "Total": "Всего",
-  "Ammount": "Сумму",
+  "Amount": "Сумму",
   "ToEmail": "на Email",
   "Send": "Отправить",
+
   "Tomorrow": "на Завтра",
   "WeekMenu": "Меню на неделю",
   "AllMenus": "Все меню",
@@ -42,7 +44,50 @@
   "AddMenu": "Добавить меню",
   "DeleteMenu": "Удалить меню '{{menu}}'?",
   "ParseMenu": "Получить меню",
+  
+  "AllOrders": "Все заказы",
+  "WeekOrders": "Заказы на неделю",
+  "LoadingOrders": "Загружаю заказы ...",
+  "GiveEveryone": "Выдать всем",
+  "Given": "Выдано",
+  "SumByMenu": "Итого по меню",
+  "ToAmount": "на сумму",
+
+  "Action": "Действия",
+  "User": "Пользователь",
+  "Users": "Пользователи",
+  "Payment": "Платеж",
+  "Payments": "Платежи",
+  "Date": "Дата",
+
+  "Statistic": "Статистика",
+  "TotalStat": "Общая",
+  "Top": "Топ",
+
+  
   "Error": "Проблема ... что то пошло не так.",
+  
+  "January": "Январь",
+	"February": "Февраль",
+	"March": "Март",
+	"April": "Апрель",
+	"May": "Май",
+	"June": "Июнь",
+	"July": "Июль",
+	"August": "Август",
+	"September": "Сентябрь",
+	"October": "Октября",
+	"November": "Ноября",
+  "December": "Декабрь",
+
+	"Monday": "Понедельник",
+	"Tuesday": "Вторник",
+	"Wednesday": "Среда",
+	"Thursday": "Четверг",
+	"Friday": "Пятница",
+	"Saturday": "Суббота",
+  "Sunday": "Воскресенье",
+
   "menuform": {
     "Error": "@:Error",
     "NewMenu": "Новое меню",
@@ -54,6 +99,14 @@
     "Components": "Компоненты",
     "Parts": "Состав",
     "Weight": "Вес"
+  },
+  "ordertable": {
+    "#": "№",
+    "Date": "Дата",
+    "UserName": "Пользователь",
+    "Menu": "Меню",
+    "Price": "Цена",
+    "Recived": "Передано"
   },
   "menutable": {
     "#": "№",

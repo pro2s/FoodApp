@@ -2,7 +2,7 @@
     <div class="col-sm-12">
         <parse-form control="form.parse" on-compleat="form.updateMenu()"></parse-form>
     </div>
-    <div class="col-sm-12">
+    <div class="col-sm-12 col-menu-tabs">
         <div class="pull-right">
             <button type="button" class="btn btn-default" ng-click="form.parse.show()" translate>ParseMenu</button>
             <button type="button" class="btn btn-default" ng-click="form.add()" translate>AddMenu</button>
@@ -18,35 +18,35 @@
     <div class="col-sm-offset-2 col-sm-8 clearfix spacer" ng-if="form.isedit">
         <menu-form menu="form.menu" title="form.title" save="form.save()" cancel="form.cancel()"></menu-form>
     </div>
-    
-    <div class="clearfix spacer"></div>
-    <div ng-if="form.isTab('week')">
-        <div ng-repeat="menu in vm.data.menu">
-            <div class="clearfix" ng-if="$index % 3 == 0"></div>
-            <div class="col-sm-4" ng-if="vm.isshow(menu)">
-                <div class="panel" ng-class="{'panel-primary': vm.isold(menu.onDate),'panel-default': !vm.isold(menu.onDate)}">
 
-                    <div class="panel-heading">
-                        <div class="btn-group pull-right">
-                            <button class="btn btn-default btn-xs" type="button" ng-click="form.edit(menu)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                            <button class="btn btn-default btn-xs" type="button" ng-click="form.delete(menu)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+    <div class="panel panel-default panel-menu">
+        <div class="panel-body">
+            <div ng-if="form.isTab('week')">
+                <div ng-repeat="menu in vm.data.menu">
+                    <div class="clearfix" ng-if="$index % 3 == 0"></div>
+                    <div class="col-sm-4" ng-if="vm.isshow(menu)">
+                        <div class="panel" ng-class="{'panel-primary': vm.isold(menu.onDate),'panel-default': !vm.isold(menu.onDate)}">
+
+                            <div class="panel-heading">
+                                <div class="btn-group pull-right">
+                                    <button class="btn btn-default btn-xs" type="button" ng-click="form.edit(menu)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
+                                    <button class="btn btn-default btn-xs" type="button" ng-click="form.delete(menu)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                </div>
+                                {{menu.name}} {{menu.onDate|date:'yyyy-MM-dd'}}
+                            </div>
+
+                            <div class="panel-body" translate="MenuPrice" translate-value-price="{{menu.price}} "></div>
+
+                            <ul class="list-group" ng-if="vm.components">
+                                <li class="list-group-item" ng-repeat="item in menu.items"><span class="badge">{{item.weight}}</span>{{item.name}}</li>
+                            </ul>
+
                         </div>
-                        {{menu.name}} {{menu.onDate|date:'yyyy-MM-dd'}}
                     </div>
-
-                    <div class="panel-body" translate="MenuPrice" translate-value-price="{{menu.price}} "></div>
-
-                    <ul class="list-group" ng-if="vm.components">
-                        <li class="list-group-item" ng-repeat="item in menu.items"><span class="badge">{{item.weight}}</span>{{item.name}}</li>
-                    </ul>
-
                 </div>
             </div>
-        </div>
-    </div>
+
     <div ng-if="form.isTab('all')" class="col-sm-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
                 <table class="table table-striped">
                     <thead>
                         <tr translate-namespace="menutable">
@@ -60,7 +60,7 @@
                     </thead>
                     <tr ng-repeat="menu in form.allMenus">
                         <th>{{menu.id}}</th>
-                        <td>{{menu.onDate|date:'yyyy-MM-dd'}}</td>    
+                        <td>{{menu.onDate|date:'yyyy-MM-dd'}}</td>
                         <td>{{menu.name}}</td>
                         <td>{{menu.price}}</td>
                         <td>{{menu.items.length}}</td>

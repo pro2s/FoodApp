@@ -18,7 +18,7 @@
                 vm.data = data;
             },
             function (data) {
-                vm.title = "Oops. Something went wrong."
+                vm.title = "Error"
             });
         }
     };

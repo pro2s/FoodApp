@@ -9,34 +9,42 @@
     </div>
     <div class="users col-md-6">
         <button class="btn btn-default" ng-click="vm.confirmEmail()" ng-if="!vm.auth.userinfo.isEmailConfirmed" translate>ConfirmEmail</button>
-        <button  class="btn btn-default" type="button" ng-if="!vm.auth.userinfo.loginProvider" ng-click="vm.changePwd.show()" translate>ChangePassword</button>
+        <button class="btn btn-default" type="button" ng-if="!vm.auth.userinfo.loginProvider" ng-click="vm.changePwd.show()" translate>ChangePassword</button>
         <change-password control="vm.changePwd"></change-password>
     </div>
 </div>
-<div class="col-md-12 alert alert-info text-center" role="alert"><strong translate>Balance</strong>:&nbsp;{{vm.auth.userinfo.balance}}</div>
+
 <div class="row">
-    
-    <div class="col-md-12">
+    <div class="col-md-5">
+        <div class="panel panel-default">
+            <div class="panel-heading" translate>Balance</div>
+            <div class="panel-body text-center">
+                <h3 class="no-margin">{{vm.auth.userinfo.balance}}</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
         <div class="panel panel-default">
             <div class="panel-heading" translate>ShareBalance</div>
             <div class="panel-body">
-                <form class="form-inline" name="shareBalance">
-                    <p class="text-danger" ng-show="shareBalance.$invalid" ng-bind="vm.shareError">...</p>
-                    <div class="form-group" ng-class="{ 'has-error' : shareBalance.amount.$invalid }">
-                        <label class="control-label" for="amount" translate>Ammount</label>
-                        <input type="text" class="form-control form-control-inline" id="amount" name="amount" placeholder="" ng-model="vm.share.amount">
-                    </div>
-                    <div class="form-group" ng-class="{ 'has-error' : shareBalance.email.$invalid }">
-                        <label class="control-label" for="email" translate>ToEmail</label>
-                        <input type="email" class="form-control form-control-inline" id="email" name="email" placeholder="jane.doe@example.com" ng-model="vm.share.email">
-                    </div>
-                    <button type="submit" class="btn btn-default" ng-click="vm.shareBalance(shareBalance)" translate>Send</button>
-                </form>
-            </div>
+            <form class="form-inline" name="shareBalance">
+                <p class="text-danger" ng-show="shareBalance.$invalid" ng-bind="vm.shareError">...</p>
+                <div class="form-group" ng-class="{ 'has-error' : shareBalance.amount.$invalid }">
+                    <label class="control-label" for="amount" translate>Amount</label>
+                    <input type="text" class="form-control form-control-inline" id="amount" name="amount" placeholder="" ng-model="vm.share.amount">
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : shareBalance.email.$invalid }">
+                    <label class="control-label" for="email" translate>ToEmail</label>
+                    <input type="email" class="form-control form-control-inline" id="email" name="email" placeholder="jane.doe@example.com" ng-model="vm.share.email">
+                </div>
+                <button type="submit" class="btn btn-default" ng-click="vm.shareBalance(shareBalance)" translate>Send</button>
+            </form>
         </div>
-    
     </div>
+
 </div>
+            </div>
 <div class="row">
     <div class="col-md-6">
         <div class="panel panel-default">
@@ -61,8 +69,8 @@
             </div>
             <div class="panel-footer"><strong translate>Total</strong>:&nbsp;{{vm.ordersSum}}</div>
         </div>
-        
-        
-        
+
+
+
     </div>
 </div>

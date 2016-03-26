@@ -1,12 +1,12 @@
 ﻿<div class="row">
-    <div class="col-sm-7"><h4 ng-bind="vm.title"></h4></div>
-    <div class="col-sm-5"><h4>Payments</h4></div>
+    <div class="col-sm-7"><h4 translate="{{vm.title}}"></h4></div>
+    <div class="col-sm-5"><h4 translate>Payments</h4></div>
     <div class="col-sm-7">
         <div class="panel panel-default">
             <div class="panel-body">
                 <table class="table table-striped">
                     <thead>
-                        <tr><th>User Name</th><th>E-mail</th><th>Balance</th><th>Action</th></tr>
+                        <tr><th translate>User</th><th translate>Email</th><th translate>Balance</th><th translate>Action</th></tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="user in vm.users" id="{{user.id}}">
@@ -59,7 +59,7 @@
             <div class="panel-body">
                 <table class="table table-striped">
                     <thead>
-                        <tr><th>Date</th><th>User Name</th><th>Payment</th><th>Action</th></tr>
+                        <tr><th translate>Date</th><th translate>User</th><th translate>Payment</th><th translate>Action</th></tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="payment in vm.payments">

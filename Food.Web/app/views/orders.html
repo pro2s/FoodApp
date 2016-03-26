@@ -1,10 +1,10 @@
 ﻿<div class="row">
-    <div class="col-sm-5"><h4 ng-bind="vm.titleWeek"></h4></div>
-    <div class="col-sm-7"><h4 ng-bind="vm.titleAll"></h4></div>
+    <div class="col-sm-5"><h4 translate="{{vm.titleWeek}}"></h4></div>
+    <div class="col-sm-7"><h4 translate="{{vm.titleAll}}"></h4></div>
     <div class="col-sm-5 spacer">
         <div class="panel panel-default no-margin" ng-repeat="(key, day) in vm.weekdays" ng-class="{'panel-success':vm.activeday==$index}" ng-if="day.orders.length>0">
             <div class="panel-heading">
-                <a href="" ng-click="vm.today=key">{{day.date|date:'yyyy-MM-dd'}} {{day.date|date:'(EEEE)'}}</a>
+                <a href="" ng-click="vm.today=key">{{day.date|date:'yyyy-MM-dd'}} ({{day.date|date:'EEEE'|translate}})</a>
             </div>
             <ul class="list-group" ng-show="vm.today==key">
                 <li ng-repeat="order in day.orders track by $index" class="list-group-item clearfix">
@@ -32,22 +32,22 @@
                     <button class="btn"
                             ng-class="{'btn-success':vm.isConfirmed(day), 'btn-default':!vm.isConfirmed(day)}"
                             ng-click="vm.confirmDay(day)"
-                            ng-disabled="vm.isConfirmed(day)">
-                        {{vm.isConfirmed(day)?"Роздано":"Выдать всем"}}
+                            ng-disabled="vm.isConfirmed(day)" translate>
+                            {{vm.isConfirmed(day)?"Given":"GiveEveryone"}}
                     </button>
                     <button class="btn btn-default"
                             ng-click="vm.updateDay(day.date)">
                             <i class="fa fa-refresh"></i>
                     </button>
                     </div>
-                    <div><strong>Итого по меню</strong></div>
+                    <div><strong translate>SumByMenu</strong></div>
 
 
 
                 </li>
                 
                 <li ng-repeat="menu in day.menu track by $index" class="list-group-item" ng-if="menu.count>0">
-                    {{menu.name}} - {{menu.count}} на сумму {{menu.price * menu.count}}
+                    {{menu.name}} - {{menu.count}} {{'ToAmount'|translate}} {{menu.price * menu.count}}
                 </li>
             </ul>
         </div>
@@ -57,13 +57,13 @@
             <div class="panel-body">
                 <table class="table table-striped">
                     <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Date</th>
-                            <th>UserName</th>
-                            <th>Menu</th>
-                            <th>Price</th>
-                            <th>Recived</th>
+                        <tr translate-namespace="ordertable">
+                            <th translate>.#</th>
+                            <th translate>.Date</th>
+                            <th translate>.UserName</th>
+                            <th translate>.Menu</th>
+                            <th translate>.Price</th>
+                            <th translate>.Recived</th>
                         </tr>
                     </thead>
                     <tbody>
