@@ -6,9 +6,6 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Food.Web", "Food.Web\Food.Web.csproj", "{A6BF5875-8868-4D04-9AFB-E2B2BB829AF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Food.Api", "Food.Api\Food.Api.csproj", "{7966E2B4-27F1-45F6-ADD7-5016A973AFCF}"
-	ProjectSection(ProjectDependencies) = postProject
-		{A6BF5875-8868-4D04-9AFB-E2B2BB829AF8} = {A6BF5875-8868-4D04-9AFB-E2B2BB829AF8}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
