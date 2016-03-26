@@ -17,13 +17,14 @@ angular
         'pascalprecht.translate',
         'ngRoute',
         'ui.bootstrap',
+        'angularMoment',
         'app.user',
         'app.admin',
         'app.menu',
         'app.statistic',
         'app.userservice',
     ])
-    .config(['$routeProvider', '$locationProvider', '$httpProvider', '$translateProvider', function ($routeProvider, $locationProvider, $httpProvider, $translateProvider) {
+    .config(['$routeProvider', '$locationProvider', '$httpProvider', '$translateProvider' , 'moment', function ($routeProvider, $locationProvider, $httpProvider, $translateProvider, moment) {
         
         $translateProvider.useSanitizeValueStrategy('escape');
         $translateProvider.useStaticFilesLoader({
@@ -32,7 +33,9 @@ angular
         });
         $translateProvider.determinePreferredLanguage();
         $translateProvider.fallbackLanguage('en');
-
+        
+        moment.locale($translateProvider.preferredLanguage());
+        
         $routeProvider.otherwise({ redirectTo: '/' });
         $routeProvider
         .when('/', {

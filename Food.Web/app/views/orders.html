@@ -4,7 +4,7 @@
     <div class="col-sm-5 spacer">
         <div class="panel panel-default no-margin" ng-repeat="(key, day) in vm.weekdays" ng-class="{'panel-success':vm.activeday==$index}" ng-if="day.orders.length>0">
             <div class="panel-heading">
-                <a href="" ng-click="vm.today=key">{{day.date|date:'yyyy-MM-dd'}} ({{day.date|date:'EEEE'|translate}})</a>
+                <a href="" ng-click="vm.today=key">{{day.date|amDateFormat:'L'}} ({{day.date|date:'EEEE'|translate}})</a>
             </div>
             <ul class="list-group" ng-show="vm.today==key">
                 <li ng-repeat="order in day.orders track by $index" class="list-group-item clearfix">
@@ -69,7 +69,7 @@
                     <tbody>
                         <tr ng-repeat="order in vm.orders">
                             <th>{{order.id}}</th>
-                            <td>{{order.date|date:'yyyy-MM-dd'}}</td>
+                            <td>{{order.date|amDateFormat:'L'}}</td>
                             <td>{{vm.getUser(order).userName}}</td>
                             <td>{{order.menu.name}}</td>
                             <td>{{order.menu.price}}</td>

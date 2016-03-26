@@ -11,7 +11,7 @@
     		host: '',
     		config: {
     		    api: 'http://publicfoodapi.azurewebsites.net/',
-    		    redirectUrl: ''
+    		    redirectUrl: '',
     		}
     	},
     	dev: {
@@ -32,7 +32,7 @@
     		host: 'production.com',
     		config: {
     		    api: 'http://production.com/',
-    		    redirectUrl: 'http://production.com/'
+    		    redirectUrl: 'http://production.com/',
     		}
     	}
     },

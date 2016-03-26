@@ -32,7 +32,7 @@
                                     <button class="btn btn-default btn-xs" type="button" ng-click="form.edit(menu)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
                                     <button class="btn btn-default btn-xs" type="button" ng-click="form.delete(menu)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                                 </div>
-                                {{menu.name}} {{menu.onDate|date:'yyyy-MM-dd'}}
+                                {{menu.name}} {{menu.onDate|amDateFormat:'L'}}
                             </div>
 
                             <div class="panel-body" translate="MenuPrice" translate-value-price="{{menu.price}} "></div>
@@ -46,7 +46,7 @@
                 </div>
             </div>
 
-    <div ng-if="form.isTab('all')" class="col-sm-12">
+    <div ng-if="form.isTab('all')">
                 <table class="table table-striped">
                     <thead>
                         <tr translate-namespace="menutable">
@@ -60,7 +60,7 @@
                     </thead>
                     <tr ng-repeat="menu in form.allMenus">
                         <th>{{menu.id}}</th>
-                        <td>{{menu.onDate|date:'yyyy-MM-dd'}}</td>
+                        <td>{{menu.onDate|amDateFormat:'L'}}</td>
                         <td>{{menu.name}}</td>
                         <td>{{menu.price}}</td>
                         <td>{{menu.items.length}}</td>

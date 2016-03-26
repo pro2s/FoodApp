@@ -51,7 +51,7 @@
             <div class="panel-heading" translate>UserPayments</div>
             <div class="panel-body">
                 <div ng-class="{'text-danger':payment.sum<0}" ng-repeat="payment in vm.payments">
-                    {{payment.date|date:'yyyy-MM-dd'}} : {{payment.sum}} <span ng-show="payment.sum<0">Balance sharing</span>
+                    {{payment.date|amDateFormat:'L'}} : {{payment.sum}} <span ng-show="payment.sum<0">Balance sharing</span>
                 </div>
                 <uib-pagination total-items="vm.paymentsPages.totalItems" ng-model="vm.paymentsPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getPayments()" items-per-page="vm.paymentsPages.perPage"></uib-pagination>
             </div>
@@ -63,7 +63,7 @@
             <div class="panel-heading" translate>UserOrders</div>
             <div class="panel-body">
                 <div ng-class="{'text-success':choice.confirm}" ng-repeat="choice in vm.userorders">
-                    {{choice.date|date:'yyyy-MM-dd'}} - {{choice.menu.name}} ({{choice.menu.price}})&nbsp;<span ng-if="choice.confirm" class="glyphicon glyphicon-ok"></span>
+                    {{choice.date|amDateFormat:'L'}} - {{choice.menu.name}} ({{choice.menu.price}})&nbsp;<span ng-if="choice.confirm" class="glyphicon glyphicon-ok"></span>
                 </div>
                 <uib-pagination total-items="vm.ordersPages.totalItems" ng-model="vm.ordersPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getUserOrders()" items-per-page="vm.ordersPages.perPage"></uib-pagination>
             </div>
