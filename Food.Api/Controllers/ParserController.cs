@@ -75,6 +75,7 @@ namespace Food.Api.Controllers
 
                 if (count > 0 && num > count)
                 {
+                    --num;
                     break;
                 }
 
@@ -138,7 +139,7 @@ namespace Food.Api.Controllers
                 ++num;
             }
 
-            result.Message = string.Format("Parse menus on {0} days.", num - 1);
+            result.Message = string.Format("Parse menus on {0} days.", num);
 
             return Ok(result);
         }
