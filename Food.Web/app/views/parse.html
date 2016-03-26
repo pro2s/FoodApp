@@ -31,7 +31,7 @@
                 <div class="form-group">
                     <label for="fromDate" translate>.From</label>
                     <div class="input-group">
-                        <input type="date" class="form-control" ng-model="input.start" placeholder="{{startDays[0].date | amDateFormat:'L'}}">
+                        <input type="text" class="form-control" ng-model="input.start" placeholder="{{startDays[0].date | amDateFormat:'L'}}" moment-validate>
                         <div class="input-group-btn">
                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span translate>.SelectDay</span>&nbsp;<span class="caret"></span></button>
                             <ul class="dropdown-menu dropdown-menu-right">

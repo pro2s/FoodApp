@@ -13,6 +13,7 @@ using Food.Api.Models;
 using System.Web.Http.Cors;
 using Microsoft.AspNet.Identity;
 using Food.Api.Atributes;
+using System.Diagnostics;
 
 namespace Food.Api.Controllers
 {
@@ -94,7 +95,11 @@ namespace Food.Api.Controllers
 
             if (StartDate == null)
             {
-                StartDate = DateTime.Today.StartOfWeek();
+                StartDate = DateTime.UtcNow.StartOfWeek();
+            }
+            else
+            {
+                StartDate = StartDate.Value.ToUniversalTime();
             }
 
             switch (MenuMode)
@@ -121,6 +126,7 @@ namespace Food.Api.Controllers
                 default:
                     result = db.Menus.Include("Items").Include("Items.Ratings")
                             .Where(m => m.Type == get_type && m.OnDate >= StartDate)
+                            .OrderBy(m => m.OnDate)
                             .ToList();
                             
                     
@@ -162,7 +168,6 @@ namespace Food.Api.Controllers
                     }
                 }
                 ModelState.Clear();
-               
             }
             
 

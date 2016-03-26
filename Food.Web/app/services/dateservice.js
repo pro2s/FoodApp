@@ -66,7 +66,7 @@
                 });
 
                 ngModel.$parsers.push(function(value) {
-                    var m = moment(value, viewFormat, true);
+                    var m = moment.utc(value, viewFormat, true);
                     if (m.isValid()) {
                         return m.toDate();
                     } else {

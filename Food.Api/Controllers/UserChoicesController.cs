@@ -27,7 +27,7 @@ namespace Food.Api.Controllers
         [Route("")]
         public List<UserChoice> Get(string list = "user", DateTime? startdate = null, bool range = false, int from = 0, int to = 0)
         {
-            DateTime monday = DateTime.Today.StartOfWeek();
+            DateTime monday = DateTime.UtcNow.StartOfWeek();
                 
             string id = User.Identity.GetUserId();
             if (startdate != null)
