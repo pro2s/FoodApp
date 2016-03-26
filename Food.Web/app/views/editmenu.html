@@ -58,16 +58,17 @@
                             <th translate>.Actions</th>
                         </tr>
                     </thead>
-                    <tr ng-repeat="menu in form.allMenus">
+                    <tr ng-repeat="menu in form.allMenus" ng-class="{'danger':menu.type<0,'warning':menu.type>0}">
                         <th>{{menu.id}}</th>
-                        <td>{{menu.onDate|amDateFormat:'L'}}</td>
+                        <td ng-if="menu.type==0">{{menu.onDate|amDateFormat:'L'}}</td>
+                        <td ng-if="menu.type!=0" translate>SystemMenu</td>
                         <td>{{menu.name}}</td>
                         <td>{{menu.price}}</td>
                         <td>{{menu.items.length}}</td>
                         <td>
-                            <div class="btn-group btn-group-sm pull-right">
+                            <div class="btn-group btn-group-sm pull-right" ng-if="menu.type>=0">
                                 <button class="btn btn-default" type="button" ng-click="form.edit(menu)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></button>
-                                <button class="btn btn-default" type="button" ng-click="form.delete(menu)"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                                <button class="btn btn-default" type="button" ng-click="form.delete(menu)" ng-if="menu.type==0"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
                             </div>
                         </td>
                     </tr>

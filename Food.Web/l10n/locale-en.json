@@ -46,6 +46,7 @@
   "AddMenu": "Add Menu",
   "DeleteMenu": "Delete menu '{{menu}}'?",
   "ParseMenu": "Parse Menu",
+  "SystemMenu":"SystemMenu",
   
   "AllOrders": "All Orders",
   "WeekOrders": "Users Orders",

@@ -46,6 +46,7 @@
   "AddMenu": "Добавить меню",
   "DeleteMenu": "Удалить меню '{{menu}}'?",
   "ParseMenu": "Получить меню",
+  "SystemMenu":"Системное меню",
   
   "AllOrders": "Все заказы",
   "WeekOrders": "Заказы на неделю",
