@@ -63,7 +63,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="payment in vm.payments">
-                            <td>{{payment.date|date:'yyyy-MM-dd'}}</td>
+                            <td>{{payment.date|amDateFormat:'L'}}</td>
                             <td ng-bind="payment.userName"></td>
                             <td>{{payment.sum}}&nbsp;<i ng-if="payment.sum<0" class="fa fa-share"></i></td>
                             <td>

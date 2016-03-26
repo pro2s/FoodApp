@@ -3,6 +3,7 @@ using Food.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -40,18 +41,19 @@ namespace Food.Api.Controllers
         public IHttpActionResult ParseMenu(string id, DateTime? start = null, int count = 0, bool update = false, bool next = false)
         {
             var result = new ParserResultView();
-            DateTime nextmonday;
-            if (start!=null)
+
+            if (start == null)
             {
-                start = start.Value.Date;
-                nextmonday = (DateTime)start;
-                nextmonday = nextmonday.StartOfWeek().AddDays(7);  
+                start = DateTime.UtcNow.StartOfWeek().AddDays(7);
             }
             else
             {
-                nextmonday = DateTime.Today.StartOfWeek().AddDays(7);
+                start = start.Value.ToUniversalTime();
             }
-            
+
+            DateTime nextmonday;
+            nextmonday = (DateTime) start;
+            nextmonday = nextmonday.StartOfWeek().AddDays(7);
 
             var parser = allParsers.FirstOrDefault(p => p.Id() == id);
             if (parser == null)

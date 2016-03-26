@@ -169,14 +169,14 @@ namespace Food.Api.Controllers
             {
                 UserID = ToUser.Id,
                 Sum = Share.Amount,
-                Date = DateTime.Now
+                Date = DateTime.UtcNow
             };
 
             Payment payment_from = new Payment()
             {
                 UserID = UserId,
                 Sum = -1 * Share.Amount,
-                Date = DateTime.Now
+                Date = DateTime.UtcNow
             };
 
 
@@ -191,7 +191,7 @@ namespace Food.Api.Controllers
         [ResponseType(typeof(Payment))]
         public IHttpActionResult PostPayment(Payment payment)
         {
-            payment.Date = DateTime.Now;
+            payment.Date = DateTime.UtcNow;
             Validate(payment);
 
             if (!ModelState.IsValid)

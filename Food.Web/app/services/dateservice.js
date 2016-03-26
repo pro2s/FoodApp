@@ -2,7 +2,8 @@
     'use strict';
     angular
         .module('app')
-        .factory('dateservice', dateService);
+        .factory('dateservice', dateService)
+        .directive('momentValidate', momentValidate)
         
     function dateService() {
         var monday = getMonday();
@@ -40,5 +41,47 @@
             return result;
         };
     };
+
+    momentValidate.$inject = ['moment'];
+    function momentValidate(moment) {
+        return {
+            restrict: 'A',
+            require: '?ngModel',
+            link: function(scope, elm, attr, ngModel) {
+                if (!ngModel) return;
+
+                var defaultViewFormat = 'L';
+
+                var viewFormat = attr['viewFormat'] || defaultViewFormat;
+
+                ngModel.$formatters.push(function(value) {
+                    if (value) {
+                        var m = moment(new Date(value));
+                            if (m.isValid()) {
+                                return m.format(viewFormat);
+                            } else {
+                                return value;
+                            }
+                   }
+                });
+
+                ngModel.$parsers.push(function(value) {
+                    var m = moment.utc(value, viewFormat, true);
+                    if (m.isValid()) {
+                        return m.toDate();
+                    } else {
+                        return value;
+                    }
+                });
+
+                ngModel.$validators.moment = function(value) {
+                    if (value) {
+                            return moment(new Date(value)).isValid();
+                    }
+                    
+                };
+            }
+        };
+    }
     
 })()

@@ -36,6 +36,8 @@
   "ToEmail": "to Email",
   "Send": "Send",
   
+  "on": "on",
+  
   "Tomorrow": "on Tomorrow",
   "WeekMenu": "Week Menu",
   "AllMenus": "All Menus",
@@ -44,6 +46,7 @@
   "AddMenu": "Add Menu",
   "DeleteMenu": "Delete menu '{{menu}}'?",
   "ParseMenu": "Parse Menu",
+  "SystemMenu":"SystemMenu",
   
   "AllOrders": "All Orders",
   "WeekOrders": "Users Orders",

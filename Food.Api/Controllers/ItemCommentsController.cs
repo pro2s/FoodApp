@@ -163,7 +163,7 @@ namespace Food.Api.Controllers
                 ItemId = itemComment.ItemId,
                 Text = itemComment.Text,
                 UserId = UserId,
-                Date = DateTime.Now,
+                Date = DateTime.UtcNow,
             };
 
             db.ItemComments.Add(comment);
