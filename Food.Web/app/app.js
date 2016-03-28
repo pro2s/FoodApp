@@ -14,8 +14,9 @@ var translations = {
     
 angular
     .module('app', [
-        'pascalprecht.translate',
         'ngRoute',
+        'ngCookies',
+        'pascalprecht.translate',
         'ui.bootstrap',
         'angularMoment',
         'app.user',
@@ -33,6 +34,7 @@ angular
         });
         $translateProvider.determinePreferredLanguage();
         $translateProvider.fallbackLanguage('en');
+        $translateProvider.useCookieStorage();
 
         moment.locale($translateProvider.preferredLanguage());
         
