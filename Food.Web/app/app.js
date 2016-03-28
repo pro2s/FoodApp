@@ -33,7 +33,7 @@ angular
         });
         $translateProvider.determinePreferredLanguage();
         $translateProvider.fallbackLanguage('en');
-        
+
         moment.locale($translateProvider.preferredLanguage());
         
         $routeProvider.otherwise({ redirectTo: '/' });

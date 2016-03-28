@@ -13,7 +13,7 @@
         <div class="container">
             <div class="navbar-header">
                 <a class="pull-left logo" href="#/">
-                    <img src="~/Content/food.png" width="45" height="45" alt="{{'FoodApp'|translate}}" />
+                    <img src="~/Content/food.png" width="45" height="45" />
                 </a>
                 <a class="navbar-brand" href="#/" translate>FoodApp</a>
             </div>
@@ -22,6 +22,18 @@
                     <a href="#{{item.url}}" translate=".{{item.name}}"></a>
                 </li>
             </ul>
+            
+                        
+            <ul class="nav navbar-nav navbar-right ng-cloak">
+             <li class="dropdown">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <img ng-src="~/Content/{{topmenu.language}}.png" width="30" height="20"> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li ng-repeat="lang in topmenu.languages"><a href="" ng-click="topmenu.changeLanguage(lang)"><img ng-src="~/Content/{{lang}}.png" width="30" height="20"></a></li>
+              </ul>
+            </li>
+            </ul>
+            
             <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="topmenu.isAuth()">
                 <li ng-class="{ active: topmenu.isActive('/user')}" >
                     <a href="#/profile" ng-bind="topmenu.auth.username">User</a>

@@ -4,13 +4,18 @@
         .module('app')
         .controller('TopMenu', TopMenu);
 
-    TopMenu.$inject = ['$rootScope', '$location', '$route', 'User', 'authservice'];    
+    TopMenu.$inject = ['$rootScope', '$location', '$route', 'User', 'authservice','$translate','moment'];    
     
-    function TopMenu($rootScope, $location, $route, User, authservice) {
+    function TopMenu($rootScope, $location, $route, User, authservice,$translate,moment) {
         var topmenu = this;
         topmenu.menu = [];
         topmenu.users = {};
         topmenu.auth = {};
+        topmenu.languages = [];
+        topmenu.language = "en"
+        
+        topmenu.changeLanguage = changeLanguage;
+        topmenu.updateLanguages = updateLanguages;
         topmenu.isAuth = isAuth;
         topmenu.isActive = isActive;
         topmenu.showLogin = showLogin;
@@ -20,12 +25,22 @@
         activate();
         
         function activate() {
+            
+            $translate.onReady(function() {
+                topmenu.language = $translate.proposedLanguage()
+                updateLanguages();
+            });
+            
             topmenu.auth = authservice.state;
             updateMenu();
             authservice.registerEvent('UserLogged', updateMenu)
             authservice.registerEvent('UserLogout', updateMenu)
         }
-            
+         
+        function updateLanguages() {
+            //TODO: Get languages from config after load static translation
+            topmenu.languages = ['en','ru_RU'];
+        }
 
         function updateMenu() {
             topmenu.menu = getMenu();
@@ -42,6 +57,13 @@
             });
             return menu;
         }
+        
+        function changeLanguage(langKey) {
+            $translate.use(langKey);
+            topmenu.language = $translate.proposedLanguage();
+            moment.locale(topmenu.language);
+            
+        };
         
         function showLogin() {
             authservice.showLogin();

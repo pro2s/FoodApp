@@ -1,6 +1,6 @@
 ﻿<div class="row" ng-if="!uc.readonly">
     <div class="col-sm-12 text-center" ng-if="uc.error">
-        <div role="alert" class="alert" ng-class="{'alert-info':uc.error && uc.working, 'alert-danger':uc.error && !uc.working}" ng-bind="uc.status"></div>
+        <div role="alert" class="alert" ng-class="{'alert-info':uc.error && uc.working, 'alert-danger':uc.error && !uc.working}" translate="{{uc.status}}"></div>
     </div>
 
     <div class="col-sm-1" ng-repeat="i in uc.weekOffset() track by $index">&nbsp;</div>
