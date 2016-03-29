@@ -32,6 +32,10 @@ angular
             prefix: 'l10n/locale-',
             suffix: '.json'
         });
+        $translateProvider.registerAvailableLanguageKeys(['en', 'ru'], {
+            'en_*': 'en',
+            'ru_*': 'ru',
+        });
         $translateProvider.determinePreferredLanguage();
         $translateProvider.fallbackLanguage('en');
         $translateProvider.useCookieStorage();

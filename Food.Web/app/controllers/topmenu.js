@@ -15,7 +15,6 @@
         topmenu.language = "en"
         
         topmenu.changeLanguage = changeLanguage;
-        topmenu.updateLanguages = updateLanguages;
         topmenu.isAuth = isAuth;
         topmenu.isActive = isActive;
         topmenu.showLogin = showLogin;
@@ -27,8 +26,8 @@
         function activate() {
             
             $translate.onReady(function() {
+                topmenu.languages = $translate.getAvailableLanguageKeys(); 
                 topmenu.language = $translate.proposedLanguage()
-                updateLanguages();
             });
             
             topmenu.auth = authservice.state;
@@ -37,11 +36,7 @@
             authservice.registerEvent('UserLogout', updateMenu)
         }
          
-        function updateLanguages() {
-            //TODO: Get languages from config after load static translation
-            topmenu.languages = ['en','ru_RU'];
-        }
-
+        
         function updateMenu() {
             topmenu.menu = getMenu();
         }
