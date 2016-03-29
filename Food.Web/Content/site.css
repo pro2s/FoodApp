@@ -107,6 +107,10 @@ table.selectday {
 	padding-right:11px;
 }
 
+.btn-group-vertical .btn {
+    margin-bottom: 0px;
+}
+
 .btn-group .btn {
     margin-bottom: 0px;
 }
