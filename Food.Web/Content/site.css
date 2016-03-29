@@ -15,7 +15,9 @@ body {
    background-size: 100%;
    
 }
-
+.btn {
+    margin-bottom: 5px;
+}
 .col-menu-tabs {
     top: 1px;
 }

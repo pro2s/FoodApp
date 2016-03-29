@@ -7,6 +7,9 @@
     "Orders": "Orders",
     "Menu": "Menu"
   },
+  "cyr.":"$",
+  "Previous": "Previous",
+  "Next": "Next",
   "Submit": "Submit",
   "Cancel": "Cancel",
   "Login": "Login",
@@ -68,7 +71,11 @@
   "Statistic": "Statistic",
   "TotalStat": "Total",
   "Top": "Top",
-
+  
+  "Comments": "Comments",
+  "Comment": "Comment",
+  "YouComment": "You Comment",
+  "Refresh": "Refresh",
 
   "Error": "Oops... something went wrong",
 

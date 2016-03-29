@@ -73,7 +73,7 @@
                         </td>
                     </tr>
                 </table>
-                <uib-pagination total-items="form.menusPages.totalItems" ng-model="form.menusPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="form.menusChanged()" items-per-page="form.menusPages.perPage"></uib-pagination>
+                <uib-pagination total-items="form.menusPages.totalItems" ng-model="form.menusPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="form.menusChanged()" items-per-page="form.menusPages.perPage"  previous-text="{{'Previous'|translate}}" next-text="{{'Next'|translate}}"></uib-pagination>
             </div>
         </div>
     </div>
