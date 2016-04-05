@@ -18,6 +18,7 @@ using Food.Api.Atributes;
 
 namespace Food.Api.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Payments")]
     public class PaymentsController : ApiController
     {
@@ -103,6 +104,7 @@ namespace Food.Api.Controllers
         }
 
         // PUT: api/Payments/5
+        [Authorize(Roles = "Admin, GlobalAdmin")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutPayment(int id, Payment payment)
         {
@@ -136,7 +138,11 @@ namespace Food.Api.Controllers
 
             return StatusCode(HttpStatusCode.NoContent);
         }
-
+        /// <summary>
+        /// Sharing balance from to other users
+        /// </summary>
+        /// <param name="Share"></param>
+        /// <returns></returns>
         // POST: api/Payments/Share
         [ResponseType(typeof(Payment))]
         [HttpPost]
@@ -187,11 +193,13 @@ namespace Food.Api.Controllers
             return CreatedAtRoute("ShareBalance", new { id = payment_from.Id }, payment_from);
         }
 
+        [Authorize(Roles = "Admin, GlobalAdmin")]
         // POST: api/Payments
         [ResponseType(typeof(Payment))]
         public IHttpActionResult PostPayment(Payment payment)
         {
             payment.Date = DateTime.UtcNow;
+
             Validate(payment);
 
             if (!ModelState.IsValid)
@@ -205,6 +213,7 @@ namespace Food.Api.Controllers
             return CreatedAtRoute("DefaultApi", new { id = payment.Id }, payment);
         }
 
+        [Authorize(Roles = "Admin, GlobalAdmin")]
         // DELETE: api/Payments/5
         [ResponseType(typeof(Payment))]
         public IHttpActionResult DeletePayment(int id)
