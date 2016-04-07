@@ -11,6 +11,7 @@ namespace Food.Api.App_Start
     using Ninject;
     using Ninject.Web.Common;
     using DAL;
+    using System.Collections.Generic;
     public static class NinjectWebCommon 
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();

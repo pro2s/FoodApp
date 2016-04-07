@@ -12,10 +12,28 @@ namespace Food.Api.DAL
     public class PaymentRepository : IPaymentRepository
     {
         FoodDBContext context = new FoodDBContext();
+        
 
-        public IQueryable<Payment> All
+        public List<Payment> All(out int total, int from = 0, int to = 0) {
+            return AllByUser("", out total, from, to);
+        } 
+        
+        public List<Payment> AllByUser(string UserId, out int total, int from = 0, int to = 0)
         {
-            get { return context.Payments; }
+            IQueryable<Payment> query = context.Payments;
+
+            if (UserId != "")
+            {
+                query = query.Where(p => p.UserID == UserId);
+            }
+
+            query = query.OrderByDescending(p => p.Date).ThenByDescending(p => p.Id);
+            total = query.Count();
+            if (from != 0 || to != 0)
+            {
+                query = query.Range(total, from, to);
+            }
+            return query.ToList();
         }
 
         public IQueryable<Payment> AllIncluding(params Expression<Func<Payment, object>>[] includeProperties)
@@ -46,10 +64,15 @@ namespace Food.Api.DAL
             }
         }
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
             var payment = context.Payments.Find(id);
+            if (payment == null)
+            {
+                return false;
+            }
             context.Payments.Remove(payment);
+            return true;
         }
 
         public void Save()
@@ -62,20 +85,28 @@ namespace Food.Api.DAL
             context.Dispose();
         }
 
-        public int GetUserBalance(string userId)
+        public int GetUserBalance(string UserId)
         {
-            return context.GetUserBalance(userId);
+            return context.GetUserBalance(UserId);
         }
+
+        public int SumByUser(string UserId)
+        {
+            return context.Payments.Where(uc => uc.UserID == UserId).Sum(uc => (int?)uc.Sum) ?? 0;
+        }
+
     }
 
     public interface IPaymentRepository : IDisposable
     {
-        IQueryable<Payment> All { get; }
+        List<Payment> All(out int total, int from = 0, int count = 0);
+        List<Payment> AllByUser(string UserId, out int total, int from = 0, int count = 0);
         IQueryable<Payment> AllIncluding(params Expression<Func<Payment, object>>[] includeProperties);
         Payment Find(int id);
         void InsertOrUpdate(Payment payment);
-        void Delete(int id);
+        bool Delete(int id);
         void Save();
-        int GetUserBalance(string userId);
+        int GetUserBalance(string UserId);
+        int SumByUser(string UserId);
     }
 }

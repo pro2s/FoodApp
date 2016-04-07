@@ -319,6 +319,7 @@
     <Compile Include="Controllers\StatisticController.cs" />
     <Compile Include="Controllers\UserChoicesController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="DAL\FoodDBExtension.cs" />
     <Compile Include="DAL\FoodDBInitializer.cs" />
     <Compile Include="DAL\PaymentRepository.cs" />
     <Compile Include="Global.asax.cs">

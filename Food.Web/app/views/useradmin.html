@@ -27,7 +27,7 @@
 
                                 <div ng-if="vm.isadd(user.id)">
                                     <div class="input-group input-group-sm" ng-class="{'has-error':vm.payment.error}">
-                                        <span class="input-group-addon">$</span>
+                                        <span class="input-group-addon" translate>cyr.</span>
                                         <input type="text" class="form-control" ng-model="vm.payment.value">
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" ng-click="vm.sendpayment(user)" ng-class="{'btn-danger':vm.payment.error}">
