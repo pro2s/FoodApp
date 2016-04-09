@@ -211,7 +211,7 @@
     <Content Include="Content\en.png" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\food.png" />
-    <Content Include="Content\ru_RU.png" />
+    <Content Include="Content\ru.png" />
     <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="favicon.ico" />
     <Content Include="favicon.png" />
@@ -302,7 +302,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
