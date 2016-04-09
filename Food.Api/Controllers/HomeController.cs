@@ -27,7 +27,7 @@ namespace Food.Api.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            ViewBag.Title = "Food API";
 
             return View();
         }
