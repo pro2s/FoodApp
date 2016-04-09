@@ -58,7 +58,7 @@ namespace Food.Api
                 {
                     OnApplyRedirect = ctx =>
                     {
-                        if (!ctx.Request.IsNtlmAuthenticationCallback())    // <------
+                        if (!ctx.Request.IsNtlmAuthenticationCallback())    
                         {
                             ctx.Response.Redirect(ctx.RedirectUri);
                         }
