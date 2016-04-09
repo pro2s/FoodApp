@@ -10,7 +10,7 @@
     	local: {
     		host: '',
     		config: {
-    		    api: 'http://publicfoodapi.azurewebsites.net/',
+    		    api: 'http://foodapp.apphb.com/',
     		    redirectUrl: '',
     		}
     	},
