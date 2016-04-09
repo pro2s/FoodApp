@@ -6,7 +6,6 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using Word = Microsoft.Office.Interop.Word;
 using System.IO;
 using System.Diagnostics;
 using Food.Api.Models;
