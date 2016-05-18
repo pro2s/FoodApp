@@ -583,12 +583,12 @@
             Load and parse menu from .doc file
             </summary>
         </member>
-        <member name="T:Food.Api.McDonalds">
+        <member name="T:Food.Api.McDonaldsParser">
             <summary>
             Sample menu parser
             </summary>
         </member>
-        <member name="M:Food.Api.McDonalds.GetInfo">
+        <member name="M:Food.Api.McDonaldsParser.GetInfo">
             <summary>
             Info about parser
             </summary>
@@ -596,7 +596,7 @@
             Dictionary with keys - id, name, icon
             </returns>
         </member>
-        <member name="M:Food.Api.McDonalds.ParseMenu(System.Nullable{System.DateTime})">
+        <member name="M:Food.Api.McDonaldsParser.ParseMenu(System.Nullable{System.DateTime})">
             <summary>
             Parse menu from site or file
             </summary>

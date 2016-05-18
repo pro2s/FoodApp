@@ -64,7 +64,7 @@ namespace Food.Api.App_Start
         {
             kernel.Bind<IMenuParser>().To<ChudoPechkaHtmlParser>();
             kernel.Bind<IMenuParser>().To<ChudoPechkaWordParser>();
-            kernel.Bind<IMenuParser>().To<McDonalds>();
+            kernel.Bind<IMenuParser>().To<McDonaldsParser>();
             kernel.Bind<IPaymentRepository>().To<PaymentRepository>();
         }        
     }
