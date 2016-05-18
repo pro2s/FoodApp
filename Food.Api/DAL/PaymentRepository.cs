@@ -9,6 +9,19 @@ using System.Threading.Tasks;
 
 namespace Food.Api.DAL
 {
+    public interface IPaymentRepository : IDisposable
+    {
+        List<Payment> All(out int total, int from = 0, int count = 0);
+        List<Payment> AllByUser(string UserId, out int total, int from = 0, int count = 0);
+        List<Payment> AllIncluding(params Expression<Func<Payment, object>>[] includeProperties);
+        Payment Find(int id);
+        void InsertOrUpdate(Payment payment);
+        bool Delete(int id);
+        void Save();
+        int GetUserBalance(string UserId);
+        int SumByUser(string UserId);
+    }
+
     public class PaymentRepository : IPaymentRepository
     {
         FoodDBContext context = new FoodDBContext();
@@ -36,14 +49,14 @@ namespace Food.Api.DAL
             return query.ToList();
         }
 
-        public IQueryable<Payment> AllIncluding(params Expression<Func<Payment, object>>[] includeProperties)
+        public List<Payment> AllIncluding(params Expression<Func<Payment, object>>[] includeProperties)
         {
             IQueryable<Payment> query = context.Payments;
             foreach (var includeProperty in includeProperties)
             {
                 query = query.Include(includeProperty);
             }
-            return query;
+            return query.ToList();
         }
 
         public Payment Find(int id)
@@ -97,16 +110,5 @@ namespace Food.Api.DAL
 
     }
 
-    public interface IPaymentRepository : IDisposable
-    {
-        List<Payment> All(out int total, int from = 0, int count = 0);
-        List<Payment> AllByUser(string UserId, out int total, int from = 0, int count = 0);
-        IQueryable<Payment> AllIncluding(params Expression<Func<Payment, object>>[] includeProperties);
-        Payment Find(int id);
-        void InsertOrUpdate(Payment payment);
-        bool Delete(int id);
-        void Save();
-        int GetUserBalance(string UserId);
-        int SumByUser(string UserId);
-    }
+ 
 }
