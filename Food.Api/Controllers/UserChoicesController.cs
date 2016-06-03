@@ -20,6 +20,7 @@ namespace Food.Api.Controllers
     [RoutePrefix("api/UserChoices")]
     public class UserChoicesController : ApiController
     {
+        // TODO: Replace on UserChoices repository
         private FoodDBContext db = new FoodDBContext();
 
         // GET: api/UserChoices

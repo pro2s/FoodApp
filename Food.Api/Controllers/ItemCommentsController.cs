@@ -19,7 +19,13 @@ namespace Food.Api.Controllers
 {
     public class ItemCommentsController : ApiController
     {
-        private FoodDBContext db = new FoodDBContext();
+        
+        readonly GenericRepository<ItemComment> _comments;
+
+        public ItemCommentsController(GenericRepository<ItemComment> comments)
+        {
+            _comments = comments;
+        }
 
         private ApplicationUserManager _userManager;
 
@@ -46,7 +52,7 @@ namespace Food.Api.Controllers
             else
             {
                 Dictionary<string, ApplicationUser> users = UserManager.Users.ToDictionary(user => user.Id);
-                var query = db.ItemComments
+                var query = _comments.All
                     .Where(ic => ic.ItemId == itemId)
                     .Select(ic => new ItemCommentViewModel()
                     {
@@ -90,11 +96,10 @@ namespace Food.Api.Controllers
         }
 
         // GET: api/ItemComments/5
-        [Authorize(Roles = "Admin, GlobalAdmin")]
         [ResponseType(typeof(ItemComment))]
         public async Task<IHttpActionResult> GetItemComment(int id)
         {
-            ItemComment itemComment = await db.ItemComments.FindAsync(id);
+            ItemComment itemComment = await _comments.FindAsync(id);
             if (itemComment == null)
             {
                 return NotFound();
@@ -118,11 +123,12 @@ namespace Food.Api.Controllers
                 return BadRequest();
             }
 
-            db.Entry(itemComment).State = EntityState.Modified;
+            _comments.InsertOrUpdate(itemComment);
+
 
             try
             {
-                await db.SaveChangesAsync();
+                await _comments.SaveAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -166,8 +172,8 @@ namespace Food.Api.Controllers
                 Date = DateTime.UtcNow,
             };
 
-            db.ItemComments.Add(comment);
-            await db.SaveChangesAsync();
+            _comments.InsertOrUpdate(comment);
+            await _comments.SaveAsync();
 
             var commentView = new ItemCommentViewModel()
             {
@@ -182,18 +188,28 @@ namespace Food.Api.Controllers
         }
 
         // DELETE: api/ItemComments/5
+
         [ResponseType(typeof(ItemComment))]
         [Authorize]
         public async Task<IHttpActionResult> DeleteItemComment(int id)
         {
-            ItemComment itemComment = await db.ItemComments.FindAsync(id);
+            ItemComment itemComment = await _comments.FindAsync(id);
             if (itemComment == null)
             {
                 return NotFound();
             }
 
-            db.ItemComments.Remove(itemComment);
-            await db.SaveChangesAsync();
+            string UserId = User.Identity.GetUserId();
+
+            if (!(User.IsInRole("Admin") || User.IsInRole("GlobalAdmin")) && itemComment.UserId != UserId)
+            {
+                return Unauthorized();
+            }
+
+
+            _comments.Delete(itemComment);
+            
+            await _comments.SaveAsync();
 
             return Ok(itemComment);
         }
@@ -202,14 +218,14 @@ namespace Food.Api.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _comments.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool ItemCommentExists(int id)
         {
-            return db.ItemComments.Count(e => e.Id == id) > 0;
+            return _comments.Find(id) != null;
         }
     }
 }

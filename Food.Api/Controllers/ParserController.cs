@@ -18,7 +18,12 @@ namespace Food.Api.Controllers
 
     public class ParserController : ApiController
     {
+
+        // TODO: Inject Menu and Items repository
+          
         private FoodDBContext db = new FoodDBContext();
+
+
         readonly IMenuParser[] allParsers;
         
         public ParserController(IMenuParser[] parsers)

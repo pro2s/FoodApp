@@ -14,6 +14,7 @@ namespace Food.Api.Controllers
     [RoutePrefix("api/Statistic")]
     public class StatisticController : ApiController
     {
+        // TODO: Implement dynamic statistic info from repositories
         private FoodDBContext db = new FoodDBContext();
 
         private ApplicationUserManager _userManager;

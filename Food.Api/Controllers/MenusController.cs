@@ -22,6 +22,8 @@ namespace Food.Api.Controllers
     /// </summary>
     public class MenusController : ApiController
     {
+        // TODO: Replace with Menu repository
+
         private FoodDBContext db = new FoodDBContext();
         
 
