@@ -17,27 +17,30 @@ namespace Food.Api.Controllers
 {
     public class ItemRatingsController : ApiController
     {
-        private FoodDBContext db = new FoodDBContext();
-        
+        readonly IGenericRepository<ItemRating> _ratings;
 
-    
-    
+        public ItemRatingsController(IGenericRepository<ItemRating> ratings)
+        {
+            _ratings = ratings;
+        }
+
         // GET: api/ItemRatings
         public IQueryable<ItemRating> GetItemRatings()
         {
-            return db.ItemRatings;
+            return _ratings.All;
         }
 
         // GET: api/ItemRatings/5
         [ResponseType(typeof(ItemRating))]
         public async Task<IHttpActionResult> GetItemRating(int id)
         {
-            ItemRating itemRating = await db.ItemRatings.FindAsync(id);
+            ItemRating itemRating = await _ratings.FindAsync(id);
+
             if (itemRating == null)
             {
                 return NotFound();
             }
-
+            
             return Ok(itemRating);
         }
 
@@ -55,11 +58,18 @@ namespace Food.Api.Controllers
                 return BadRequest();
             }
 
-            db.Entry(itemRating).State = EntityState.Modified;
+            string UserId = User.Identity.GetUserId();
+
+            if (!(User.IsInRole("Admin") || User.IsInRole("GlobalAdmin")) && itemRating.UserId != UserId )
+            {
+                return Unauthorized();
+            }
+            
+            _ratings.InsertOrUpdate(itemRating);
 
             try
             {
-                await db.SaveChangesAsync();
+                await _ratings.SaveAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -80,31 +90,39 @@ namespace Food.Api.Controllers
         [ResponseType(typeof(ItemRating))]
         public async Task<IHttpActionResult> PostItemRating(ItemRating itemRating)
         {
-            string UserId = User.Identity.GetUserId();
-
-            if (!ModelState.IsValid || itemRating.UserId != UserId)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+
+            string UserId = User.Identity.GetUserId();
+
+            if (!(User.IsInRole("Admin") || User.IsInRole("GlobalAdmin")) && itemRating.UserId != UserId)
+            {
+                return Unauthorized();
+            }
             
-            db.ItemRatings.Add(itemRating);
-            await db.SaveChangesAsync();
+            _ratings.InsertOrUpdate(itemRating);
+            
+            await _ratings.SaveAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = itemRating.Id }, itemRating);
         }
 
         // DELETE: api/ItemRatings/5
+        [Authorize(Roles = "Admin, GlobalAdmin")]
         [ResponseType(typeof(ItemRating))]
         public async Task<IHttpActionResult> DeleteItemRating(int id)
         {
-            ItemRating itemRating = await db.ItemRatings.FindAsync(id);
+            ItemRating itemRating = await _ratings.FindAsync(id);
+
             if (itemRating == null)
             {
                 return NotFound();
             }
 
-            db.ItemRatings.Remove(itemRating);
-            await db.SaveChangesAsync();
+            _ratings.Delete(itemRating);
+            await _ratings.SaveAsync();
 
             return Ok(itemRating);
         }
@@ -113,14 +131,14 @@ namespace Food.Api.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _ratings.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool ItemRatingExists(int id)
         {
-            return db.ItemRatings.Count(e => e.Id == id) > 0;
+            return _ratings.Find(id) != null;
         }
     }
 }
