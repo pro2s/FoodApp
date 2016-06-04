@@ -25,8 +25,12 @@ namespace Food.Api.Controllers
         // TODO: Replace with Menu repository
 
         private FoodDBContext db = new FoodDBContext();
-        
+        private readonly IMenuRepository _menus;
 
+        public MenusController(IMenuRepository menus)
+        {
+            _menus = menus;
+        }
         
         private void CalculateRatings(List<Menu> menus)
         {
@@ -111,7 +115,8 @@ namespace Food.Api.Controllers
                     result = db.Menus.Include("Items").Where(m => m.Type == get_type).ToList();
                     break;
                 case "all":
-                    IQueryable<Menu> query = db.Menus.Include("Items").OrderByDescending(m=>m.OnDate);
+                    
+                    IQueryable<Menu> query = _menus.AllIncluding(m=> m.Items).OrderByDescending(m => m.OnDate);
                     if (range)
                     {
                         int count = to - from + 1;
@@ -122,11 +127,14 @@ namespace Food.Api.Controllers
                             query = query.Skip(from).Take(count);
                         }
                     }
+                    
                     result = query.ToList();
 
                     break;
                 default:
-                    result = db.Menus.Include("Items").Include("Items.Ratings")
+                    // db.Menus.Include("Items").Include("Items.Ratings")
+         
+                    result = _menus.AllIncluding(m => m.Items, m => m.Items.Select(i=> i.Ratings))
                             .Where(m => m.Type == get_type && m.OnDate >= StartDate)
                             .OrderBy(m => m.OnDate)
                             .ToList();
@@ -145,7 +153,11 @@ namespace Food.Api.Controllers
         [ResponseType(typeof(Menu))]
         public IHttpActionResult GetMenu(int id)
         {
-            Menu menu = db.Menus.Find(id);
+
+            Menu menu = _menus.Find(id);
+            
+            // db.Menus.Find(id);
+
             if (menu == null)
             {
                 return NotFound();
@@ -231,14 +243,14 @@ namespace Food.Api.Controllers
         [ResponseType(typeof(Menu))]
         public IHttpActionResult DeleteMenu(int id)
         {
-            Menu menu = db.Menus.Find(id);
+            Menu menu = _menus.Find(id);
             if (menu == null)
             {
                 return NotFound();
             }
 
-            db.Menus.Remove(menu);
-            db.SaveChanges();
+            _menus.Delete(menu);
+            _menus.Save();
 
             return Ok(menu);
         }

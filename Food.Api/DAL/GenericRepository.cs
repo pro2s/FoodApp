@@ -8,10 +8,10 @@ using System.Web;
 
 namespace Food.Api.DAL
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class, new()
+    public abstract class GenericRepository<T> : IGenericRepository<T> where T : class, new()
     {
         FoodDBContext context = new FoodDBContext();
-        private DbSet<T> table = null;
+        protected DbSet<T> table = null;
         
         public static object GetDefault(Type type)
         {
@@ -66,7 +66,7 @@ namespace Food.Api.DAL
             context.Dispose();
         }
 
-        public T Find(object id)
+        public virtual T Find(object id)
         {
             if (id == null)
             {
@@ -75,7 +75,7 @@ namespace Food.Api.DAL
             return table.Find(id);
         }
 
-        public async Task<T> FindAsync(object id)
+        public virtual async Task<T> FindAsync(object id)
         {
             if (id == null )
             {

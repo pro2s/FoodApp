@@ -6,66 +6,80 @@ using System.Linq.Expressions;
 using System.Web;
 using Food.Api.Models;
 
+
 namespace Food.Api.DAL
 { 
-    public class MenuRepository : IMenuRepository
+    public class MenuRepository : GenericRepository<Menu>, IMenuRepository
     {
-        FoodDBContext context = new FoodDBContext();
-
-        public IQueryable<Menu> All
+        public void DoSomething()
         {
-            get { return context.Menus; }
+            throw new NotImplementedException();
         }
 
-        public IQueryable<Menu> AllIncluding(params Expression<Func<Menu, object>>[] includeProperties)
+        //TODO: Rewrite to SQL/Linq query
+        private void CalculateRatings(List<Menu> menus, string UserId)
         {
-            IQueryable<Menu> query = context.Menus;
-            foreach (var includeProperty in includeProperties) {
-                query = query.Include(includeProperty);
+            foreach (var menu in menus)
+            {
+                menu.Items = menu.Items.OrderBy(i => i.Order).ToList();
+                foreach (var item in menu.Items)
+                {
+                    // if ratings not calculated (present raiting with id = -1)
+                    if (!item.Ratings.Where(ir => ir.Id < 0).Any())
+                    {
+                        var AllRatings = item.Ratings.ToList();
+                        item.Ratings.Clear();
+
+                        // [0] - average rating 
+                        if (AllRatings.Count > 0)
+                        {
+                            var avg = AllRatings.Average(r => r.Rate);
+                            item.Ratings.Add(new ItemRating() { Id = -1, ItemId = item.Id, Rate = (int)avg });
+                        }
+                        else
+                        {
+                            ItemRating rate = new ItemRating() { Id = -1, ItemId = item.Id, Rate = 0 };
+                            item.Ratings.Add(rate);
+                        }
+
+                        // [1] - user rating, undefined if not logined
+                        if (UserId != null)
+                        {
+                            var rate = AllRatings.Where(r => r.UserId == UserId);
+                            if (rate.Any())
+                            {
+                                item.Ratings.Add(rate.First());
+                            }
+                            else
+                            {
+                                item.Ratings.Add(new ItemRating()
+                                {
+                                    Id = 0,
+                                    ItemId = item.Id,
+                                    UserId = UserId,
+                                    Rate = 0,
+                                    Date = DateTime.Today
+                                });
+                            }
+                        }
+                    }
+                }
             }
-            return query;
         }
 
-        public Menu Find(int id)
+        public override Menu Find(object id)
         {
-            return context.Menus.Find(id);
-        }
-
-        public void InsertOrUpdate(Menu menu)
-        {
-            if (menu.Id == default(int)) {
-                // New entity
-                context.Menus.Add(menu);
-            } else {
-                // Existing entity
-                context.Entry(menu).State = EntityState.Modified;
+            if (id == null)
+            {
+                throw new NullReferenceException();
             }
-        }
-
-        public void Delete(int id)
-        {
-            var menu = context.Menus.Find(id);
-            context.Menus.Remove(menu);
-        }
-
-        public void Save()
-        {
-            context.SaveChanges();
-        }
-
-        public void Dispose() 
-        {
-            context.Dispose();
+            return table.Include("Items").SingleOrDefault(m => m.Id == (int)id);
         }
     }
 
-    public interface IMenuRepository : IDisposable
+    public interface IMenuRepository: IGenericRepository<Menu>
     {
-        IQueryable<Menu> All { get; }
-        IQueryable<Menu> AllIncluding(params Expression<Func<Menu, object>>[] includeProperties);
-        Menu Find(int id);
-        void InsertOrUpdate(Menu menu);
-        void Delete(int id);
-        void Save();
+        void DoSomething();
     }
+    
 }
