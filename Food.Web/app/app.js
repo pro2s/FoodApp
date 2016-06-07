@@ -19,14 +19,17 @@ angular
         'pascalprecht.translate',
         'ui.bootstrap',
         'angularMoment',
+        'angular-loading-bar',
         'app.user',
         'app.admin',
         'app.menu',
         'app.statistic',
         'app.userservice',
     ])
-    .config(['$routeProvider', '$locationProvider', '$httpProvider', '$translateProvider' , 'moment', function ($routeProvider, $locationProvider, $httpProvider, $translateProvider, moment) {
-        
+    .config(['$routeProvider', '$locationProvider', '$httpProvider', '$translateProvider', 'moment', 'cfpLoadingBarProvider', function ($routeProvider, $locationProvider, $httpProvider, $translateProvider, moment, cfpLoadingBarProvider) {
+
+        cfpLoadingBarProvider.includeSpinner = true;
+
         $translateProvider.useSanitizeValueStrategy('escape');
         $translateProvider.useStaticFilesLoader({
             prefix: 'l10n/locale-',

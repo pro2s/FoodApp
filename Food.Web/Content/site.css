@@ -162,3 +162,29 @@ table.selectday {
 .star-rating.readonly .star.filled {
   color: #666;
 }
+
+
+/*
+ * Progress Bar
+ */
+
+#loading-bar .bar {
+  background: #a05090;
+}
+
+#loading-bar-spinner .spinner-icon {
+  border-top-color:  #a05090;
+  border-left-color: #a05090;
+}
+
+#loading-bar .peg {
+  -moz-box-shadow: #a05090 1px 0 6px 1px;
+  -ms-box-shadow: #a05090 1px 0 6px 1px;
+  -webkit-box-shadow: #a05090 1px 0 6px 1px;
+  box-shadow: #a05090 1px 0 6px 1px;
+}
+
+#loading-bar-spinner {
+  top: 17px;
+  left: 30px;
+}
