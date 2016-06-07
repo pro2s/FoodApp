@@ -6,7 +6,6 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using Word = Microsoft.Office.Interop.Word;
 using System.IO;
 using System.Diagnostics;
 using Food.Api.Models;
@@ -31,18 +30,19 @@ namespace Food.Api
 
         protected void ReadData()
         {
-            WebClient client = new WebClient();
-            
-            var data = client.DownloadData(_url);
-            var raw_html = Encoding.UTF8.GetString(data);
-            var html = new HtmlDocument();
-            html.LoadHtml(raw_html);
-            _html_menu = html.GetElementbyId("issues").Elements("li");
-            _url_menu = html.DocumentNode.Descendants("a")
-                .Where(d => d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("file but"))
-                .First()
-                .Attributes["href"].Value;
+            using (WebClient client = new WebClient())
+            {
+                var data = client.DownloadData(_url);
+                var raw_html = Encoding.UTF8.GetString(data);
 
+                var html = new HtmlDocument();
+                html.LoadHtml(raw_html);
+                _html_menu = html.GetElementbyId("issues").Elements("li");
+                _url_menu = html.DocumentNode.Descendants("a")
+                    .Where(d => d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("file but"))
+                    .First()
+                    .Attributes["href"].Value;
+            }
         }
       
         public ChudoPechka()

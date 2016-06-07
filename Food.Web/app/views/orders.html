@@ -96,7 +96,7 @@
                     </tbody>
                 </table>
 
-                <uib-pagination total-items="vm.pages.totalItems" ng-model="vm.pages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.pageChanged()" items-per-page="vm.pages.perPage"></uib-pagination>
+                <uib-pagination total-items="vm.pages.totalItems" ng-model="vm.pages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.pageChanged()" items-per-page="vm.pages.perPage"  previous-text="{{'Previous'|translate}}" next-text="{{'Next'|translate}}"></uib-pagination>
             </div>
         </div>
     </div>

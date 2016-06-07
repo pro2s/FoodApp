@@ -6,27 +6,50 @@
     <title translate>FoodApp</title>
     <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
     <link rel="icon" type="image/x-icon" href="./favicon.ico" />
-    <link href="./Content/bootstrap.css" rel="stylesheet"/>
+    <link href="./Content/bootstrap.min.css" rel="stylesheet"/>
     <link href="./Content/font-awesome.css" rel="stylesheet"/>
     <link href="./Content/bootstrap-social.css" rel="stylesheet"/>
+    <link href="./Content/loading-bar.min.css" rel="stylesheet" />
 	<link href="./Content/site.css" rel="stylesheet"/>
+    
 </head>
 <body>
     <nav class="navbar navbar-default navbar-static-top" ng-controller="TopMenu as topmenu">
         <div class="container">
             <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-mobile" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            
                 <a class="pull-left logo" href="#/">
-                    <img src="./Content/food.png" width="45" height="45" alt="{{'FoodApp'|translate}}" />
+                    <img src="./Content/food.png" width="45" height="45" />
                 </a>
                 <a class="navbar-brand" href="#/" translate>FoodApp</a>
             </div>
-            <ul class="nav navbar-nav" translate-namespace="topmenu">
-                <li ng-repeat="item in topmenu.menu" ng-class="{ active: topmenu.isActive(item.url)}">
-                    <a href="#{{item.url}}" translate=".{{item.name}}"></a>
-                </li>
+            
+            <div class="collapse navbar-collapse" id="navbar-collapse-mobile">
+                <ul class="nav navbar-nav" translate-namespace="topmenu">
+                    <li ng-repeat="item in topmenu.menu" ng-class="{ active: topmenu.isActive(item.url)}">
+                        <a href="#{{item.url}}" translate=".{{item.name}}"></a>
+                    </li>
+                </ul>
+            
+            
+            <ul class="nav navbar-nav navbar-right ng-cloak lang">
+             <li class="dropdown">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <img ng-src="./Content/{{topmenu.language}}.png" width="30" height="20"> <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li ng-repeat="lang in topmenu.languages"><a href="" ng-click="topmenu.changeLanguage(lang)"><img ng-src="./Content/{{lang}}.png" width="30" height="20"></a></li>
+              </ul>
+            </li>
             </ul>
+            
             <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="topmenu.isAuth()">
-                <li ng-class="{ active: topmenu.isActive('/user')}">
+                <li ng-class="{ active: topmenu.isActive('/profile')}">
                     <a href="#/profile" ng-bind="topmenu.auth.username">User</a>
                 </li>
                 <li><a href="" ng-click="topmenu.logout()" translate>Logout</a></li>
@@ -35,6 +58,7 @@
                 <li><a href="" ng-click="topmenu.showLogin()" translate>Login</a></li>
                 <li><a href="" ng-click="topmenu.showRegister()" translate>Registration</a></li>
             </ul>
+            </div>
         </div>
     </nav>
 	
@@ -56,15 +80,17 @@
         </div>
     </div>
 
-<script src="./scripts/jquery-1.10.2.js"></script>
-<script src="./scripts/angular.js"></script>
+<script src="./scripts/jquery-1.10.2.min.js"></script>
+<script src="./scripts/angular.min.js"></script>
 <script src="./scripts/angular-mocks.js"></script>
-<script src="./scripts/angular-resource.js"></script>
-<script src="./scripts/angular-route.js"></script>
-<script src="./scripts/angular-ui/ui-bootstrap-tpls.js"></script>
-<script src="./scripts/bootstrap.js"></script>
-<script src="./scripts/moment-with-locales.js"></script>
-<script src="./scripts/angular-moment.js"></script>
+<script src="./scripts/angular-cookies.min.js"></script>
+<script src="./scripts/angular-resource.min.js"></script>
+<script src="./scripts/angular-route.min.js"></script>
+<script src="./scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+<script src="./scripts/bootstrap.min.js"></script>
+<script src="./scripts/moment-with-locales.min.js"></script>
+<script src="./scripts/loading-bar.min.js"></script>
+<script src="./scripts/angular-moment.min.js"></script>
 
 <script src="./scripts/angular-translate/translate.js"></script>
 <script src="./scripts/angular-translate/directive/translate-cloak.js"></script>

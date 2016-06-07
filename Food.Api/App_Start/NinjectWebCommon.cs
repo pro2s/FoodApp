@@ -11,6 +11,7 @@ namespace Food.Api.App_Start
     using Ninject;
     using Ninject.Web.Common;
     using DAL;
+    using System.Collections.Generic;
     public static class NinjectWebCommon 
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
@@ -63,7 +64,7 @@ namespace Food.Api.App_Start
         {
             kernel.Bind<IMenuParser>().To<ChudoPechkaHtmlParser>();
             kernel.Bind<IMenuParser>().To<ChudoPechkaWordParser>();
-            kernel.Bind<IMenuParser>().To<McDonalds>();
+            kernel.Bind<IMenuParser>().To<McDonaldsParser>();
             kernel.Bind<IPaymentRepository>().To<PaymentRepository>();
         }        
     }

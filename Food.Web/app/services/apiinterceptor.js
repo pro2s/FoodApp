@@ -35,7 +35,7 @@
         service.responseError = function (rejection) {
             switch (rejection.status) {
                 case 401:
-                    $rootScope.$broadcast('unauthorized');
+                    $rootScope.$broadcast('api:unauthorized');
                     break;
                 case 408:
                 case -1:

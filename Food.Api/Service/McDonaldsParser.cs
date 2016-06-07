@@ -9,11 +9,11 @@ namespace Food.Api
     /// <summary>
     /// Sample menu parser
     /// </summary>
-    public class McDonalds : IMenuParser
+    public class McDonaldsParser : IMenuParser
     {
         private Dictionary<string, string> _info;
 
-        public McDonalds()
+        public McDonaldsParser()
         {
             _info = new Dictionary<string, string>();
             _info["id"] = "mcdonalds";

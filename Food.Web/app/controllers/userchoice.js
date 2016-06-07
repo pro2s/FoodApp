@@ -14,8 +14,7 @@
         uc.days = []
         uc.error = true;
         uc.working = false;
-        uc.title = "Loading ...";
-        uc.status = "Loading food ...";
+        uc.status = "LoadingFood";
         uc.readonly = true;
         uc.weekdays = [];
         uc.numweekdays = 0;
@@ -51,7 +50,7 @@
         }
 
         function FillUserChoice() {
-            uc.status = "Loading food ...";
+            uc.status = "LoadingFood";
             uc.working = true;
             uc.error = true;
             uc.weekdays = {};
@@ -127,7 +126,7 @@
         };
         
         function failure() {
-            uc.status = "Oops... something went wrong";
+            uc.status = "Error";
             uc.error = true;
             uc.working = false;
         };

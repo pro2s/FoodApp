@@ -8,7 +8,7 @@
                      on-rating-select="setRating(item.ratings[1])"
                      readonly="readonly">
                 </div>
-                <h4 class="modal-title" ng-bind="item.name">Comments</h4>
+                <h4 class="modal-title" ng-bind="item.name" translate>Comments</h4>
             </div>
             <div class="modal-body">
                 <p>{{item.name}}, {{item.weight}} g.</p>
@@ -27,19 +27,19 @@
                         </div>
                     </li>
                 </ul>
-                <uib-pagination total-items="pages.totalItems" ng-model="pages.currentPage" max-size="5" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="pageChanged()" items-per-page="pages.perPage"></uib-pagination>
+                <uib-pagination total-items="pages.totalItems" ng-model="pages.currentPage" max-size="5" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="pageChanged()" items-per-page="pages.perPage" previous-text="{{'Previous'|translate}}" next-text="{{'Next'|translate}}"></uib-pagination>
                 
                 <form ng-if="!readonly">
                     <div class="form-group">
-                        <label for="comment">You comment</label>
-                        <input type="text" class="form-control" id="comment" placeholder="comment" ng-model="form.text">
+                        <label for="comment" translate>YouComment</label>
+                        <input type="text" class="form-control" id="comment" placeholder="{{'Comment'|translate}}" ng-model="form.text">
                     </div>
-                    <button type="submit" class="btn btn-default" ng-click="sendComment()">Send</button>
+                    <button type="submit" class="btn btn-default" ng-click="sendComment()" translate>Send</button>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" ng-click="refreshComments()">Refresh</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" ng-click="refreshComments()" translate>Refresh</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

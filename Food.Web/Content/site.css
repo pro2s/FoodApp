@@ -15,15 +15,22 @@ body {
    background-size: 100%;
    
 }
-
+.btn {
+    margin-bottom: 5px;
+}
 .col-menu-tabs {
     top: 1px;
 }
 
-
+.lang > li > a {
+    padding-top: 14px;
+    padding-bottom: 15px;
+}
 
 .logo > img {
-    margin: 2px 10px;
+    margin-top: 3px;
+    margin-right: 10px;
+
 }
 
 .alert-success .badge {
@@ -100,6 +107,18 @@ table.selectday {
 	padding-right:11px;
 }
 
+.btn-group-vertical .btn {
+    margin-bottom: 0px;
+}
+
+.btn-group .btn {
+    margin-bottom: 0px;
+}
+
+.input-group .btn {
+    margin-bottom: 0px;
+}
+
 .input-group > .input-group-btn:empty {
     width: 0px;
 }
@@ -142,4 +161,30 @@ table.selectday {
 
 .star-rating.readonly .star.filled {
   color: #666;
+}
+
+
+/*
+ * Progress Bar
+ */
+
+#loading-bar .bar {
+  background: #a05090;
+}
+
+#loading-bar-spinner .spinner-icon {
+  border-top-color:  #a05090;
+  border-left-color: #a05090;
+}
+
+#loading-bar .peg {
+  -moz-box-shadow: #a05090 1px 0 6px 1px;
+  -ms-box-shadow: #a05090 1px 0 6px 1px;
+  -webkit-box-shadow: #a05090 1px 0 6px 1px;
+  box-shadow: #a05090 1px 0 6px 1px;
+}
+
+#loading-bar-spinner {
+  top: 17px;
+  left: 30px;
 }

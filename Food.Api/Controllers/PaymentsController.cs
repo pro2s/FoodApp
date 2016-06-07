@@ -18,10 +18,11 @@ using Food.Api.Atributes;
 
 namespace Food.Api.Controllers
 {
+    [Authorize]
     [RoutePrefix("api/Payments")]
     public class PaymentsController : ApiController
     {
-        private FoodDBContext db;
+        readonly IPaymentRepository _payments;
 
         private ApplicationUserManager _userManager;
 
@@ -37,9 +38,9 @@ namespace Food.Api.Controllers
             }
         }
 
-        public PaymentsController()
+        public PaymentsController(IPaymentRepository payments)
         {
-            db = new FoodDBContext();
+            _payments = payments;
         }
 
         // GET: api/Payments
@@ -47,28 +48,25 @@ namespace Food.Api.Controllers
         public List<PaymentViewModel> GetPayments(string list = "user", bool range = false, int from = 0, int to = 0)
         {
             string id = User.Identity.GetUserId();
-            IQueryable<Payment> query;
+            List<Payment> data;
+            int total;
+
             if (User.IsInRole("Admin") && list == "all")
             {
-                query = db.Payments.OrderByDescending(p=>p.Date).ThenByDescending(p => p.Id); 
+                data = _payments.All(out total, from, to);
             }
             else
             {
-                query = db.Payments.Where(p => p.UserID == id).OrderByDescending(p => p.Date).ThenByDescending(p=> p.Id); 
+                data = _payments.AllByUser(id, out total, from, to);
             }
+            
 
             if (range)
             {
-                int count = to - from + 1;
-                int total = query.Count();
                 Request.Headers.Add("X-Range-Total", total.ToString());
-                if (count > 0 && from < total)
-                {
-                    query = query.Skip(from).Take(count);
-                }
             }
-
-            var result = query.ToList().Select(p => new PaymentViewModel() {
+            
+            var result = data.Select(p => new PaymentViewModel() {
                 Id = p.Id,
                 Sum = p.Sum,
                 UserId = p.UserID,
@@ -77,7 +75,6 @@ namespace Food.Api.Controllers
                 });
 
             return result.ToList();
-            
         }
 
         // GET: api/Payments
@@ -85,7 +82,7 @@ namespace Food.Api.Controllers
         public IHttpActionResult GetPaymentsSum()
         {
             string id = User.Identity.GetUserId();
-            int sum = db.Payments.Where(uc => uc.UserID == id).Sum(uc => (int?)uc.Sum) ?? 0;
+            int sum = _payments.SumByUser(id);
             return Ok(new { Sum = sum });
         }
 
@@ -93,19 +90,31 @@ namespace Food.Api.Controllers
         [ResponseType(typeof(Payment))]
         public IHttpActionResult GetPayment(int id)
         {
-            Payment payment = db.Payments.Find(id);
+            Payment payment = _payments.Find(id);
+            
             if (payment == null)
             {
                 return NotFound();
+            }
+
+            if (!User.IsInRole("Admin") && payment.UserID != User.Identity.GetUserId())
+            {
+                return Unauthorized();
             }
 
             return Ok(payment);
         }
 
         // PUT: api/Payments/5
+        [Authorize(Roles = "Admin, GlobalAdmin")]
         [ResponseType(typeof(void))]
         public IHttpActionResult PutPayment(int id, Payment payment)
         {
+            if (payment == null)
+            {
+                return BadRequest();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -116,27 +125,17 @@ namespace Food.Api.Controllers
                 return BadRequest();
             }
 
-            db.Entry(payment).State = EntityState.Modified;
+            _payments.InsertOrUpdate(payment);
+            _payments.Save();
 
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PaymentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
+            return CreatedAtRoute("DefaultApi", new { id = payment.Id }, payment);
         }
 
+        /// <summary>
+        /// Sharing balance from to other users
+        /// </summary>
+        /// <param name="Share"></param>
+        /// <returns></returns>
         // POST: api/Payments/Share
         [ResponseType(typeof(Payment))]
         [HttpPost]
@@ -157,9 +156,9 @@ namespace Food.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            int debit = db.Payments.Where(p => p.UserID == UserId).Sum(p => (int?)p.Sum) ?? 0;
-            int credit = db.UserChoices.Where(uc => uc.UserID == UserId && uc.confirm).Sum(uc => (int?)uc.Menu.Price) ?? 0;
-            if (debit - credit - Share.Amount < 0)
+            int balance = _payments.GetUserBalance(UserId);
+
+            if (balance - Share.Amount < 0)
             {
                 ModelState.AddModelError("Share.Amount", "Insufficient balance.");
                 return BadRequest(ModelState);
@@ -180,59 +179,54 @@ namespace Food.Api.Controllers
             };
 
 
-            db.Payments.Add(payment_to);
-            db.Payments.Add(payment_from);
-            db.SaveChanges();
+            _payments.InsertOrUpdate(payment_to);
+            _payments.InsertOrUpdate(payment_from);
+            _payments.Save();
 
             return CreatedAtRoute("ShareBalance", new { id = payment_from.Id }, payment_from);
         }
-
+        
         // POST: api/Payments
+        [Authorize(Roles = "Admin, GlobalAdmin")]
         [ResponseType(typeof(Payment))]
         public IHttpActionResult PostPayment(Payment payment)
         {
-            payment.Date = DateTime.UtcNow;
-            Validate(payment);
-
-            if (!ModelState.IsValid)
+            if (payment == null)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Payments.Add(payment);
-            db.SaveChanges();
+            payment.Id = 0;
+            payment.Date = DateTime.UtcNow;
 
-            return CreatedAtRoute("DefaultApi", new { id = payment.Id }, payment);
+            return PutPayment(0, payment);
         }
 
         // DELETE: api/Payments/5
+        [Authorize(Roles = "Admin, GlobalAdmin")]
         [ResponseType(typeof(Payment))]
         public IHttpActionResult DeletePayment(int id)
         {
-            Payment payment = db.Payments.Find(id);
-            if (payment == null)
+            if (_payments.Delete(id))
+            {
+                _payments.Save();
+            }
+            else
             {
                 return NotFound();
             }
 
-            db.Payments.Remove(payment);
-            db.SaveChanges();
-
-            return Ok(payment);
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                _payments.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        private bool PaymentExists(int id)
-        {
-            return db.Payments.Count(e => e.Id == id) > 0;
-        }
     }
 }

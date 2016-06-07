@@ -53,7 +53,7 @@
                 <div ng-class="{'text-danger':payment.sum<0}" ng-repeat="payment in vm.payments">
                     {{payment.date|amDateFormat:'L'}} : {{payment.sum}} <span ng-show="payment.sum<0">Balance sharing</span>
                 </div>
-                <uib-pagination total-items="vm.paymentsPages.totalItems" ng-model="vm.paymentsPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getPayments()" items-per-page="vm.paymentsPages.perPage"></uib-pagination>
+                <uib-pagination total-items="vm.paymentsPages.totalItems" ng-model="vm.paymentsPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getPayments()" items-per-page="vm.paymentsPages.perPage"  previous-text="{{'Previous'|translate}}" next-text="{{'Next'|translate}}"></uib-pagination>
             </div>
             <div class="panel-footer"><strong translate>Total</strong>:&nbsp;{{vm.paymentsSum}}</div>
         </div>
@@ -65,7 +65,7 @@
                 <div ng-class="{'text-success':choice.confirm}" ng-repeat="choice in vm.userorders">
                     {{choice.date|amDateFormat:'L'}} - {{choice.menu.name}} ({{choice.menu.price}})&nbsp;<span ng-if="choice.confirm" class="glyphicon glyphicon-ok"></span>
                 </div>
-                <uib-pagination total-items="vm.ordersPages.totalItems" ng-model="vm.ordersPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getUserOrders()" items-per-page="vm.ordersPages.perPage"></uib-pagination>
+                <uib-pagination total-items="vm.ordersPages.totalItems" ng-model="vm.ordersPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getUserOrders()" items-per-page="vm.ordersPages.perPage"  previous-text="{{'Previous'|translate}}" next-text="{{'Next'|translate}}"></uib-pagination>
             </div>
             <div class="panel-footer"><strong translate>Total</strong>:&nbsp;{{vm.ordersSum}}</div>
         </div>

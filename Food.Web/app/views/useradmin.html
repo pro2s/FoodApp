@@ -15,7 +15,7 @@
                             <td>
                                 <div ng-if="!vm.isadd(user.id)">
                                     <div class="input-group input-group-sm">
-                                        <span class="input-group-addon">$</span>
+                                        <span class="input-group-addon" translate>cyr.</span>
                                         <input type="text" class="form-control" ng-model="user.balance" readonly>
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" ng-click="vm.onadd(user.id)">
@@ -27,7 +27,7 @@
 
                                 <div ng-if="vm.isadd(user.id)">
                                     <div class="input-group input-group-sm" ng-class="{'has-error':vm.payment.error}">
-                                        <span class="input-group-addon">$</span>
+                                        <span class="input-group-addon" translate>cyr.</span>
                                         <input type="text" class="form-control" ng-model="vm.payment.value">
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" ng-click="vm.sendpayment(user)" ng-class="{'btn-danger':vm.payment.error}">
@@ -50,7 +50,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <uib-pagination total-items="vm.usersPages.totalItems" ng-model="vm.usersPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getUsers()" items-per-page="vm.usersPages.perPage"></uib-pagination>
+                <uib-pagination total-items="vm.usersPages.totalItems" ng-model="vm.usersPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getUsers()" items-per-page="vm.usersPages.perPage"  previous-text="{{'Previous'|translate}}" next-text="{{'Next'|translate}}"></uib-pagination>
             </div>
         </div>
     </div>
@@ -74,7 +74,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <uib-pagination total-items="vm.paymentsPages.totalItems" ng-model="vm.paymentsPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getPayments()" items-per-page="vm.paymentsPages.perPage"></uib-pagination>
+                <uib-pagination total-items="vm.paymentsPages.totalItems" ng-model="vm.paymentsPages.currentPage" max-size="10" class="pagination-sm no-margin" boundary-link-numbers="true" ng-change="vm.getPayments()" items-per-page="vm.paymentsPages.perPage"  previous-text="{{'Previous'|translate}}" next-text="{{'Next'|translate}}"></uib-pagination>
             </div>
         </div>
     </div>

@@ -6,11 +6,12 @@
                 <h4 class="modal-title" translate>.ParseMenu</h4>
             </div>
             <div class="modal-body">
-                <p ng-class="{'text-warning':error, 'text-success':!error}" translate=".{{message}}" translate-value-data="{{messageData}}" ng-if="message!=''" ></p>
-                <div class="form-group">
-                    <div class="pull-right">{{source.info}}</div>
-                    <label for="source" translate>.Source</label>
-                    <div class="dropdown">
+                <form name="parseForm">
+                    <p ng-class="{'text-warning':error, 'text-success':!error}" translate=".{{message}}" translate-value-data="{{messageData}}" ng-if="message!=''"></p>
+                    <div class="form-group">
+                        <div class="pull-right">{{source.info}}</div>
+                        <label for="source" translate>.Source</label>
+                        <div class="dropdown">
                             <button class="btn btn-default dropdown-toggle" type="button" id="sourceSelect" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 <img ng-src="{{source.icon}}" width="24" height="24">
                                 {{source.name}}
@@ -25,35 +26,36 @@
                                 </li>
                             </ul>
                             <button class="btn btn-default" type="button" id="sourcesUpdate" ng-click="getParsers()"><i class="glyphicon glyphicon-refresh" /></button>
-                    </div>
+                        </div>
 
-                </div>
-                <div class="form-group">
-                    <label for="fromDate" translate>.From</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="input.start" placeholder="{{startDays[0].date | amDateFormat:'L'}}" moment-validate>
-                        <div class="input-group-btn">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span translate>.SelectDay</span>&nbsp;<span class="caret"></span></button>
-                            <ul class="dropdown-menu dropdown-menu-right">
-                                <li ng-repeat="day in startDays"><a href="" ng-click="setStart(day)" translate=".{{day.name}}"></a></li>
-                            </ul>
-                        </div><!-- /btn-group -->
-                    </div><!-- /input-group -->
-                </div>
-                <div class="form-group">
-                    <label for="fromDate" translate>.Count</label>
-                    <input type="text" class="form-control" id="fromDate" placeholder="" ng-model="input.count">
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" ng-model="input.update"> <p translate>.Update</p>
-                    </label>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" ng-model="input.next"> <p translate>.Next</p>
-</label>
-                </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error':parseForm.fromDate.$error.moment}">
+                        <label for="fromDate" translate>.From</label>
+                        <div class="input-group">
+                            <input type="text" name="fromDate" class="form-control" ng-model="input.start" placeholder="{{startDays[0].date | amDateFormat:'L'}}" moment-validate>
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span translate>.SelectDay</span>&nbsp;<span class="caret"></span></button>
+                                <ul class="dropdown-menu dropdown-menu-right">
+                                    <li ng-repeat="day in startDays"><a href="" ng-click="setStart(day)" translate=".{{day.name}}"></a></li>
+                                </ul>
+                            </div><!-- /btn-group -->
+                        </div><!-- /input-group -->
+                    </div>
+                    <div class="form-group">
+                        <label for="fromDate" translate>.Count</label>
+                        <input type="text" class="form-control" id="fromDate" placeholder="" ng-model="input.count">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="input.update"> <p translate>.Update</p>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="input.next"> <p translate>.Next</p>
+                        </label>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" translate>Close</button>

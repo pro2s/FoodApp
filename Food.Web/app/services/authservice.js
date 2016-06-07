@@ -4,8 +4,8 @@
         .module('app')
         .factory('authservice', authService);
 
-    authService.$inject = ['$http', 'Config', 'Account'];
-    function authService($http, Config, Account) {
+    authService.$inject = ['$rootScope','$http', '$location', 'Config', 'Account'];
+    function authService($rootScope, $http, $location, Config, Account) {
         var storage = localStorage; //sessionStorage;
         var _form = {
             title: "Login",
@@ -18,6 +18,7 @@
             password: '',
             confirmPassword: '',
             active: false,
+            onlyLogin: false,
         }
 
         var _state = {
@@ -27,6 +28,7 @@
             email:'',
             username: '',
             userinfo: {},
+            authError: false,
         };
         
         var _view = {
@@ -36,6 +38,7 @@
         }
 
         var _handlers = {};
+        var apiListener = $rootScope.$on('api:unauthorized', unauthorized);
         
         var service = {
             view: _view,
@@ -62,6 +65,15 @@
 
         return service;
 
+        function unauthorized(event, data) {
+            if (_state.isLogged) {
+                _form.email = _state.email
+                _form.onlyLogin = true;
+                _state.authError = true;
+                showLogin();
+            }
+        };
+        
         function getKey() {
             return storage.getItem('tokenKey');
         }
@@ -179,6 +191,9 @@
             _form.username = '';
             _form.password = '';
             _form.confirmPassword = '';
+            if (_state.authError) {
+                doLogout();
+            }
         }
 
         function showLogin() {
@@ -267,6 +282,7 @@
         }
 
         function doLogout() {
+            _state.authError = false;
             _state.isLogged = false;
             _state.username = '';
             _state.roles = [];
@@ -277,6 +293,7 @@
             removeKey();
             delete $http.defaults.headers.common['Authorization'];
             authEvent('UserLogout');
+            $location.path('/');
         }
 
         function authExternalProvider(provider) {

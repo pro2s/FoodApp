@@ -23,6 +23,9 @@ namespace Food.Web
             bundles.Add(new ScriptBundle("~/bundles/moment").Include(
                         "~/Scripts/moment-with-locales.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/loading-bar").Include(
+                        "~/Scripts/loading-bar.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                         "~/Scripts/angular.js",
                         "~/Scripts/angular-*",
@@ -39,6 +42,7 @@ namespace Food.Web
                         "~/Content/bootstrap.css",
                         "~/Content/font-awesome.css",
                         "~/Content/bootstrap-social.css",
+                        "~/Content/loading-bar.css",
                         "~/Content/site.css"
                         ));
         }

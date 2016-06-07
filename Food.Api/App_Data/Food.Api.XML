@@ -520,6 +520,13 @@
             <param name="to">to</param>
             <returns>List of Menu</returns>
         </member>
+        <member name="M:Food.Api.Controllers.PaymentsController.ShareBalance(Food.Api.Models.ShareToBindingModel)">
+            <summary>
+            Sharing balance from to other users
+            </summary>
+            <param name="Share"></param>
+            <returns></returns>
+        </member>
         <member name="M:Food.Api.Controllers.UserChoicesController.CheckUserChoise(Food.Api.Models.UserChoice)">
             <summary>
             Check is posibe to confirm user order
@@ -538,6 +545,17 @@
             Get user info
             </summary>
             <returns>user info</returns>
+        </member>
+        <member name="M:Food.Api.DAL.FoodDBExtension.Range``1(System.Linq.IQueryable{``0},System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Get range of records
+            </summary>
+            <typeparam name="T">Any entry</typeparam>
+            <param name="query">Self query parametr</param>
+            <param name="total">Count of records</param>
+            <param name="from">From records</param>
+            <param name="to">To records</param>
+            <returns>Range of query records</returns>
         </member>
         <member name="T:Food.Api.ChudoPechkaHtmlParser">
             <summary>
@@ -565,12 +583,12 @@
             Load and parse menu from .doc file
             </summary>
         </member>
-        <member name="T:Food.Api.McDonalds">
+        <member name="T:Food.Api.McDonaldsParser">
             <summary>
             Sample menu parser
             </summary>
         </member>
-        <member name="M:Food.Api.McDonalds.GetInfo">
+        <member name="M:Food.Api.McDonaldsParser.GetInfo">
             <summary>
             Info about parser
             </summary>
@@ -578,7 +596,7 @@
             Dictionary with keys - id, name, icon
             </returns>
         </member>
-        <member name="M:Food.Api.McDonalds.ParseMenu(System.Nullable{System.DateTime})">
+        <member name="M:Food.Api.McDonaldsParser.ParseMenu(System.Nullable{System.DateTime})">
             <summary>
             Parse menu from site or file
             </summary>

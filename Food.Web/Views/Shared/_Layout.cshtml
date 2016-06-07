@@ -12,26 +12,48 @@
     <nav class="navbar navbar-default navbar-static-top" ng-controller="TopMenu as topmenu" >
         <div class="container">
             <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-mobile" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
                 <a class="pull-left logo" href="#/">
-                    <img src="~/Content/food.png" width="45" height="45" alt="{{'FoodApp'|translate}}" />
+                    <img src="~/Content/food.png" width="45" height="45" />
                 </a>
                 <a class="navbar-brand" href="#/" translate>FoodApp</a>
             </div>
-            <ul class="nav navbar-nav" translate-namespace="topmenu">
-                <li ng-repeat="item in topmenu.menu" ng-class="{ active: topmenu.isActive(item.url)}">
-                    <a href="#{{item.url}}" translate=".{{item.name}}"></a>
+            
+            <div class="collapse navbar-collapse" id="navbar-collapse-mobile">
+            
+                <ul class="nav navbar-nav" translate-namespace="topmenu">
+                    <li ng-repeat="item in topmenu.menu" ng-class="{ active: topmenu.isActive(item.url)}">
+                        <a href="#{{item.url}}" translate=".{{item.name}}"></a>
+                    </li>
+                </ul>
+                
+                            
+                <ul class="nav navbar-nav navbar-right ng-cloak lang">
+                 <li class="dropdown">
+                  <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <img ng-src="~/Content/{{topmenu.language}}.png" width="30" height="20"> <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li ng-repeat="lang in topmenu.languages"><a href="" ng-click="topmenu.changeLanguage(lang)"><img ng-src="~/Content/{{lang}}.png" width="30" height="20"></a></li>
+                  </ul>
                 </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="topmenu.isAuth()">
-                <li ng-class="{ active: topmenu.isActive('/user')}" >
-                    <a href="#/profile" ng-bind="topmenu.auth.username">User</a>
-                </li>
-                <li><a href="" ng-click="topmenu.logout()" translate>Logout</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="!topmenu.isAuth()">
-                <li><a href="" ng-click="topmenu.showLogin()" translate>Login</a></li>
-                <li><a href="" ng-click="topmenu.showRegister()" translate>Registration</a></li>
-            </ul>
+                </ul>
+                
+                <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="topmenu.isAuth()">
+                    <li ng-class="{ active: topmenu.isActive('/user')}" >
+                        <a href="#/profile" ng-bind="topmenu.auth.username">User</a>
+                    </li>
+                    <li><a href="" ng-click="topmenu.logout()" translate>Logout</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right ng-cloak" ng-if="!topmenu.isAuth()">
+                    <li><a href="" ng-click="topmenu.showLogin()" translate>Login</a></li>
+                    <li><a href="" ng-click="topmenu.showRegister()" translate>Registration</a></li>
+                </ul>
+            </div>
         </div>
     </nav>
 
@@ -61,6 +83,7 @@
         @Scripts.Render("~/bundles/jquery")
         @Scripts.Render("~/bundles/bootstrap")
         @Scripts.Render("~/bundles/moment")
+        @Scripts.Render("~/bundles/loading-bar")
         @Scripts.Render("~/bundles/angular")
         @Scripts.Render("~/bundles/angular-translate")
         @Scripts.Render("~/bundles/app")
