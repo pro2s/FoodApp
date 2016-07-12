@@ -76,14 +76,14 @@
             if (vm.addId < 0 ) {
                 return;
             }
-            var add = parseInt(vm.payment.value);
+            var add = parseFloat(vm.payment.value);
             if (isNaN(add)) {
                 vm.payment.error = true;
             }
             else
             {
                 vm.payment.error = false;
-                user.balance = parseInt(user.balance) + add;
+                user.balance = parseFloat(user.balance) + add;
                 
                 var pay = new Payment({userid:user.id, sum:add})
                 pay.$save({},function () {
