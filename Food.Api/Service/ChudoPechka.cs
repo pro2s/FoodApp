@@ -78,7 +78,7 @@ namespace Food.Api
             Menu daymenu = new Menu()
             {
                 Name = "Полный обед",
-                Price = 35000,
+                Price = 3.50m,
                 Items = copy_items,
                 OnDate = _monday.AddDays(day),
                 Type = MenuType.NormalMenu,
@@ -97,7 +97,7 @@ namespace Food.Api
             daymenu = new Menu()
             {
                 Name = "Без первого",
-                Price = 30000,
+                Price = 3.00m,
                 Items = copy_items,
                 OnDate = _monday.AddDays(day),
                 Type = MenuType.NormalMenu,
