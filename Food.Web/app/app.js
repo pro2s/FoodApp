@@ -71,7 +71,7 @@ angular
             controller: 'UserAdmin',
             controllerAs: 'vm',
             access: 'isAuthenticated',
-            roles: ['Admin'],
+            roles: ['Admin','GlobalAdmin'],
             menuname:'Users',
         })
         .when('/orders', {
@@ -79,7 +79,7 @@ angular
             controller: 'OrdersAdmin',
             controllerAs: 'vm',
             access: 'isAuthenticated',
-            roles: ['Admin'],
+            roles: ['Admin','GlobalAdmin'],
             menuname: 'Orders',
         })
         .when('/menu', {
