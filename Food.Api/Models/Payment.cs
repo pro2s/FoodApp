@@ -11,7 +11,9 @@ namespace Food.Api.Models
 
         public string UserID { get; set; }
         public DateTime Date { get; set; }
-        public int Sum { get; set; }
+
+        [Precision(10, 2)]
+        public decimal Sum { get; set; }
 
     }
 }
