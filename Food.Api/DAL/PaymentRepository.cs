@@ -18,7 +18,7 @@ namespace Food.Api.DAL
         void InsertOrUpdate(Payment payment);
         bool Delete(int id);
         void Save();
-        int GetUserBalance(string UserId);
+        decimal GetUserBalance(string UserId);
         int SumByUser(string UserId);
     }
 
@@ -98,7 +98,7 @@ namespace Food.Api.DAL
             context.Dispose();
         }
 
-        public int GetUserBalance(string UserId)
+        public decimal GetUserBalance(string UserId)
         {
             return context.GetUserBalance(UserId);
         }

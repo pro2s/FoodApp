@@ -160,7 +160,7 @@ namespace Food.Api.Controllers
             UserChoice oldChoice = db.UserChoices.Where(uc => uc.Id == userChoice.Id).First();
             db.Entry(oldChoice).State = EntityState.Detached;
             Menu menu = db.Menus.First(m => m.Id == userChoice.MenuId);
-            int balance = db.GetUserBalance(userChoice.UserID);
+            decimal balance = db.GetUserBalance(userChoice.UserID);
             
 
             if (User.IsInRole("Admin") || User.IsInRole("GlobalAdmin"))
@@ -208,7 +208,7 @@ namespace Food.Api.Controllers
             }
 
             Menu menu = db.Menus.First(m => m.Id == userChoice.MenuId);
-            int balance = db.GetUserBalance(userChoice.UserID);
+            decimal balance = db.GetUserBalance(userChoice.UserID);
             if (balance >= menu.Price)
             {
                 db.UserChoices.Add(userChoice);

@@ -156,7 +156,7 @@ namespace Food.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            int balance = _payments.GetUserBalance(UserId);
+            decimal balance = _payments.GetUserBalance(UserId);
 
             if (balance - Share.Amount < 0)
             {

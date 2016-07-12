@@ -41,11 +41,11 @@ namespace Food.Api.DAL
             base.OnModelCreating(modelBuilder);
         }
 
-        public int GetUserBalance(string userId)
+        public decimal GetUserBalance(string userId)
         {
             // Get User Balance
-            int debit = Payments.Where(p => p.UserID == userId).Sum(p => (int?)p.Sum) ?? 0;
-            int credit = UserChoices.Where(uc => uc.UserID == userId && uc.confirm).Sum(uc => (int?)uc.Menu.Price) ?? 0;
+            decimal debit = Payments.Where(p => p.UserID == userId).Sum(p => (decimal?)p.Sum) ?? 0;
+            decimal credit = UserChoices.Where(uc => uc.UserID == userId && uc.confirm).Sum(uc => (decimal?)uc.Menu.Price) ?? 0;
             return debit - credit;
         }
         

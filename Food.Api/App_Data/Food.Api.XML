@@ -546,6 +546,35 @@
             </summary>
             <returns>user info</returns>
         </member>
+        <member name="T:Food.Api.Models.Precision">
+            <summary>
+            The Precision class allows us to decorate our Entity Models with a Precision attribute 
+            to specify decimal precision values for the database column
+            </summary>
+        </member>
+        <member name="P:Food.Api.Models.Precision.precision">
+            <summary>
+            The total number of digits to store, including decimals
+            </summary>
+        </member>
+        <member name="P:Food.Api.Models.Precision.scale">
+            <summary>
+            The number of digits from the precision to be used for decimals
+            </summary>
+        </member>
+        <member name="M:Food.Api.Models.Precision.#ctor(System.Byte,System.Byte)">
+            <summary>
+            Define the precision and scale of a decimal data type
+            </summary>
+            <param name="precision">The total number of digits to store, including decimals</param>
+            <param name="scale">The number of digits from the precision to be used for decimals</param>
+        </member>
+        <member name="M:Food.Api.Models.Precision.ConfigureModelBuilder(System.Data.Entity.DbModelBuilder)">
+            <summary>
+            Apply the precision to our data model for any property using this annotation
+            </summary>
+            <param name="modelBuilder"></param>
+        </member>
         <member name="M:Food.Api.DAL.FoodDBExtension.Range``1(System.Linq.IQueryable{``0},System.Int32,System.Int32,System.Int32)">
             <summary>
             Get range of records

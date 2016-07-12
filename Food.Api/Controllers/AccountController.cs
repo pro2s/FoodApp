@@ -93,7 +93,7 @@ namespace Food.Api.Controllers
             string UserName = User.Identity.GetUserName();
             string Email = UserName;
             bool IsEmailConfirmed = false;
-            int Balance = 0;
+            decimal Balance = 0;
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
             string LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null;
 
