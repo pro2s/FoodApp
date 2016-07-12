@@ -330,6 +330,7 @@
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="DAL\MenuRepository.cs" />
+    <Compile Include="Models\ParserTemplate.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaymentBindingModel.cs" />
     <Compile Include="Models\PaymentViewModels.cs" />

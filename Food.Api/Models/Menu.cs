@@ -11,6 +11,7 @@ namespace Food.Api.Models
         NoneMenu = -1,
         NormalMenu = 0,
         NextMonday = 8,
+        ParserTemplate = 100
     }
 
     public class Menu
@@ -20,7 +21,7 @@ namespace Food.Api.Models
         public int Price { get; set; }
         public DateTime? OnDate { get; set; }
         public MenuType Type { get; set; }
-
+        public virtual ParserTemplate ParserTemplate { get; set; }
         public virtual ICollection<Item> Items { get; set; }
 
         public Menu()
