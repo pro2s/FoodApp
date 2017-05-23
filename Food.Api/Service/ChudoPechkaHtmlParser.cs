@@ -38,7 +38,12 @@ namespace Food.Api
             {
                 _monday = (DateTime)start;
             }
-            ParseHtml();
+
+            if (!_error)
+            {
+                ParseHtml();
+            }
+
             return _weekmenu;
         }
 

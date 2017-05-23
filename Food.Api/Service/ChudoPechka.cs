@@ -22,7 +22,7 @@ namespace Food.Api
         protected DateTime _monday;
         protected IEnumerable<HtmlNode> _html_menu;
         protected string _url_menu;
-
+        protected boolean _error;   
         protected List<Menu> _weekmenu
         {
             get; set;
@@ -36,17 +36,26 @@ namespace Food.Api
                 var raw_html = Encoding.UTF8.GetString(data);
 
                 var html = new HtmlDocument();
-                html.LoadHtml(raw_html);
-                _html_menu = html.GetElementbyId("issues").Elements("li");
-                _url_menu = html.DocumentNode.Descendants("a")
-                    .Where(d => d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("file but"))
-                    .First()
-                    .Attributes["href"].Value;
+                try
+                {
+                    html.LoadHtml(raw_html);
+                    _html_menu = html.GetElementbyId("issues").Elements("li");
+                    _url_menu = html.DocumentNode.Descendants("a")
+                        .Where(d => d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("file but"))
+                        .First()
+                        .Attributes["href"].Value;
+                }
+                catch (WebException e) 
+                {
+                    _error = true;   
+                }
+                
             }
         }
       
         public ChudoPechka()
         {
+            _error = false;
             _url = "http://chudo-pechka.by/";
             _monday = DateTime.UtcNow.StartOfWeek();
             _weekmenu = new List<Menu>();
