@@ -22,7 +22,7 @@ namespace Food.Api
         protected DateTime _monday;
         protected IEnumerable<HtmlNode> _html_menu;
         protected string _url_menu;
-        protected boolean _error;   
+        protected bool _error;   
         protected List<Menu> _weekmenu
         {
             get; set;
