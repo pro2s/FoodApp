@@ -32,30 +32,33 @@ namespace Food.Api
         {
             using (WebClient client = new WebClient())
             {
-                var data = client.DownloadData(_url);
-                var raw_html = Encoding.UTF8.GetString(data);
-
-                var html = new HtmlDocument();
+                var raw_html = "";
+                _error = false;
                 try
                 {
+                    var data = client.DownloadData(_url);
+                    raw_html = Encoding.UTF8.GetString(data);
+                }
+                catch (WebException e) 
+                {
+                    _error = true;   
+                }
+
+                if (!_error) 
+                {
+                    var html = new HtmlDocument();
                     html.LoadHtml(raw_html);
                     _html_menu = html.GetElementbyId("issues").Elements("li");
                     _url_menu = html.DocumentNode.Descendants("a")
                         .Where(d => d.Attributes.Contains("class") && d.Attributes["class"].Value.Contains("file but"))
                         .First()
                         .Attributes["href"].Value;
-                }
-                catch (WebException e) 
-                {
-                    _error = true;   
-                }
-                
+                }    
             }
         }
       
         public ChudoPechka()
         {
-            _error = false;
             _url = "http://chudo-pechka.by/";
             _monday = DateTime.UtcNow.StartOfWeek();
             _weekmenu = new List<Menu>();
