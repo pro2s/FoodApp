@@ -24,7 +24,7 @@
     	test: {
     		host: 'pro2s.github.io',
     		config: {
-    		    api: 'http://publicfoodapi.azurewebsites.net/',
+    		    api: 'http://foodapp.apphb.com/',
     		    redirectUrl: 'http://pro2s.github.io/FoodApp/Food.Web/',
     		}
     	},
