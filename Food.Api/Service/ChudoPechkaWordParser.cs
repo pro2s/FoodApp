@@ -24,7 +24,8 @@ namespace Food.Api
             _info["id"] = "chudopechkaword";
             _info["name"] = "Chudo-Pechka Word";
             _info["icon"] = "http://chudo-pechka.by/assets/templates/Chudopechka/images/logo.png";
-            _info["info"] = Uri.UnescapeDataString(_url_menu.Substring(_url_menu.LastIndexOf('/') + 1));
+            String url_menu = _url_menu ?? new String();
+            _info["info"] = Uri.UnescapeDataString(url_menu.Substring(url_menu.LastIndexOf('/') + 1));
         }
 
         public string Id()
