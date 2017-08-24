@@ -59,7 +59,7 @@ namespace Food.Api
       
         public ChudoPechka()
         {
-            _url = "http://chudo-pechka.by/";
+            _url = "https://pro2s.github.io/FoodAppContent/chudo-pechka.by.html";
             _monday = DateTime.UtcNow.StartOfWeek();
             _weekmenu = new List<Menu>();
             ReadData();

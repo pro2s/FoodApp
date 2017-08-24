@@ -19,7 +19,7 @@ namespace Food.Api
             _info = new Dictionary<string, string>();
             _info["id"] = "chudopechkahtml";
             _info["name"] = "Chudo-Pechka HTML";
-            _info["icon"] = "http://chudo-pechka.by/assets/templates/Chudopechka/images/logo.png";
+            _info["icon"] = "https://pro2s.github.io/FoodAppContent/chudo-pechka-logo.png";
         }
 
         public string Id()
