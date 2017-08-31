@@ -21,6 +21,7 @@ namespace Food.Api
         protected string _url;
         protected DateTime _monday;
         protected IEnumerable<HtmlNode> _html_menu;
+        protected string _page;
         protected string _url_menu;
         protected bool _error;   
         protected List<Menu> _weekmenu
@@ -36,7 +37,7 @@ namespace Food.Api
                 _error = false;
                 try
                 {
-                    var data = client.DownloadData(_url);
+                    var data = client.DownloadData(_url + _page);
                     raw_html = Encoding.UTF8.GetString(data);
                 }
                 catch (WebException e) 
@@ -59,7 +60,8 @@ namespace Food.Api
       
         public ChudoPechka()
         {
-            _url = "https://pro2s.github.io/FoodAppContent/chudo-pechka.by.html";
+            _url = "https://pro2s.github.io/FoodAppContent/";
+            _page = "chudo-pechka.by.html";
             _monday = DateTime.UtcNow.StartOfWeek();
             _weekmenu = new List<Menu>();
             ReadData();
@@ -69,8 +71,6 @@ namespace Food.Api
         {
             _weekmenu.Clear();
         }
-
-
 
         protected List<Menu> FillMenu(List<Item> items, int day)
         {
