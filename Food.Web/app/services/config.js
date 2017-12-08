@@ -24,15 +24,15 @@
     	test: {
     		host: 'pro2s.github.io',
     		config: {
-    		    api: 'http://publicfoodapi.azurewebsites.net/',
+    		    api: 'http://foodapp.apphb.com/',
     		    redirectUrl: 'http://pro2s.github.io/FoodApp/Food.Web/',
     		}
     	},
     	pro2s: {
     		host: 'pro2s.ru',
     		config: {
-    		    api: 'http://publicfoodapi.azurewebsites.net/',
-    		    redirectUrl: 'http://pro2s.github.io/FoodApp/Food.Web/',
+    		    api: 'http://foodapp.apphb.com/',
+    		    redirectUrl: 'http://pro2s.ru/FoodApp/Food.Web/',
     		}
     	},
         prod: {
