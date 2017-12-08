@@ -28,6 +28,13 @@
     		    redirectUrl: 'http://pro2s.github.io/FoodApp/Food.Web/',
     		}
     	},
+    	pro2s: {
+    		host: 'pro2s.ru',
+    		config: {
+    		    api: 'http://publicfoodapi.azurewebsites.net/',
+    		    redirectUrl: 'http://pro2s.github.io/FoodApp/Food.Web/',
+    		}
+    	},
         prod: {
     		host: 'production.com',
     		config: {
